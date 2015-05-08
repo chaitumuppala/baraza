@@ -3,11 +3,13 @@ require 'rails_helper'
 describe User do
   describe "validation" do
     it "should be inavlid if password length is less than 6 characters" do
-      expect(build(:user, password: "pass")).not_to be_valid
+      user = build(:user, password: "Pa1!")
+      expect(user).not_to be_valid
+      expect(user.errors.full_messages).to eq(["Password is too short (minimum is 6 characters)"])
     end
 
     it "should be inavlid if password length is more than 10 characters" do
-      expect(build(:user, password: "*"*15)).not_to be_valid
+      expect(build(:user, password: "Pa1!213456675856432456463452")).not_to be_valid
     end
 
     it "should validate presence" do
