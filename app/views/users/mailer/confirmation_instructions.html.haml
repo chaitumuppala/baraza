@@ -1,0 +1,8 @@
+%p
+  Hi #{@email},
+%p
+  Welcome to Pan-African Baraza.
+%p
+  To activate your account, please follow the #{link_to 'link', confirmation_url(@resource, confirmation_token: @token)}.
+  Your Baraza User name is email address.
+
