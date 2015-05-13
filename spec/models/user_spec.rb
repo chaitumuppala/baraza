@@ -29,4 +29,29 @@ describe User do
       expect(build(:user, password: "Password1!")).to be_valid
     end
   end
+
+  describe "skip confirmation mail" do
+    it "should skip for users associated to providers" do
+      user = create(:user, uid: "uid001", provider: "facebook")
+
+    end
+  end
+
+  describe "skip validation" do
+    it "should skip email validation for users associated to providers" do
+      expect {
+        create(:user, uid: "uid001", provider: "facebook", email: nil)
+      }.to change{User.count}.by(1)
+    end
+
+    it "should skip password validation for users associated to providers" do
+      expect {
+        create(:user, uid: "uid001", provider: "facebook", password: nil, password_confirmation: nil)
+      }.to change{User.count}.by(1)
+    end
+
+    it "should not skip for regular users" do
+      expect(build(:user, email: nil)).not_to be_valid
+    end
+  end
 end
