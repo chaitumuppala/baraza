@@ -25,6 +25,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'haml'
 gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 gem 'foundation-rails'
 
 # Use ActiveModel has_secure_password
