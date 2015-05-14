@@ -9,6 +9,26 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
+    .tabs
+      %ul
+        %li.left Baraza
+        %li.left EXPLORE
+        %li.left LEARN
+        %li.left PARTICIPATE
+        - unless current_user
+          %li.right.sign_up
+            %a{href: "#", "data-reveal-id" => "signUpModal"}
+              Sign Up
+          %li.right.sign_in
+            %a{href: "#", "data-reveal-id" => "signInModal"}
+              Sign In
+
+          = render file: "users/registrations/new"
+          = render file: "users/sessions/new"
+    %hr
+    .mission
+      Let us reclaim the past, contest the present & invent the future
+    %hr
     %p.notice
       = notice
     %p.alert

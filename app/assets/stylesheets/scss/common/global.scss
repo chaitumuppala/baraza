@@ -1,3 +1,14 @@
 input[type=submit] {
   @extend .button;
 }
+
+ul, li, ul li ul {
+  list-style-type: none;
+}
+
+.mission {
+  text-align: center;
+  color: red;
+  font-weight: normal;
+  font-style: italic;
+}

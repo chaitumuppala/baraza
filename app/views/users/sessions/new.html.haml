@@ -1,4 +1,5 @@
-.login_page.row
+#signInModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  .login_page.row
   %h2 Nice to have you back!
   %h2 Log in
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
@@ -16,4 +17,8 @@
         = f.label :remember_me
     .actions
       = f.submit "Log in"
+  %div
+    %span.icon-facebook-square
+    %div.fb_sign_in
+      = link_to "Sign in with Facebook", omniauth_authorize_path(resource_name, "facebook")
   = render "users/shared/links"

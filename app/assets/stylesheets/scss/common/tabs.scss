@@ -1,0 +1,19 @@
+.tabs{
+  ul {
+    @extend .row;
+    li.left {
+      @extend .column;
+      @extend .medium-2;
+      float: left;
+      margin-top: 20px;
+      border-right: 1px solid;
+    }
+    li.right {
+      @extend .column;
+      @extend .medium-2;
+      float: right;
+      margin-top: 20px;
+      border-right: 1px solid;
+    }
+  }
+}
