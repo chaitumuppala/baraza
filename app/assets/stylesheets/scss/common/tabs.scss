@@ -1,19 +1,25 @@
-.tabs{
+
+div.tabs {
+  border-bottom: 1px solid $gainsboro;
   ul {
     @extend .row;
-    li.left {
+    li {
+      padding: 20px 0;
+      text-align: center;
       @extend .column;
       @extend .medium-2;
+      margin-top: 25px;
+    }
+    .left {
       float: left;
-      margin-top: 20px;
+    }
+    .right {
+      float: right;
       border-right: 1px solid;
     }
-    li.right {
-      @extend .column;
-      @extend .medium-2;
-      float: right;
+    .logo {
+      padding-top: 0px;
       margin-top: 20px;
-      border-right: 1px solid;
     }
   }
 }

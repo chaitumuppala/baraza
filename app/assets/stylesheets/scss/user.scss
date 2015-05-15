@@ -16,6 +16,11 @@
 .fb_sign_in {
   vertical-align: super;
   display: inline-block;
+  img {
+    width: 300px;
+    height: 60px;
+    margin: 20px;
+  }
 }
 
 .sign_up, .sign_in {

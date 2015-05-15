@@ -11,7 +11,8 @@
   %body
     .tabs
       %ul
-        %li.left Baraza
+        %li.left.logo
+          %a{:href => "/"}= image_tag "logo.png",  :alt => "Baraza Logo"
         %li.left EXPLORE
         %li.left LEARN
         %li.left PARTICIPATE
@@ -28,7 +29,6 @@
 
           = render file: "users/registrations/new"
           = render file: "users/sessions/new"
-    %hr
     .mission
       Let us reclaim the past, contest the present & invent the future
     %hr
