@@ -15,7 +15,10 @@
         %li.left EXPLORE
         %li.left LEARN
         %li.left PARTICIPATE
-        - unless current_user
+        - if current_user
+          %li.right
+            = link_to "Logout", destroy_user_session_path, :method => :delete
+        - else
           %li.right.sign_up
             %a{href: "#", "data-reveal-id" => "signUpModal"}
               Sign Up
