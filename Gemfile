@@ -28,7 +28,7 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'foundation-rails'
-
+gem 'mysql2'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

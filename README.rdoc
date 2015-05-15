@@ -6,3 +6,9 @@ Machine Setup
 * `cd PATH_TO_PROJECT` (PATH_TO_PROJECT is the path of the project)
 * Install all gems `bundle install`
 * create tables -> `rake db:migrate`
+* brew install mysql
+* mysql.server start
+* mysql -uroot
+* CREATE USER 'baraza'@'localhost' IDENTIFIED BY 'baraza';
+* GRANT ALL PRIVILEGES ON * . * TO 'baraza'@'localhost';
+* mysql -ubaraza -p

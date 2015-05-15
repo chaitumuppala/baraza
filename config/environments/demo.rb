@@ -87,5 +87,5 @@ Rails.application.configure do
       :authentication       => "plain",
       :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: '128.199.165.90', port: 80 }
 end
