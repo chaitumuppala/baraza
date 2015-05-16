@@ -2,7 +2,8 @@
   .login_page.row
   %h2 Nice to have you back!
   %h2 Log in
-  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = form_for(resource, as: resource_name, url: session_path(resource_name), remote: true) do |f|
+    .error
     .field
       = f.label :email
       %br/
@@ -18,7 +19,6 @@
     .actions
       = f.submit "Log in"
   %div
-    %span.icon-facebook-square
     %div.fb_sign_in
-      = link_to "Sign in with Facebook", omniauth_authorize_path(resource_name, "facebook")
+      = link_to (image_tag "signup_with_facebook.png"), omniauth_authorize_path(resource_name, "facebook")
   = render "users/shared/links"

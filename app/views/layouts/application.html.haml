@@ -13,9 +13,12 @@
       %ul
         %li.left.logo
           %a{:href => "/"}= image_tag "logo.png",  :alt => "Baraza Logo"
-        %li.left EXPLORE
-        %li.left LEARN
-        %li.left PARTICIPATE
+        %li.left
+          %h4 EXPLORE
+        %li.left
+          %h4 LEARN
+        %li.left
+          %h4 PARTICIPATE
         - if current_user
           %li.right
             = link_to "Logout", destroy_user_session_path, :method => :delete
@@ -27,8 +30,8 @@
             %a{href: "#", "data-reveal-id" => "signInModal"}
               Sign In
 
-          = render file: "users/registrations/new"
-          = render file: "users/sessions/new"
+          = render "users/registrations/new"
+          = render "users/sessions/new"
     .mission
       Let us reclaim the past, contest the present & invent the future
     %hr
