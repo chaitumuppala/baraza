@@ -21,4 +21,7 @@
   %div
     %div.fb_sign_in
       = link_to (image_tag "signup_with_facebook.png"), omniauth_authorize_path(resource_name, "facebook")
+  %div
+    %div.google_sign_in
+      = link_to (image_tag "signup_with_google.png"), omniauth_authorize_path(resource_name, "google_oauth2")
   = render "users/shared/links"
