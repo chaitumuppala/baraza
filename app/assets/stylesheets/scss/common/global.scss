@@ -16,4 +16,13 @@ ul, li, ul li ul {
 
 .display_error {
   color: red;
+  font-size: small;
+}
+
+.star_it:before {
+  color: red;
+  content: " ";
+  background: transparent url(image_path('red_asterisk.gif')) center right no-repeat;
+  padding: 5px;
+  margin-right: 2px;
 }

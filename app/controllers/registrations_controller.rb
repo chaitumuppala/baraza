@@ -1,4 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
+  before_filter :configure_permitted_parameters
+
   def create
     build_resource(sign_up_params)
 
@@ -22,5 +24,10 @@ class RegistrationsController < Devise::RegistrationsController
       end
       render json: resource.errors.full_messages.to_sentence, status: 422
     end
+  end
+
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name, :year_of_birth, :country, :gender)
   end
 end

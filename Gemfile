@@ -23,12 +23,15 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
+gem 'devise-i18n'
 gem 'haml'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'foundation-rails'
 gem 'mysql2'
+gem 'country_select', github: 'stefanpenner/country_select'
+gem 'star_it'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -54,7 +57,7 @@ end
 
 group :test do
   gem 'factory_girl_rails'
-  gem "shoulda-matchers"
+  gem 'shoulda-matchers'
 end
 
 

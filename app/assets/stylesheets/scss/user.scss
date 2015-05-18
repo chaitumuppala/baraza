@@ -4,7 +4,22 @@
   h3 {font-weight: bold}
   .register {
     margin-top: 20px;
+    .or {
+      @extend .column;
+      @extend .small-2;
+      @extend .medium-2;
+      @extend .large-2;
+    }
     .omniauth, .custom {
+      @extend .column;
+      @extend .small-5;
+      @extend .medium-5;
+      @extend .large-5;
+    }
+  }
+  .name {
+    @extend .row;
+    .first_name, .last_name {
       @extend .column;
       @extend .small-6;
       @extend .medium-6;
@@ -14,12 +29,10 @@
 }
 
 .fb_sign_in, .google_sign_in {
-  vertical-align: super;
-  display: inline-block;
   img {
     width: 300px;
     height: 60px;
-    margin: 20px 0;
+    margin-top: 20px;
   }
 }
 

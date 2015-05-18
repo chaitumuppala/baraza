@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   validates :password, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
+  validates_presence_of :first_name, :last_name
   def email_required?
     super && !has_a_provider?
   end

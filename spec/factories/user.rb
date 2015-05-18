@@ -8,6 +8,8 @@ FactoryGirl.define do
   factory :user do |user|
     email
     password "Password1!"
+    first_name "Patrick"
+    last_name "Jane"
     confirmed_at Time.now
   end
 end

@@ -87,5 +87,5 @@ Rails.application.configure do
       :authentication       => "plain",
       :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { host: '128.199.165.90', port: 80 }
+  config.action_mailer.default_url_options = { host: 'baraza-demo.mine.bz', port: 80 }
 end
