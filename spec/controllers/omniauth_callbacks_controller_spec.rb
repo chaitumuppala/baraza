@@ -5,11 +5,13 @@ describe OmniauthCallbacksController do
     context provider do
       it "should create first time user and sign_in the user" do
         request.env.merge!({"omniauth.auth" => OpenStruct.new(uid: 'uid001', provider: provider,
-                                                                         info: OpenStruct.new(email: "email@x.com", name: "danny"))})
+                                                                         info: OpenStruct.new(email: "email@x.com", first_name: "karthik", last_name: "sr"))})
         get provider.to_sym
 
         user = User.find_by(uid: 'uid001', provider: provider)
         expect(user).not_to be_nil
+        expect(user.first_name).to eq("karthik")
+        expect(user.last_name).to eq("sr")
         expect(response).to redirect_to("/")
         expect(controller.current_user).not_to be_nil
       end

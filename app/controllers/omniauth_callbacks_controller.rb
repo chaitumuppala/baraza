@@ -5,7 +5,7 @@ class OmniauthCallbacksController < ApplicationController
         auth = request.env["omniauth.auth"]
         user = User.find_by(uid: auth.uid, provider: auth.provider)
         if user.nil?
-          user = User.create(uid: auth.uid, provider: auth.provider)
+          user = User.create(uid: auth.uid, provider: auth.provider, first_name: auth.info.first_name, last_name: auth.info.last_name)
           user.skip_confirmation!
         end
         sign_in_and_redirect user
