@@ -21,3 +21,10 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+      errors:
+        models:
+          user:
+            attributes:
+              password:
+                invalid: "should include at-least one of the following characters - one uppercase letter; one lowercase letter; one numeral; one special character."

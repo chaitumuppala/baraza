@@ -6,7 +6,7 @@ $(function(){
             location.reload();
         }).on('ajax:error',function(e, xhr, status, error){
             errorSection.empty();
-            errorSection.append( xhr.responseText );
+            errorSection.append( xhr.responseText.split(", ").join(" <br> ") );
             $(form).parents(".reveal-modal").foundation('reveal', 'open');
         });
     });
