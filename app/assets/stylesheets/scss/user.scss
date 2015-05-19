@@ -28,7 +28,24 @@
   }
 }
 
-.fb_sign_in, .google_sign_in {
+.login_page {
+  .title { text-align: center; }
+  .social_media_sign_up {
+    @extend .row;
+    .fb_sign_up, .google_sign_up {
+      @extend .column;
+      @extend .small-6;
+      @extend .medium-6;
+      @extend .large-6;
+    }
+  }
+
+  .or {
+   text-align: center;
+  }
+}
+
+.fb_sign_in, .google_sign_in, .fb_sign_up, .google_sign_up {
   img {
     width: 300px;
     height: 60px;
