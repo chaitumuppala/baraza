@@ -14,13 +14,14 @@ ActiveAdmin.register User do
 # end
   permit_params :type
 
-  actions :all, except: [:new, :create, :show, :destroy]
+  actions :edit, :update, :index
 
   index do
     column :first_name
     column :last_name
     column :email
     column :type
+    actions
   end
 
   form do |f|

@@ -30,13 +30,6 @@ describe User do
     end
   end
 
-  describe "skip confirmation mail" do
-    it "should skip for users associated to providers" do
-      user = create(:user, uid: "uid001", provider: "facebook")
-
-    end
-  end
-
   describe "skip validation" do
     it "should skip email validation for users associated to providers" do
       expect {
@@ -52,6 +45,28 @@ describe User do
 
     it "should not skip for regular users" do
       expect(build(:user, email: nil)).not_to be_valid
+    end
+  end
+
+  describe "send_editor_intro_mail" do
+    it "should send mail to the user on assignment of editorial role" do
+      user = create(:user)
+      mailer = double("mailer")
+      expect(EditorWelcomeNotifier).to receive(:welcome).with(user).and_return(mailer)
+      expect(mailer).to receive(:deliver_now)
+      user.update_attributes(type: Editor.name)
+    end
+
+    it "should not send mail to the user if other attributes are changed" do
+      user = create(:user)
+      expect(EditorWelcomeNotifier).not_to receive(:welcome)
+      user.update_attributes(first_name: "hi")
+    end
+
+    it "should not send mail to the user if type is changed to value other than editor" do
+      user = create(:user, type: Editor.name)
+      expect(EditorWelcomeNotifier).not_to receive(:welcome)
+      user.update_attributes(type: Editor.name)
     end
   end
 end

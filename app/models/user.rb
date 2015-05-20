@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
 
   validates :password, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
   validates_presence_of :first_name, :last_name
+
+  after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
+
   def email_required?
     super && !has_a_provider?
   end
@@ -18,6 +21,10 @@ class User < ActiveRecord::Base
   private
   def has_a_provider?
     uid.present? && provider.present?
+  end
+
+  def send_editor_intro_mail
+    EditorWelcomeNotifier.welcome(self).deliver_now
   end
 end
 
