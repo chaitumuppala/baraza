@@ -12,7 +12,7 @@ describe OmniauthCallbacksController do
         expect(user).not_to be_nil
         expect(user.first_name).to eq("karthik")
         expect(user.last_name).to eq("sr")
-        expect(response).to redirect_to("/")
+        expect(response).to redirect_to(root_path)
         expect(controller.current_user).not_to be_nil
       end
 

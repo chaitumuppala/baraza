@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
                    confirmations: "confirmations"}
+
+  get "users/:id/change_email" => "users#edit", as: "user_edit"
+  patch "users/:id/change_email" => "users#update", as: "user_update"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

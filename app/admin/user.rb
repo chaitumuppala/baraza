@@ -32,7 +32,6 @@ ActiveAdmin.register User do
   end
 
   filter :type, as: :select, collection: proc { User::Roles.values }
-  filter :country
   filter :provider, as: :select, collection: proc { User.omniauth_providers }
   filter :gender, as: :select, collection: proc { User::GenderCategory.values }
 end

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
+  PASSWORD_SUBSTRING = "1Aa!"
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
@@ -28,6 +29,11 @@ class User < ActiveRecord::Base
 
   def password_required?
     super && !has_a_provider?
+  end
+
+  def update_email(new_email)
+    return update_attributes(email: new_email) if new_email.present? && User.where(email: new_email).blank?
+    false
   end
 
   private

@@ -1,0 +1,9 @@
+.change_email {
+  @extend .row;
+  .left, .right {
+    @extend .column;
+    @extend .small-6;
+    @extend .medium-6;
+    @extend .large-6;
+  }
+}
