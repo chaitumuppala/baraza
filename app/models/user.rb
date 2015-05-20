@@ -10,6 +10,18 @@ class User < ActiveRecord::Base
 
   after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
 
+  module Roles
+    extend ListValues
+    EDITOR = "Editor"
+  end
+
+  module GenderCategory
+    extend ListValues
+    M = "M"
+    F = "F"
+    OTHER = "Other"
+  end
+
   def email_required?
     super && !has_a_provider?
   end

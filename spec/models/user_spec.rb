@@ -69,4 +69,12 @@ describe User do
       user.update_attributes(type: Editor.name)
     end
   end
+
+  describe "GenderCategory" do
+    context "values" do
+      it "should return all values of gender category" do
+        expect(User::GenderCategory.values).to eq(["M", "F", "Other"])
+      end
+    end
+  end
 end
