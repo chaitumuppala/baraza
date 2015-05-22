@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
-                   confirmations: "confirmations"}
+                   confirmations: "confirmations", sessions: "sessions"}
 
   get "users/:id/change_email" => "users#edit", as: "user_edit"
   patch "users/:id/change_email" => "users#update", as: "user_update"

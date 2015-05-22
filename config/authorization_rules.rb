@@ -4,16 +4,15 @@ authorization do
   end
 
   role :registered_user do
+    includes :guest
     has_permission_on :users, to: [:edit, :update] do
       if_attribute :id => is { user.id }
     end
   end
 
   role :editor do
-
   end
 
   role :admin do
-
   end
 end
