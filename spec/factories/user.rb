@@ -10,6 +10,7 @@ FactoryGirl.define do
     password "Password1!"
     first_name "Patrick"
     last_name "Jane"
+    type RegisteredUser.name
     confirmed_at Time.now
   end
 end

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   validates :password, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
   validates_presence_of :first_name, :last_name
-
+  alias_attribute :role, :type
   after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
 
   module Roles
@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     M = "M"
     F = "F"
     OTHER = "Other"
+  end
+
+  def role_symbols
+    [role.underscore.to_sym]
   end
 
   def email_required?

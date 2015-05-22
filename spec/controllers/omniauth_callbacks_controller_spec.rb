@@ -23,7 +23,7 @@ describe OmniauthCallbacksController do
         expect{get provider.to_sym}.to_not change{User.count}
 
         expect(response).to redirect_to("/")
-        expect(controller.current_user).to eq(user)
+        expect(controller.current_user.id).to eq(user.id)
       end
     end
   end

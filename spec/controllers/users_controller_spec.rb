@@ -4,6 +4,7 @@ describe UsersController do
   describe "update" do
     it "should update valid email" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
+      sign_in user
       email = "email@valid.com"
       patch :update, id: user.id, user: {email: email}
 
@@ -15,6 +16,7 @@ describe UsersController do
       email = "email@valid.com"
       user1 = create(:user, uid: "uid001", provider: "facebook", email: email)
       user2 = create(:user, uid: "uid001", provider: "facebook", email: nil)
+      sign_in user2
       patch :update, id: user2.id, user: {email: email}
 
       expect(user2.reload.email).to be_nil
@@ -23,6 +25,7 @@ describe UsersController do
 
     it "should return error response if email is empty" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
+      sign_in user
       patch :update, id: user.id, user: {email: ""}
 
       expect(response).to render_template("edit")
@@ -32,9 +35,11 @@ describe UsersController do
   describe "edit" do
     it "should set the user" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
+      sign_in user
       get :edit, id: user.id
 
-      expect(assigns[:user]).to eq(user)
+      expect(assigns[:user].id).to eq(user.id)
+      expect(response).to render_template("edit")
     end
   end
 end

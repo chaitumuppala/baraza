@@ -102,6 +102,7 @@ GEM
       i18n_data (~> 0.7.0)
     currencies (0.4.2)
     debug_inspector (0.0.2)
+    declarative_authorization (0.5.7)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -207,8 +208,6 @@ GEM
       mime-types
     polyamorous (1.2.0)
       activerecord (>= 3.0)
-    pundit (1.0.0)
-      activesupport (>= 3.0.0)
     rack (1.6.0)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -326,6 +325,7 @@ DEPENDENCIES
   ckeditor
   coffee-rails (~> 4.1.0)
   country_select!
+  declarative_authorization
   devise
   devise-i18n
   factory_girl_rails
@@ -339,7 +339,6 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   paperclip
-  pundit
   rails (= 4.2.1)
   rspec-rails
   sass-rails (~> 5.0)
