@@ -9,7 +9,8 @@ set :repo_url, 'git@bitbucket.org:tw_osci/baraza.git'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/home/deploy/baraza'
-
+set :rvm_type, :system
+set :bundle_flags, '--deployment'
 # Default value for :scm is :git
 set :scm, :git
 

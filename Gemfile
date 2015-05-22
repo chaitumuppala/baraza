@@ -46,6 +46,9 @@ gem 'declarative_authorization'
 
 # Use Capistrano for deployment
 gem 'capistrano', '~> 3.4.0'
+gem 'capistrano-rails', '~> 1.1.0'
+gem 'capistrano-rvm'
+gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-passenger'
 
 group :development, :test do
