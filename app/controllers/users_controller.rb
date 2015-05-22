@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user
-  skip_before_action :authenticate
+  skip_before_action :ensure_email_present
   filter_resource_access
 
   def edit
