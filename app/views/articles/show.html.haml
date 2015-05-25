@@ -5,7 +5,7 @@
   = @article.title
 %p
   %b Content:
-  = @article.content
+  = @article.content.html_safe
 %p
   %b User:
   = @article.user

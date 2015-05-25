@@ -14,7 +14,7 @@
     - @articles.each do |article|
       %tr
         %td= article.title
-        %td= article.content
+        %td= article.content.html_safe
         %td= article.user
         %td= link_to 'Show', article
         %td= link_to 'Edit', edit_article_path(article)

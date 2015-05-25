@@ -9,7 +9,7 @@ authorization do
       if_attribute :id => is { user.id }
     end
 
-    has_permission_on :articles, to: [:new, :create]
+    has_permission_on :articles, to: [:new, :create, :show, :index, :edit, :update]
   end
 
   role :editor do
