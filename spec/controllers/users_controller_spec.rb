@@ -6,7 +6,7 @@ describe UsersController do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
       sign_in user
       email = "email@valid.com"
-      patch :update, id: user.id, user: {email: email}
+      patch :update, id: user.id, registered_user: {email: email}
 
       expect(user.reload.email).to eq(email)
       expect(response).to redirect_to(root_path)
@@ -17,7 +17,7 @@ describe UsersController do
       user1 = create(:user, uid: "uid001", provider: "facebook", email: email)
       user2 = create(:user, uid: "uid001", provider: "facebook", email: nil)
       sign_in user2
-      patch :update, id: user2.id, user: {email: email}
+      patch :update, id: user2.id, registered_user: {email: email}
 
       expect(user2.reload.email).to be_nil
       expect(response).to render_template("edit")
@@ -26,7 +26,7 @@ describe UsersController do
     it "should return error response if email is empty" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
       sign_in user
-      patch :update, id: user.id, user: {email: ""}
+      patch :update, id: user.id, registered_user: {email: ""}
 
       expect(response).to render_template("edit")
     end

@@ -30,6 +30,13 @@ describe User do
     end
   end
 
+  describe "before_create" do
+    it "should set type as registeredUser" do
+      user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod")
+      expect(user.type).to eq(RegisteredUser.name)
+    end
+  end
+
   describe "skip validation" do
     it "should skip email validation for users associated to providers" do
       expect {
@@ -64,9 +71,9 @@ describe User do
     end
 
     it "should not send mail to the user if type is changed to value other than editor" do
-      user = create(:user, type: Editor.name)
+      user = create(:user, type: RegisteredUser.name)
       expect(EditorWelcomeNotifier).not_to receive(:welcome)
-      user.update_attributes(type: Editor.name)
+      user.update_attributes(type: nil)
     end
   end
 

@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   alias_attribute :role, :type
   after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
 
+  before_create ->{ self.type = RegisteredUser.name }
+
   module Roles
     extend ListValues
     EDITOR = "Editor"

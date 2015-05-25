@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if(@user.update_email(params[:user][:email]))
+    if(@user.update_email(params[:registered_user][:email]))
       redirect_to root_path
     else
       render :edit
