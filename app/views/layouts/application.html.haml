@@ -9,34 +9,40 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
+    .header
+      .logo
+        %a{:href => "/"}= image_tag "logo.png",  :alt => "Baraza Logo"
+      .mission
+        .statement Reclaiming the past
+        .separator
+          |
+        .statement Contesting the present
+        .separator
+          |
+        .statement Inventing the future
     .tabs
-      %ul
-        %li.left.logo
-          %a{:href => "/"}= image_tag "logo.png",  :alt => "Baraza Logo"
-        %li.left
-          %h4 EXPLORE
-        %li.left
-          %h4 LEARN
-        %li.left
-          %h4 PARTICIPATE
-        - if current_user
-          %li.right
-            = link_to "Logout", destroy_user_session_path, :method => :delete
-        - else
-          %li.right.sign_up
-            %a{href: "#", "data-reveal-id" => "signUpModal"}
-              Sign Up
-          %li.right.sign_in
-            %a{href: "#", "data-reveal-id" => "signInModal"}
-              Sign In
+      .item.left
+        %a EXPLORE
+      .item.left
+        %a LEARN
+      .item.left
+        %a PARTICIPATE
+      - if current_user
+        .item.right
+          = link_to "Logout", destroy_user_session_path, :method => :delete
+      - else
+        .item.right.sign_up
+          %a{href: "#", "data-reveal-id" => "signUpModal"}
+            Sign Up
+        .item.right.sign_in
+          %a{href: "#", "data-reveal-id" => "signInModal"}
+            Sign In
 
-          = render "users/registrations/new"
-          = render "users/sessions/new"
-          = render "users/confirmations/new"
-          = render "users/passwords/new"
-    .mission
-      Let us reclaim the past, contest the present & invent the future
-    %hr
+        = render "users/registrations/new"
+        = render "users/sessions/new"
+        = render "users/confirmations/new"
+        = render "users/passwords/new"
+
     %p.notice
       = notice
     %p.alert

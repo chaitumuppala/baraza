@@ -1,17 +1,39 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, menu, nav, section, summary,
+time, mark, audio, video, input, textarea {
+  margin:0;
+  padding:0;
+  outline:0;
+  border:0;
+  background:transparent;
+  vertical-align:baseline;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1140px;
+  padding: 0;
+}
+
+body {
+  max-width: 1140px !important;
+}
+
 input[type=submit] {
   @extend .button;
 }
 
 ul, li, ul li ul {
   list-style-type: none;
-}
-
-.mission {
-  text-align: center;
-  color: red;
-  font-weight: normal;
-  font-style: italic;
-  margin-top: 20px;
 }
 
 .display_error {
@@ -25,4 +47,33 @@ ul, li, ul li ul {
   background: transparent url(image_path('red_asterisk.gif')) center right no-repeat;
   padding: 5px;
   margin-right: 2px;
+}
+
+.header {
+  border-bottom: 1px solid $gainsboro;
+  @extend .clearfix;
+  .logo {
+    @extend .left;
+    img {
+      height: 120px;
+      position: absolute;
+      left: -19pt;
+    }
+  }
+  .mission {
+    @extend .right;
+    line-height: 120px;
+    color: #d45934;
+    font-family: "Roboto Slab", serif;
+    font-size: 16px;
+    font-weight: 400;
+    .separator {
+      @extend .left;
+      padding: 0 10px;
+    }
+    .statement {
+      @extend .left;
+      font-style: italic;
+    }
+  }
 }
