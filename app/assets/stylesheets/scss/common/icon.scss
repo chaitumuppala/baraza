@@ -23,8 +23,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-facebook-square:before {
+.icon-down-arrow:before {
   content: "\e600";
-  font-size: 35px;
-  color: RGB(44, 67, 136);
+  font-size: 15px;
+  color: #C7C7C7;
+}
+.icon-search:before {
+  content: "\e986";
+  font-size: 15px;
+  color: #666666;
 }

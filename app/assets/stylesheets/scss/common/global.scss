@@ -24,10 +24,6 @@ body {
   padding: 0;
 }
 
-body {
-  max-width: 1140px !important;
-}
-
 input[type=submit] {
   @extend .button;
 }

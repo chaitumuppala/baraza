@@ -23,20 +23,26 @@
     .tabs
       .item.left
         %a EXPLORE
+        %span.icon-down-arrow
       .item.left
         %a LEARN
-      .item.left
+        %span.icon-down-arrow
+      .item.left.participate
         %a PARTICIPATE
+        %span.icon-down-arrow
+      .item.right
+        %span.icon-search
       - if current_user
         .item.right
-          = link_to "Logout", destroy_user_session_path, :method => :delete
+          = link_to "LOGOUT", destroy_user_session_path, :method => :delete
+        .item.right
+          = link_to "+ CREATE", "#"
       - else
-        .item.right.sign_up
-          %a{href: "#", "data-reveal-id" => "signUpModal"}
-            Sign Up
-        .item.right.sign_in
+        .item.right
           %a{href: "#", "data-reveal-id" => "signInModal"}
-            Sign In
+            LOGIN /
+          %a{href: "#", "data-reveal-id" => "signUpModal"}
+            SIGN UP
 
         = render "users/registrations/new"
         = render "users/sessions/new"
