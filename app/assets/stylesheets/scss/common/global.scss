@@ -10,18 +10,31 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, menu, nav, section, summary,
 time, mark, audio, video, input, textarea {
-  margin:0;
-  padding:0;
-  outline:0;
-  border:0;
-  background:transparent;
-  vertical-align:baseline;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: baseline;
 }
 
-body {
-  margin: 0 auto;
-  max-width: 1140px;
-  padding: 0;
+.left-empty, .right-empty {
+  @extend .column;
+  @extend .medium-1;
+  &:after {
+    content: '.';
+    visibility: hidden;
+  }
+}
+
+.middle-content {
+  @extend .column;
+  @extend .medium-10;
+}
+
+.main-content, .nav-bar, .logo-bar {
+  clear: both;
+  border-bottom: 1px solid $gainsboro;
 }
 
 input[type=submit] {
@@ -47,10 +60,10 @@ ul, li, ul li ul {
 }
 
 .header {
-  border-bottom: 1px solid $gainsboro;
-  @extend .clearfix;
+  @extend .row;
   .logo {
-    @extend .left;
+    @extend .column;
+    @extend .medium-6;
     img {
       height: 120px;
       position: absolute;
@@ -58,7 +71,8 @@ ul, li, ul li ul {
     }
   }
   .mission {
-    @extend .right;
+    @extend .column;
+    @extend .medium-6;
     line-height: 120px;
     color: #d45934;
     font-family: "Roboto Slab", serif;
@@ -73,4 +87,9 @@ ul, li, ul li ul {
       font-style: italic;
     }
   }
+}
+
+.main-content {
+  overflow: hidden;
+  background-color: #EBEBEA;
 }
