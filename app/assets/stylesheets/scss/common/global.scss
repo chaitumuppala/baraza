@@ -26,6 +26,7 @@ body {
 
 input[type=submit] {
   @extend .button;
+  margin: 20px 0;
 }
 
 ul, li, ul li ul {
