@@ -32,7 +32,7 @@ ActiveAdmin.register User do
         input :email
         input :password
       end
-      input :type
+      input :type, as: :select, collection: User::Roles.values
     end
     actions
   end

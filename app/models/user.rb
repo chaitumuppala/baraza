@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   module Roles
     extend ListValues
     EDITOR = "Editor"
+    ADMINISTRATOR = "Administrator"
   end
 
   module GenderCategory
