@@ -41,7 +41,7 @@
             %span.icon-search
           - if current_user
             .item.right
-              = link_to "LOGOUT", destroy_user_session_path, :method => :delete
+              = link_to "LOGOUT", destroy_user_session_path, :method => :get
             .item.right
               = link_to "+ CREATE", new_article_path
           - else

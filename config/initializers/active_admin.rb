@@ -104,7 +104,7 @@ ActiveAdmin.setup do |config|
   # link. For example :get, :delete, :put, etc..
   #
   # Default:
-  config.logout_link_method = :delete
+  config.logout_link_method = :get
 
   # == Root
   #
@@ -112,14 +112,14 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  # config.root_to = 'dashboard#index'
+  config.root_to = 'users#index'
 
   # == Admin Comments
   #
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
+  config.comments = false
   #
   # You can disable the menu item for the comments index page:
   # config.show_comments_in_menu = false
