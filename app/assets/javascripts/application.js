@@ -12,10 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require lodash.min
+//= require custom_js/lodash.min.js
 //= require foundation
 //= require turbolinks
 //= require ckeditor/init
-//= require_tree .
+//= require_tree ./custom_js
 
 $(function(){ $(document).foundation(); });
