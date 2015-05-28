@@ -1,6 +1,6 @@
 $(function(){
     $('.reveal-modal form').each(function(i, form) {
-            var errorSection = $(form).find(".display_error");
+        var errorSection = $(form).find(".display_error");
         $(form).on('ajax:success',function(e, data, status, xhr){
             errorSection.empty();
             location.reload();

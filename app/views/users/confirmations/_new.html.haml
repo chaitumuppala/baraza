@@ -1,12 +1,10 @@
 #confirmationMailModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
   .confirmation_mail.row
     %h2 Resend confirmation instructions
-    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
-      = devise_error_messages!
+    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), remote: true) do |f|
+      .display_error
       .field
         = f.label :email
-        %br/
         = f.email_field :email, autofocus: true
       .actions
         = f.submit "Resend confirmation instructions"
-    = render "users/shared/links"
