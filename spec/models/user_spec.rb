@@ -31,9 +31,14 @@ describe User do
   end
 
   describe "before_create" do
-    it "should set type as registeredUser" do
+    it "should set type as registeredUser if no type is present" do
       user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod")
       expect(user.type).to eq(RegisteredUser.name)
+      end
+
+    it "should use the provided type" do
+      user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod", type: Administrator.name)
+      expect(user.type).to eq(Administrator.name)
     end
   end
 
@@ -82,6 +87,26 @@ describe User do
       it "should return all values of gender category" do
         expect(User::GenderCategory.values).to eq(["M", "F", "Other"])
       end
+    end
+  end
+
+  context "administrator?" do
+    it "should return true for administrator" do
+      expect(create(:administrator).administrator?).to eq(true)
+    end
+  
+    it "should return false for others" do
+      expect(create(:editor).administrator?).to eq(false)
+    end
+    end
+  
+  context "editor?" do
+    it "should return true for editor" do
+      expect(create(:editor).editor?).to eq(true)
+    end
+  
+    it "should return false for others" do
+      expect(create(:administrator).editor?).to eq(false)
     end
   end
 end

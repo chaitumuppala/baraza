@@ -12,9 +12,9 @@ ActiveAdmin.register User do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  permit_params :type
+  permit_params :type, :first_name, :last_name, :email, :password
 
-  actions :edit, :update, :index
+  actions :edit, :update, :index, :new, :create
 
   index do
     column :first_name
@@ -26,6 +26,12 @@ ActiveAdmin.register User do
 
   form do |f|
     inputs 'Details' do
+      if f.object.new_record?
+        input :first_name
+        input :last_name
+        input :email
+        input :password
+      end
       input :type
     end
     actions

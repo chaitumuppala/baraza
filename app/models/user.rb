@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   alias_attribute :role, :type
   after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
-
-  before_create ->{ self.type = RegisteredUser.name }
+  delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
+  before_create ->{ self.type = type || RegisteredUser.name }
 
   module Roles
     extend ListValues
@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
   def update_email(new_email)
     return update_attributes(email: new_email) if new_email.present? && User.where(email: new_email).blank?
     false
+  end
+
+  def user_role_is
+    ActiveSupport::StringInquirer.new(role.underscore)
   end
 
   private

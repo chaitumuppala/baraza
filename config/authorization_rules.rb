@@ -18,8 +18,10 @@ authorization do
   end
 
   role :editor do
+    includes :registered_user
   end
 
-  role :admin do
+  role :administrator do
+    includes :editor
   end
 end
