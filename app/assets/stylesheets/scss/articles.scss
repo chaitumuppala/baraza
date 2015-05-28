@@ -9,10 +9,11 @@
   @extend .row;
   .block {
     @extend .column;
-    &.article-write {
+    &.article-content {
+      padding-left: 0;
       @extend .medium-9;
     }
-    &.tips {
+    &.side-content {
       @extend .medium-3;
     }
   }
