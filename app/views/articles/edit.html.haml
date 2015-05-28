@@ -1,4 +1,7 @@
-.articles
-  %h4 Editing article
-  = render 'form'
+.articles.block
+  .block.article-write
+    .panel
+      %h4 Editing article
+      = render 'form'
+  = render 'tips'
   = link_to 'Show', @article

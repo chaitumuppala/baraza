@@ -6,4 +6,14 @@
     font-family: "Roboto Slab", serif;
     padding-bottom: 20px;
   }
+  @extend .row;
+  .block {
+    @extend .column;
+    &.article-write {
+      @extend .medium-9;
+    }
+    &.tips {
+      @extend .medium-3;
+    }
+  }
 }
