@@ -34,6 +34,7 @@ time, mark, audio, video, input, textarea {
 
 .main-content, .nav-bar, .logo-bar {
   clear: both;
+  overflow: hidden;
   border-bottom: 1px solid $gainsboro;
 }
 
@@ -92,5 +93,10 @@ ul, li, ul li ul {
 .main-content {
   overflow: hidden;
   background-color: #EBEBEA;
-  height: 100%;
+  height: auto;
+}
+
+.icon-search {
+  position: relative;
+  left: -20%;
 }
