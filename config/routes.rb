@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
-                   confirmations: "confirmations", sessions: "sessions"}
+                   confirmations: "confirmations", sessions: "sessions", passwords: "passwords"}
 
   get "users/:id/change_email" => "users#edit", as: "user_edit"
   patch "users/:id/change_email" => "users#update", as: "user_update"
