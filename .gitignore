@@ -17,4 +17,5 @@
 /tmp
 .idea/*
 public/assets/*
+public/ckeditor_assets/*
 
