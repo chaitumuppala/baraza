@@ -62,30 +62,36 @@ ul, li, ul li ul {
 
 .header {
   @extend .row;
-  .logo {
+  #logo {
     @extend .column;
     @extend .medium-6;
+    position: absolute;
+    left: -1%;
     img {
-      height: 120px;
-      position: absolute;
-      left: -19pt;
+      height: 75%;
+      width: 68%;
     }
   }
-  .mission {
+  #mission {
     @extend .column;
     @extend .medium-6;
+    white-space: nowrap;
     line-height: 120px;
     color: #d45934;
     font-family: "Roboto Slab", serif;
     font-size: 16px;
     font-weight: 400;
-    .separator {
-      @extend .left;
-      padding: 0 10px;
+    ul {
+      overflow: hidden;
     }
-    .statement {
-      @extend .left;
-      font-style: italic;
+    li + li:before {
+      content: "\00a0 |\00a0";
+    }
+    li {
+      display: inline;
+      span {
+        font-style: italic;
+      }
     }
   }
 }

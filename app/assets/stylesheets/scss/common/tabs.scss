@@ -1,4 +1,5 @@
 div.tabs {
+  white-space: nowrap;
   @extend .row;
   line-height: 94px;
   .item {

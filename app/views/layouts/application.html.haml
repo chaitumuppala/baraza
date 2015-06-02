@@ -13,16 +13,15 @@
       .left-empty
       .middle-content
         .header
-          .logo
+          #logo
             %a{:href => "/"}= image_tag "logo.png",  :alt => "Baraza Logo"
-          .mission
-            .statement Reclaiming the past
-            .separator
-              |
-            .statement Contesting the present
-            .separator
-              |
-            .statement Inventing the future
+          %ul#mission
+            %li
+              %span Reclaiming the past
+            %li
+              %span Contesting the present
+            %li
+              %span Inventing the future
       .right-empty
     .nav-bar
       .left-empty
