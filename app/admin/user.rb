@@ -31,8 +31,10 @@ ActiveAdmin.register User do
         input :last_name
         input :email
         input :password
+        input :type, as: :select, collection: [User::Roles::ADMINISTRATOR]
+      else
+        input :type, as: :select, collection: User::Roles.values
       end
-      input :type, as: :select, collection: User::Roles.values
     end
     actions
   end

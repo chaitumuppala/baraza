@@ -15,8 +15,9 @@ class User < ActiveRecord::Base
 
   module Roles
     extend ListValues
-    EDITOR = "Editor"
     ADMINISTRATOR = "Administrator"
+    EDITOR = "Editor"
+    REGISTERED_USER = "RegisteredUser"
   end
 
   module GenderCategory
@@ -45,6 +46,10 @@ class User < ActiveRecord::Base
 
   def user_role_is
     ActiveSupport::StringInquirer.new(role.underscore)
+  end
+
+  def generate_set_password_token
+    self.set_reset_password_token
   end
 
   private

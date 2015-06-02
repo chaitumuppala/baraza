@@ -14,11 +14,14 @@ FactoryGirl.define do
     confirmed_at Time.now
   end
 
-  factory :administrator , parent: :user, class: 'Administrator'  do
-    type "Administrator"
+  factory :administrator, class: 'Administrator'  do
+    email
+    first_name "Patrick"
+    last_name "Jane"
+    type Administrator.name
   end
 
-  factory :editor , parent: :user, class: 'Editor'  do
-    type "Editor"
+  factory :editor, parent: :user, class: 'Editor'  do
+    type Editor.name
   end
 end

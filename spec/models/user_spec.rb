@@ -34,7 +34,7 @@ describe User do
     it "should set type as registeredUser if no type is present" do
       user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod")
       expect(user.type).to eq(RegisteredUser.name)
-      end
+    end
 
     it "should use the provided type" do
       user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod", type: Administrator.name)
@@ -46,13 +46,13 @@ describe User do
     it "should skip email validation for users associated to providers" do
       expect {
         create(:user, uid: "uid001", provider: "facebook", email: nil)
-      }.to change{User.count}.by(1)
+      }.to change { User.count }.by(1)
     end
 
     it "should skip password validation for users associated to providers" do
       expect {
         create(:user, uid: "uid001", provider: "facebook", password: nil, password_confirmation: nil)
-      }.to change{User.count}.by(1)
+      }.to change { User.count }.by(1)
     end
 
     it "should not skip for regular users" do
@@ -94,19 +94,27 @@ describe User do
     it "should return true for administrator" do
       expect(create(:administrator).administrator?).to eq(true)
     end
-  
+
     it "should return false for others" do
       expect(create(:editor).administrator?).to eq(false)
     end
-    end
-  
+  end
+
   context "editor?" do
     it "should return true for editor" do
       expect(create(:editor).editor?).to eq(true)
     end
-  
+
     it "should return false for others" do
       expect(create(:administrator).editor?).to eq(false)
+    end
+  end
+
+  context "generate_set_password_token" do
+    it 'should return the token for the user' do
+      user = create(:user)
+      expect(user).to receive(:set_reset_password_token)
+      user.generate_set_password_token
     end
   end
 end
