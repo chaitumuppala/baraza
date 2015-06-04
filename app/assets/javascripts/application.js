@@ -15,7 +15,6 @@
 //= require lib/lodash.min.js
 //= require lib/jquery.tagsinput.min
 //= require foundation
-//= require turbolinks
 //= require ckeditor/init
 //= require active_admin
 //= require_tree ./custom_js
