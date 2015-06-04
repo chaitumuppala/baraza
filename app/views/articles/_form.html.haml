@@ -12,6 +12,9 @@
   .field
     = f.label :content
     = f.cktext_area :content
+  .field
+    = label_tag "Tags"
+    = f.text_field :tag_list, id: "tags"
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   .actions
     = f.submit 'Save'

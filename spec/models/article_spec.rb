@@ -1,5 +1,39 @@
 require 'rails_helper'
 
-RSpec.describe Article, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Article do
+  context "tag_list" do
+    it "should list the tags as comma separated string" do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << [tag1, tag2]
+
+      expect(article.tag_list).to eq("history,science")
+    end
+  end
+
+  context "tag_list=" do
+    it "should add tags of the given names" do
+      article = create(:article, tag_list: "history,science")
+      expect(article.tag_list).to eq("history,science")
+    end
+
+    it "should not create same tag again" do
+      tag1 = create(:tag, name: "history")
+      article = create(:article)
+      article.tags << tag1
+      article.update_attributes(tag_list: "history,science")
+      expect(article.tags.count).to eq(2)
+    end
+
+    it "should delete tags" do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << [tag1, tag2]
+      article.update_attributes(tag_list: "history")
+      expect(article.reload.tags.count).to eq(1)
+      expect(Tag.count).to eq(2)
+    end
+  end
 end
