@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require lib/lodash.min.js
+//= require lib/jquery.tagsinput.min
 //= require foundation
 //= require turbolinks
 //= require ckeditor/init
