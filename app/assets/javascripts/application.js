@@ -15,8 +15,10 @@
 //= require lib/lodash.min.js
 //= require lib/jquery.tagsinput.min
 //= require foundation
+//= require loadjs
 //= require ckeditor/init
 //= require active_admin
+//= require common
 //= require_tree ./custom_js
 
 $(function(){ $(document).foundation(); });

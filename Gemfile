@@ -37,7 +37,7 @@ gem 'active_skin'
 gem 'ckeditor'
 gem 'paperclip'
 gem 'declarative_authorization'
-
+gem 'loadjs'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
