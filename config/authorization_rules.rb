@@ -15,6 +15,7 @@ authorization do
       if_attribute :user_id => is { user.id }
     end
 
+    has_permission_on :tags, to: [:index ]
   end
 
   role :editor do

@@ -12,8 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require lib/jquery-ui.min
 //= require lib/lodash.min.js
-//= require lib/jquery.tagsinput.min
+//= require lib/tag-it.min
 //= require foundation
 //= require loadjs
 //= require ckeditor/init

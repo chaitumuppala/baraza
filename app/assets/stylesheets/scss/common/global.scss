@@ -106,3 +106,14 @@ ul, li, ul li ul {
   position: relative;
   left: -20%;
 }
+
+ul.tagit.ui-widget.ui-widget-content.ui-corner-all {
+  li.tagit-choice {
+    border-color: $gainsboro;
+    background-color: #EBEBEA;
+    font-weight: bold;
+  }
+  .tagit-label {
+    color: #000000;
+  }
+}
