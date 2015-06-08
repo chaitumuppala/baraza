@@ -4,6 +4,8 @@ class Article < ActiveRecord::Base
   belongs_to :user
   has_many :article_tags
   has_many :tags, through: :article_tags
+  has_many :article_categories
+  has_many :categories, through: :article_categories
   attr_accessor :tag_list
 
   def tag_list
