@@ -24,8 +24,16 @@
       }
     }
 
-    .tags_field {
+    #tags_field {
       margin-bottom: 10px;
+    }
+
+    #top_story_field {
+      margin: 10px;
+    }
+
+    #article_top_story {
+      width: auto;
     }
   }
 }

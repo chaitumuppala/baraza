@@ -12,12 +12,15 @@
   .field
     = f.label "Category"
     = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select")
-  .field.tags_field
+  .field#tags_field
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"
   .field
     = f.label :content
     = f.cktext_area :content
+  .field#top_story_field
+    = f.check_box :top_story
+    %label{for: "article_top_story"} Top Story
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   .actions
     = f.submit 'Save'

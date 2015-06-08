@@ -12,7 +12,7 @@ class ArticlesController < InheritedResources::Base
   end
   # Never trust parameters from the scary internet, only allow the white list through.
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, category_ids: [])
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, category_ids: [])
   end
 end
 
