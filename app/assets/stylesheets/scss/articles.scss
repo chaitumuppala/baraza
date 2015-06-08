@@ -17,4 +17,15 @@
       @extend .medium-3;
     }
   }
+  form {
+    .field {
+      ul.tagit.ui-widget.ui-widget-content.ui-corner-all {
+        width: 40%;
+      }
+    }
+
+    .tags_field {
+      margin-bottom: 10px;
+    }
+  }
 }

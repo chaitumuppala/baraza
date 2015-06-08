@@ -6,6 +6,7 @@ $(function () {
           availableTags: data
         });
       });
+      $("#category-select").select2();
     }
   };
   loadPageSpecificJs("articles", ['new', 'edit'], ArticleTag.init);

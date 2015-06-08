@@ -11,8 +11,8 @@
     = f.text_field :title
   .field
     = f.label "Category"
-    = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true)
-  .field
+    = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select")
+  .field.tags_field
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"
   .field
