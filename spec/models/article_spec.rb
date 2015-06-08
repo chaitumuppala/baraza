@@ -36,4 +36,18 @@ describe Article do
       expect(Tag.count).to eq(2)
     end
   end
+
+  context "as_indexed_json" do
+    it "should index including tag names" do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << [tag1, tag2]
+
+      expect(article.as_indexed_json).to eq({"id"=>article.id,
+                                             "title"=>article.title,
+                                             "content"=>article.content,
+                                             "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}]})
+    end
+  end
 end
