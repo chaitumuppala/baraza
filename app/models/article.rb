@@ -1,4 +1,3 @@
-require 'elasticsearch/model'
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :user
@@ -7,6 +6,13 @@ class Article < ActiveRecord::Base
   has_many :article_categories
   has_many :categories, through: :article_categories
   attr_accessor :tag_list
+  index_name    "articles_#{Rails.env}"
+  settings do
+    mapping do
+      indexes :title, analyzer: 'snowball'
+      indexes :content, analyzer: 'snowball'
+    end
+  end
 
   def tag_list
     tags.collect(&:name).join(",")
@@ -23,5 +29,24 @@ class Article < ActiveRecord::Base
         only: [:id, :title, :content],
         include: {tags: {only: :name}
         })
+  end
+
+  def self.search_by_tag(tag_name)
+    query = Jbuilder.encode do |json|
+      json.query do
+        json.filtered do
+          json.query do
+            json.set!("match_all", {})
+          end
+          json.filter do
+            json.term do
+              json.set!("tags.name", tag_name)
+            end
+          end
+        end
+      end
+    end
+    response = Article.__elasticsearch__.search query
+    response.results
   end
 end
