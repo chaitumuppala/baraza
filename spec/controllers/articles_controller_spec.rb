@@ -20,12 +20,12 @@ RSpec.describe ArticlesController, type: :controller do
         get action, id: article.id
         expect(response.code).to eq("200")
       end
+    end
 
-      it "should not allow others to #{action}" do
-        article = create(:article, user_id: create(:user).id)
-        get action, id: article.id
-        expect(response.code).to eq("403")
-      end
+    it "should not allow others to edit" do
+      article = create(:article, user_id: create(:user).id)
+      get :edit, id: article.id
+      expect(response.code).to eq("403")
     end
   end
 

@@ -1,6 +1,7 @@
 authorization do
   role :guest do
     has_permission_on :home, to: [:index]
+    has_permission_on :articles, to: [ :index, :show ]
   end
 
   role :registered_user do
@@ -11,7 +12,7 @@ authorization do
 
     has_permission_on :articles, to: [:new, :create ]
 
-    has_permission_on :articles, to: [:show, :edit, :update] do
+    has_permission_on :articles, to: [:edit, :update] do
       if_attribute :user_id => is { user.id }
     end
 

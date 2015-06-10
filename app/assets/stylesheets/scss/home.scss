@@ -1,0 +1,41 @@
+#home-page {
+  .article-row {
+    @extend .row;
+    .article-outline {
+      padding-left: 0;
+      @extend .column;
+      @extend .medium-4;
+      .article-board {
+        @extend .panel;
+        padding: 0;
+        margin-left: 1%;
+        figure {
+          position: relative;
+          img {
+            height: 300px;
+          }
+          figcaption {
+            position: absolute;
+            bottom: 7px;
+            left: 0;
+            width: 100%;;
+            z-index: 200;
+            color: white;
+            padding: 10px;
+            background: rgba(47, 47, 47, 0.7);
+            font-weight: 900;
+            font-size: 35px;
+          }
+        }
+        .article-info {
+          border-bottom: 1px solid $gainsboro;
+        }
+
+        .article-related, .article-info {
+          font-size: 13px;
+          padding: 10px;
+        }
+      }
+    }
+  }
+}
