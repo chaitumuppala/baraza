@@ -118,6 +118,17 @@ ul.tagit.ui-widget.ui-widget-content.ui-corner-all {
   }
 }
 
+.select2-container-multi ul.select2-choices{
+  li.select2-search-choice {
+    background-color: #EBEBEA;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .select2-search-choice-close {
+      top: 11px;
+    }
+  }
+}
+
 form {
   .field {
     input {
