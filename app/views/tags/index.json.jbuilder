@@ -1,1 +1,1 @@
-json.array! Tag.pluck :name
+json.tags @tags

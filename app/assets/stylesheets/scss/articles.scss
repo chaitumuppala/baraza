@@ -22,9 +22,13 @@
       ul.tagit.ui-widget.ui-widget-content.ui-corner-all {
         width: 40%;
       }
+
+      div.select2-container.select2-container-multi {
+        width: 40%;
+      }
     }
 
-    #tags_field {
+    #tags_field, #category_field {
       margin-bottom: 10px;
     }
 

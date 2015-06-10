@@ -1,5 +1,5 @@
 #home-page
-  - @articles.in_groups_of(3) do |article_group|
+  - @articles.in_groups_of(3, false) do |article_group|
     .article-row
       - article_group.each do |article|
         .article-outline
