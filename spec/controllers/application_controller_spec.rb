@@ -13,7 +13,7 @@ describe ApplicationController do
         user = create(:user, email: nil, uid: "uid", provider: "facebook")
         sign_in user
         get :index
-        response.should redirect_to user_edit_path(user)
+        expect(response).to redirect_to user_edit_path(user)
       end
     end
   end
