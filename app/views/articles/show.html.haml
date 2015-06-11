@@ -6,6 +6,10 @@
         = social_share_button_tag(@article.title)
       = @article.content.html_safe
       = link_to 'Edit', edit_article_path(@article)
+    %h4
+      DISCUSSIONS
+    .panel
+      #disqus_thread
   .block.side-content
     .panel
       %h4 Author
