@@ -3,6 +3,7 @@
     .panel
       %h4
         = @article.title
+        = social_share_button_tag(@article.title)
       = @article.content.html_safe
       = link_to 'Edit', edit_article_path(@article)
   .block.side-content

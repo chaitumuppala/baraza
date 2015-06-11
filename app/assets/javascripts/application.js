@@ -18,6 +18,7 @@
 //= require loadjs
 //= require ckeditor/init
 //= require active_admin
+//= require social-share-button
 //= require common
 //= require_tree ./custom_js
 

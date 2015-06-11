@@ -3,6 +3,19 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0" }
+
+    %meta{:content => "Baraza Article", :property => "og:title"}/
+    %meta{:content => request.original_url, :property => "og:url"}/
+    %meta{:content => image_url("logo.png"), :property => "og:image"}/
+    %meta{:content => "description goes here", :property => "og:description"}/
+    %meta{:content => "article", :property => "og:type"}/
+
+    %meta{:content => "Baraza Article", :name => "twitter:title"}
+    %meta{:content => "description goes here", :name => "twitter:description"}
+    %meta{:content => request.original_url, :name => "twitter:site"}
+    %meta{:content => image_url("logo.png"), :name => "twitter:image"}/
+    %meta{:content => "summary", :name => "twitter:card"}
+
     %title Baraza
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag "vendor/modernizr"
