@@ -26,6 +26,9 @@ time, mark, audio, video, input, textarea {
     visibility: hidden;
   }
 }
+body{
+  position: relative;
+}
 
 .middle-content {
   @extend .column;

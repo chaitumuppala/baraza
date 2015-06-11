@@ -22,6 +22,14 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body{"data-action" => controller.action_name, "data-controller" => controller.controller_path}
+    %ul#category-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+      - Category.all.each do |category|
+        %li
+          %a{:href => "#"}
+            = category.name
+    #search-drop.f-dropdown.content{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+      = form_tag "", method: :get do
+        = text_field_tag :search, params[:search], placeholder: "search...."
     .logo-bar
       .left-empty
       .middle-content
@@ -41,7 +49,7 @@
       .middle-content
         .tabs
           .item.left
-            %a EXPLORE
+            %a{"aria-controls" => "category-drop", "aria-expanded" => "false", "data-dropdown" => "category-drop"} EXPLORE
             %span.icon-down-arrow
           .item.left
             %a LEARN
@@ -50,7 +58,7 @@
             %a PARTICIPATE
             %span.icon-down-arrow
           .item.right
-            %span.icon-search
+            %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop"}
           - if current_user
             .item.right
               = link_to "LOGOUT", destroy_user_session_path, :method => :get

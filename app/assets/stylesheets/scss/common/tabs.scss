@@ -3,7 +3,6 @@ div.tabs {
   @extend .row;
   line-height: 94px;
   .item {
-    padding: 0;
     @extend .column;
     @extend .medium-1;
     &.participate {
