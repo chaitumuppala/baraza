@@ -1,7 +1,7 @@
 authorization do
   role :guest do
     has_permission_on :home, to: [:index]
-    has_permission_on :articles, to: [ :index, :show ]
+    has_permission_on :articles, to: [ :index, :show, :tag_search ]
   end
 
   role :registered_user do

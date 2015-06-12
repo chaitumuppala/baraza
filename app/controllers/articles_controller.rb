@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
-  filter_resource_access
+  filter_resource_access additional_collection: [:tag_search]
 
   def show
   end
@@ -44,6 +44,10 @@ class ArticlesController < ApplicationController
       format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def tag_search
+    @articles = Article.search_by_tag(params[:search])
   end
 
   private
