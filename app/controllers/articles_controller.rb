@@ -47,7 +47,7 @@ class ArticlesController < ApplicationController
   end
 
   def tag_search
-    @articles = Article.search_by_tag(params[:search])
+    @articles = Article.search_by_tag(params[:search]).results
   end
 
   private

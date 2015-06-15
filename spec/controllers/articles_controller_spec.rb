@@ -65,6 +65,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       get :tag_search, search: tag1.name
 
+      expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id.to_s, article3.id.to_s])
     end
   end
