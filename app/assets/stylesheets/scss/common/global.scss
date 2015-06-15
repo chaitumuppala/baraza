@@ -4,8 +4,7 @@ abbr, address, cite, code,
 del, dfn, em, img, ins, kbd, q, samp,
 small, strong, var,
 b, i,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
+dl, dt, dd, ol, ul, li, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, menu, nav, section, summary,
@@ -117,14 +116,6 @@ ul, li, ul li ul {
     padding-bottom: 10px;
     .select2-search-choice-close {
       top: 11px;
-    }
-  }
-}
-
-form {
-  .field {
-    input {
-      width: 40%;
     }
   }
 }

@@ -19,6 +19,10 @@
   }
   form {
     .field {
+      input {
+        width: 40%;
+      }
+
       div.select2-container.select2-container-multi {
         width: 50%;
       }
