@@ -46,13 +46,7 @@ RSpec.configure do |config|
 
   config.before(:each, search: true) do
     Article.__elasticsearch__.create_index! force: true
-    end
-
-  config.after(:each, search: true) do
-    Article.__elasticsearch__.client.indices.delete index: Article.index_name rescue nil
   end
-
-
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
