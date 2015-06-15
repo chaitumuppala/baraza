@@ -33,7 +33,7 @@ ActiveAdmin.register User do
         input :password
         input :type, as: :select, collection: [User::Roles::ADMINISTRATOR]
       else
-        input :type, as: :select, collection: User::Roles.values
+        input :type, as: :select, collection: [User::Roles::EDITOR]
       end
     end
     actions
