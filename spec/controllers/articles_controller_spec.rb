@@ -57,10 +57,10 @@ RSpec.describe ArticlesController, type: :controller do
       tag1 = create(:tag, name: "science")
       tag2 = create(:tag, name: "history")
       tag3 = create(:tag, name: "politics")
-      article1 = create(:article, tags: [tag1, tag2])
-      article2 = create(:article, tags: [tag3])
-      article3 = create(:article, tags: [tag1, tag3])
-      Article.import
+      article1 = create(:article, tag_list: "#{tag1.name},#{tag2.name}", content: "article1")
+      article2 = create(:article, tag_list: tag3.name, content: "article2")
+      article3 = create(:article, tag_list: "#{tag1.name},#{tag3.name}", content: "article3")
+      Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
       get :tag_search, search: tag1.name

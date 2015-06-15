@@ -41,15 +41,24 @@ describe Article do
     it "should return articles of the given tag_name" do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
-      article1 = create(:article)
-      article2 = create(:article)
-      article1.tags << [tag1, tag2]
-      article2.tags << tag1
+      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},#{tag2.name}")
+      article2 = create(:article, content: "article2", tag_list: tag1.name)
 
-      Article.import
+      Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article1.id.to_s])
+    end
+
+    it "should return articles of the given  new tag_name" do
+      tag1 = create(:tag, name: "history")
+      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},science")
+      article2 = create(:article, content: "article2", tag_list: tag1.name)
+
+      Article.__elasticsearch__.import force: true
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_tag("science").collect(&:id)).to eq([article1.id.to_s])
     end
   end
 
@@ -78,6 +87,33 @@ describe Article do
       mapping = Article.mapping.to_hash[:article][:properties]
       expect(mapping[:title][:analyzer]).to eq("snowball")
       expect(mapping[:content][:analyzer]).to eq("snowball")
+    end
+  end
+
+  context "index_document" do
+    it "should update document on adding tags", search: true do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << tag1
+      Article.__elasticsearch__.import force: true
+      article.tags << tag2
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
+      end
+
+    it "should update document on adding tags through tag_list", search: true do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << tag1
+
+      article.update_attributes(tag_list: tag2.name)
+      Article.__elasticsearch__.refresh_index!
+      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([])
+      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
     end
   end
 end
