@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :articles, except: :index do
     collection do
-      get 'tag_search', as: 'tag_search'
+      get 'search', as: 'search'
     end
   end
   mount Ckeditor::Engine => '/ckeditor'

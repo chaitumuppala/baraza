@@ -52,7 +52,7 @@ RSpec.describe ArticlesController, type: :controller do
     end
   end
 
-  context "search_tag" do
+  context "search" do
     it "should search articles based on the tags", search: true do
       tag1 = create(:tag, name: "science")
       tag2 = create(:tag, name: "history")
@@ -63,7 +63,26 @@ RSpec.describe ArticlesController, type: :controller do
       Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
-      get :tag_search, search: tag1.name
+      get :search, q: tag1.name, search: "tag"
+
+      expect(assigns[:articles].class).to eq(Array)
+      expect(assigns[:articles].map(&:id)).to match_array([article1.id.to_s, article3.id.to_s])
+    end
+  
+    it "should search articles based on the categories", search: true do
+      category1 = create(:category, name: "science")
+      category2 = create(:category, name: "history")
+      category3 = create(:category, name: "politics")
+      article1 = create(:article, content: "article1")
+      article2 = create(:article, content: "article2")
+      article3 = create(:article, content: "article3")
+      article1.categories << [category1, category2]
+      article2.categories << category3
+      article3.categories << [category1, category3]
+      Article.__elasticsearch__.import force: true
+      Article.__elasticsearch__.refresh_index!
+
+      get :search, q: category1.name, search: "category"
 
       expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id.to_s, article3.id.to_s])

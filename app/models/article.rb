@@ -11,6 +11,12 @@ class Article < ActiveRecord::Base
     mapping do
       indexes :title, analyzer: 'snowball'
       indexes :content, analyzer: 'snowball'
+      indexes :tags do
+        indexes :name, index: 'not_analyzed'
+      end
+      indexes :categories do
+        indexes :name, index: 'not_analyzed'
+      end
     end
   end
 

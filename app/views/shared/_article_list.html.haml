@@ -11,7 +11,7 @@
             .article-info
               .tags
                 - article.tags.each do |tag|
-                  = link_to tag.name, tag_search_articles_path(search: tag.name)
+                  = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
               .comments
                 With the rapid expansion of digital communications, protection civil liberties...
             .article-related

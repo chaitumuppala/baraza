@@ -90,6 +90,8 @@ describe Article do
       mapping = Article.mapping.to_hash[:article][:properties]
       expect(mapping[:title][:analyzer]).to eq("snowball")
       expect(mapping[:content][:analyzer]).to eq("snowball")
+      expect(mapping[:tags][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
+      expect(mapping[:categories][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
     end
   end
 

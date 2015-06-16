@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
-  filter_resource_access additional_collection: [:tag_search]
+  filter_resource_access additional_collection: [:search]
 
   def show
   end
@@ -46,8 +46,8 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def tag_search
-    @articles = Article.search_by_tag(params[:search]).results
+  def search
+    @articles = Article.send("search_by_#{params[:search]}", params[:q]).results
   end
 
   private
