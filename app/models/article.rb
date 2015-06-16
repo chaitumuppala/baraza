@@ -31,26 +31,29 @@ class Article < ActiveRecord::Base
   def as_indexed_json(options={})
     self.as_json(
         only: [:id, :title, :content],
-        include: {tags: {only: :name}
-        })
+        include: {tags: {only: :name},
+                  categories: {only: :name}}
+    )
   end
 
-  def self.search_by_tag(tag_name)
-    query = Jbuilder.encode do |json|
-      json.query do
-        json.filtered do
-          json.query do
-            json.set!("match_all", {})
-          end
-          json.filter do
-            json.term do
-              json.set!("tags.name", tag_name)
+  ["tag", "category"].each do |criteria|
+    define_singleton_method "search_by_#{criteria}" do |tag_name|
+      query = Jbuilder.encode do |json|
+        json.query do
+          json.filtered do
+            json.query do
+              json.set!("match_all", {})
+            end
+            json.filter do
+              json.term do
+                json.set!("#{criteria.pluralize}.name", tag_name)
+              end
             end
           end
         end
       end
+      response = Article.__elasticsearch__.search query
+      response.results
     end
-    response = Article.__elasticsearch__.search query
-    response.results
   end
 end

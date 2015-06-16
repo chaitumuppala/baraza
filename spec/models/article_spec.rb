@@ -63,16 +63,19 @@ describe Article do
   end
 
   context "as_indexed_json" do
-    it "should index including tag names" do
+    it "should index including tag names, category names" do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
+      category = create(:category)
       article = create(:article)
       article.tags << [tag1, tag2]
+      article.categories << category
 
       expect(article.as_indexed_json).to eq({"id"=>article.id,
                                              "title"=>article.title,
                                              "content"=>article.content,
-                                             "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}]})
+                                             "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}],
+                                             "categories"=>[{"name"=>category.name}]})
     end
   end
 
@@ -114,6 +117,21 @@ describe Article do
       Article.__elasticsearch__.refresh_index!
       expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([])
       expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
+    end
+  end
+
+  context "search_by_category", search: true do
+    it "should return articles of the given category name" do
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      article1 = create(:article, content: "article1")
+      article2 = create(:article, content: "article2")
+      article1.categories << [category1, category2]
+      article2.categories << [category1]
+      Article.__elasticsearch__.import force: true
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id.to_s])
     end
   end
 end
