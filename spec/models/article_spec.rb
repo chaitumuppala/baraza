@@ -32,7 +32,7 @@ describe Article do
       article = create(:article)
       article.tags << [tag1, tag2]
       article.update_attributes(tag_list: "history")
-      expect(article.reload.tags).to eq([tag1])
+      expect(article.reload.tags.count).to eq(1)
       expect(Tag.count).to eq(2)
     end
   end

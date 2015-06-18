@@ -2,7 +2,7 @@ class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :user
   has_many :article_tags
-  has_many :tags, through: :article_tags
+  has_many :tags, through: :article_tags, after_add: :update_index_of_doc
   has_many :article_categories
   has_many :categories, through: :article_categories,
            after_add: :update_index_of_doc,
@@ -22,7 +22,7 @@ class Article < ActiveRecord::Base
     end
   end
 
-  def update_index_of_doc(doc="")
+  def update_index_of_doc(doc)
     self.__elasticsearch__.index_document
   end
 
@@ -31,12 +31,9 @@ class Article < ActiveRecord::Base
   end
 
   def tag_list=(tag_names_string)
-    existing_tag_names = tags.pluck :name
-    modified_tag_names = tag_names_string.split(",")
-    tag_names_to_be_added = modified_tag_names - existing_tag_names
-    tag_names_to_be_removed = existing_tag_names - modified_tag_names
-    tags << tag_names_to_be_added.collect { |name| Tag.find_or_initialize_by(name: name) }
-    article_tags.includes(:tag).destroy_all(tags: {name: tag_names_to_be_removed})
+    tag_names_array = tag_names_string.split(",")
+    tags.destroy_all
+    tags << tag_names_array.collect { |name| Tag.find_or_initialize_by(name: name) }
   end
 
   def as_indexed_json(options={})
