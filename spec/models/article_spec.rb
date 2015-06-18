@@ -96,44 +96,72 @@ describe Article do
   end
 
   context "index_document" do
-    it "should update document on adding tags", search: true do
-      tag1 = create(:tag, name: "history")
-      tag2 = create(:tag, name: "science")
-      article = create(:article)
-      article.tags << tag1
-      Article.__elasticsearch__.import force: true
-      article.tags << tag2
-      Article.__elasticsearch__.refresh_index!
+    context "tags" do
+      it "should update document on adding tags", search: true do
+        tag1 = create(:tag, name: "history")
+        tag2 = create(:tag, name: "science")
+        article = create(:article)
+        article.tags << tag1
+        Article.__elasticsearch__.import force: true
+        article.tags << tag2
+        Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
-      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
       end
 
-    it "should update document on adding tags through tag_list", search: true do
-      tag1 = create(:tag, name: "history")
-      tag2 = create(:tag, name: "science")
-      article = create(:article)
-      article.tags << tag1
+      it "should update document on adding tags through tag_list", search: true do
+        tag1 = create(:tag, name: "history")
+        tag2 = create(:tag, name: "science")
+        article = create(:article)
+        article.tags << tag1
 
-      article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
-      Article.__elasticsearch__.refresh_index!
-      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
-      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
-      expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id.to_s])
+        article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
+        Article.__elasticsearch__.refresh_index!
+        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id.to_s])
+      end
+
+      it "should update document on removing tags through tag_list", search: true do
+        tag1 = create(:tag, name: "history")
+        tag2 = create(:tag, name: "science")
+        article = create(:article)
+        article.tags << [tag1, tag2]
+
+        article.update_attributes(tag_list: "#{tag1.name}")
+        Article.__elasticsearch__.refresh_index!
+        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([])
+      end
     end
+    
+    context "categories" do
+      it "should update document on adding categories through category_ids", search: true do
+        category1 = create(:category, name: "history")
+        category2 = create(:category, name: "science")
+        article = create(:article, category_ids: [category1.id])
+        Article.__elasticsearch__.import force: true
 
-    it "should update document on removing tags through tag_list", search: true do
-      tag1 = create(:tag, name: "history")
-      tag2 = create(:tag, name: "science")
-      article = create(:article)
-      article.tags << [tag1, tag2]
+        article.update_attributes(category_ids: [category1.id, category2.id])
+        Article.__elasticsearch__.refresh_index!
+        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article.id.to_s])
+      end
 
-      article.update_attributes(tag_list: "#{tag1.name}")
-      Article.__elasticsearch__.refresh_index!
-      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
-      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([])
+      it "should update document on removing categories through category_ids", search: true do
+        category1 = create(:category, name: "history")
+        category2 = create(:category, name: "science")
+        article = create(:article)
+        article.categories << [category1, category2]
+        Article.__elasticsearch__.import force: true
+
+        article.update_attributes(category_ids: [category1.id])
+        Article.__elasticsearch__.refresh_index!
+        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_category(category2.name).collect(&:id)).to eq([])
+      end
     end
-
   end
 
   context "search_by_category", search: true do
