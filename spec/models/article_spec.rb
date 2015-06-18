@@ -164,4 +164,25 @@ describe Article do
       expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id.to_s])
     end
   end
+
+  context "search_by_all", search: true do
+    it "should return articles of the given name" do
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      tag = create(:category, name: "tag1")
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name)
+      article2 = create(:article, content: "article2", category_ids: [category1.id])
+
+      Article.__elasticsearch__.import force: true
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_all("article1").collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_all(tag.name).collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id.to_s])
+
+      expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id.to_s])
+
+      expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id.to_s, article2.id.to_s])
+    end
+  end
 end

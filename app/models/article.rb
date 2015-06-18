@@ -42,8 +42,20 @@ class Article < ActiveRecord::Base
     )
   end
 
+  def self.search_by_all(search_text)
+    query = Jbuilder.encode do |json|
+      json.query do
+        json.match do
+          json.set!("_all", search_text)
+        end
+      end
+    end
+    response = Article.__elasticsearch__.search query
+    response.results
+  end
+
   ["tag", "category"].each do |criteria|
-    define_singleton_method "search_by_#{criteria}" do |tag_name|
+    define_singleton_method "search_by_#{criteria}" do |search_text|
       query = Jbuilder.encode do |json|
         json.query do
           json.filtered do
@@ -52,7 +64,7 @@ class Article < ActiveRecord::Base
             end
             json.filter do
               json.term do
-                json.set!("#{criteria.pluralize}.name", tag_name)
+                json.set!("#{criteria.pluralize}.name", search_text)
               end
             end
           end
