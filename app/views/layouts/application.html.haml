@@ -28,7 +28,7 @@
           = link_to category.name, search_articles_path(q: category.name, search: Category.name.downcase)
     #search-drop.f-dropdown.content{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       = form_tag "", method: :get do
-        = text_field_tag :search, params[:search], placeholder: "search...."
+        = text_field_tag :search, params[:search_all], placeholder: "search...."
     .logo-bar
       .left-empty
       .middle-content
