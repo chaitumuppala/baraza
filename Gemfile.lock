@@ -110,8 +110,14 @@ GEM
       currencies (~> 0.4.2)
       i18n_data (~> 0.7.0)
     currencies (0.4.2)
+    daemons (1.2.2)
     debug_inspector (0.0.2)
     declarative_authorization (0.5.7)
+    delayed_job (4.0.6)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.0.3)
+      activerecord (>= 3.0, < 5.0)
+      delayed_job (>= 3.0, < 4.1)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -357,7 +363,9 @@ DEPENDENCIES
   ckeditor
   coffee-rails (~> 4.1.0)
   country_select!
+  daemons
   declarative_authorization
+  delayed_job_active_record
   devise
   devise-i18n
   elasticsearch-model
