@@ -97,24 +97,10 @@ describe Article do
 
   context "index_document" do
     context "tags" do
-      it "should update document on adding tags", search: true do
-        tag1 = create(:tag, name: "history")
-        tag2 = create(:tag, name: "science")
-        article = create(:article)
-        article.tags << tag1
-        Article.__elasticsearch__.import force: true
-        article.tags << tag2
-        Article.__elasticsearch__.refresh_index!
-
-        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
-        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
-      end
-
       it "should update document on adding tags through tag_list", search: true do
         tag1 = create(:tag, name: "history")
         tag2 = create(:tag, name: "science")
-        article = create(:article)
-        article.tags << tag1
+        article = create(:article, tag_list: tag1.name)
 
         article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
         Article.__elasticsearch__.refresh_index!

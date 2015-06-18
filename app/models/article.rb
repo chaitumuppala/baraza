@@ -2,11 +2,9 @@ class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :user
   has_many :article_tags
-  has_many :tags, through: :article_tags, after_add: :update_index_of_doc
+  has_many :tags, through: :article_tags
   has_many :article_categories
-  has_many :categories, through: :article_categories,
-           after_add: :update_index_of_doc,
-           after_remove: :update_index_of_doc
+  has_many :categories, through: :article_categories
   attr_accessor :tag_list
   index_name    "articles_#{Rails.env}"
   settings do
@@ -22,8 +20,8 @@ class Article < ActiveRecord::Base
     end
   end
 
-  def update_index_of_doc(doc)
-    self.__elasticsearch__.index_document
+  after_save do
+    __elasticsearch__.index_document
   end
 
   def tag_list
