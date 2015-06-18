@@ -32,7 +32,7 @@ describe Article do
       article = create(:article)
       article.tags << [tag1, tag2]
       article.update_attributes(tag_list: "history")
-      expect(article.reload.tags.count).to eq(1)
+      expect(article.reload.tags).to eq([tag1])
       expect(Tag.count).to eq(2)
     end
   end
@@ -115,11 +115,25 @@ describe Article do
       article = create(:article)
       article.tags << tag1
 
-      article.update_attributes(tag_list: tag2.name)
+      article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
       Article.__elasticsearch__.refresh_index!
-      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([])
+      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
       expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
+      expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id.to_s])
     end
+
+    it "should update document on removing tags through tag_list", search: true do
+      tag1 = create(:tag, name: "history")
+      tag2 = create(:tag, name: "science")
+      article = create(:article)
+      article.tags << [tag1, tag2]
+
+      article.update_attributes(tag_list: "#{tag1.name}")
+      Article.__elasticsearch__.refresh_index!
+      expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([])
+    end
+
   end
 
   context "search_by_category", search: true do
