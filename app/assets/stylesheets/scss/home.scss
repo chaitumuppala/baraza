@@ -5,6 +5,10 @@
       padding-left: 0;
       @extend .column;
       @extend .medium-4;
+
+      &:last-child {
+        @extend .end;
+      }
       .article-board {
         @extend .panel;
         padding: 0;
