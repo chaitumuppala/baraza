@@ -4,6 +4,6 @@ class Administrator < User
   after_create :send_admin_intro_mail
 
   def send_admin_intro_mail
-    AdminWelcomeNotifier.welcome(self).deliver_now
+    AdminWelcomeNotifier.welcome(self).deliver_later
   end
 end

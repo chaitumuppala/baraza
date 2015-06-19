@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def send_editor_intro_mail
-    EditorWelcomeNotifier.welcome(self).deliver_now
+    EditorWelcomeNotifier.welcome(self).deliver_later
   end
 end
 

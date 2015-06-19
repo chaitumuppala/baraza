@@ -65,7 +65,7 @@ describe User do
       user = create(:user)
       mailer = double("mailer")
       expect(EditorWelcomeNotifier).to receive(:welcome).with(user).and_return(mailer)
-      expect(mailer).to receive(:deliver_now)
+      expect(mailer).to receive(:deliver_later)
       user.update_attributes(type: Editor.name)
     end
 
@@ -79,6 +79,17 @@ describe User do
       user = create(:user, type: RegisteredUser.name)
       expect(EditorWelcomeNotifier).not_to receive(:welcome)
       user.update_attributes(type: nil)
+    end
+
+    context "delayed_job" do
+      it "should asynchronously send mail" do
+        user = create(:user)
+        Delayed::Worker.delay_jobs = true
+
+        expect {
+          user.update_attributes(type: Editor.name)
+        }.to change { Delayed::Job.count }.from(0).to(1)
+      end
     end
   end
 

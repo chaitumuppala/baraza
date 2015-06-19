@@ -18,8 +18,18 @@ describe Administrator do
       admin = build(:administrator)
       mailer = double("mailer")
       expect(AdminWelcomeNotifier).to receive(:welcome).with(admin).and_return(mailer)
-      expect(mailer).to receive(:deliver_now)
+      expect(mailer).to receive(:deliver_later)
       admin.save
+    end
+
+    context "delayed_job" do
+      it "should asynchronously send mail" do
+        Delayed::Worker.delay_jobs = true
+
+        expect {
+          create(:administrator)
+        }.to change { Delayed::Job.count }.from(0).to(1)
+      end
     end
   end
 end
