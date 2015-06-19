@@ -21,8 +21,14 @@ class Article < ActiveRecord::Base
   end
 
   after_save do
+    index_current_document_values
+  end
+
+  def index_current_document_values
     __elasticsearch__.index_document
   end
+
+  handle_asynchronously :index_current_document_values
 
   def tag_list
     tags.collect(&:name).join(",")

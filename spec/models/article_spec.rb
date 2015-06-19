@@ -44,7 +44,6 @@ describe Article do
       article1 = create(:article, content: "article1", tag_list: "#{tag1.name},#{tag2.name}")
       article2 = create(:article, content: "article2", tag_list: tag1.name)
 
-      Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article1.id.to_s])
@@ -55,7 +54,6 @@ describe Article do
       article1 = create(:article, content: "article1", tag_list: "#{tag1.name},science")
       article2 = create(:article, content: "article2", tag_list: tag1.name)
 
-      Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_tag("science").collect(&:id)).to eq([article1.id.to_s])
@@ -127,7 +125,6 @@ describe Article do
         category1 = create(:category, name: "history")
         category2 = create(:category, name: "science")
         article = create(:article, category_ids: [category1.id])
-        Article.__elasticsearch__.import force: true
 
         article.update_attributes(category_ids: [category1.id, category2.id])
         Article.__elasticsearch__.refresh_index!
@@ -140,7 +137,6 @@ describe Article do
         category2 = create(:category, name: "science")
         article = create(:article)
         article.categories << [category1, category2]
-        Article.__elasticsearch__.import force: true
 
         article.update_attributes(category_ids: [category1.id])
         Article.__elasticsearch__.refresh_index!
@@ -154,11 +150,9 @@ describe Article do
     it "should return articles of the given category name" do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "science")
-      article1 = create(:article, content: "article1")
-      article2 = create(:article, content: "article2")
-      article1.categories << [category1, category2]
-      article2.categories << [category1]
-      Article.__elasticsearch__.import force: true
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id])
+      article2 = create(:article, content: "article2", category_ids: [category1.id])
+
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id.to_s])
@@ -173,7 +167,6 @@ describe Article do
       article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name)
       article2 = create(:article, content: "article2", category_ids: [category1.id])
 
-      Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_all("article1").collect(&:id)).to eq([article1.id.to_s])
@@ -183,6 +176,16 @@ describe Article do
       expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id.to_s])
 
       expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id.to_s, article2.id.to_s])
+    end
+  end
+
+  context "delayed_job" do
+    it "should asynchronously index the document" do
+      Delayed::Worker.delay_jobs = true
+
+      expect {
+        create(:article, content: "article1")
+      }.to change { Delayed::Job.count }.from(0).to(1)
     end
   end
 end

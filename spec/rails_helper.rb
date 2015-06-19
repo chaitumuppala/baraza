@@ -46,6 +46,7 @@ RSpec.configure do |config|
 
   config.before(:each, search: true) do
     Article.__elasticsearch__.create_index! force: true
+    Delayed::Worker.delay_jobs = false
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests

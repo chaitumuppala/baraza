@@ -73,13 +73,9 @@ RSpec.describe ArticlesController, type: :controller do
       category1 = create(:category, name: "science")
       category2 = create(:category, name: "history")
       category3 = create(:category, name: "politics")
-      article1 = create(:article, content: "article1")
-      article2 = create(:article, content: "article2")
-      article3 = create(:article, content: "article3")
-      article1.categories << [category1, category2]
-      article2.categories << category3
-      article3.categories << [category1, category3]
-      Article.__elasticsearch__.import force: true
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id])
+      article2 = create(:article, content: "article2", category_ids: [category3.id])
+      article3 = create(:article, content: "article3", category_ids: [category1.id, category3.id])
       Article.__elasticsearch__.refresh_index!
 
       get :search, q: category1.name, search: "category"
