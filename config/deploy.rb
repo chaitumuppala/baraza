@@ -37,12 +37,17 @@ set :pty, true
 # set :keep_releases, 5
 
 namespace :run_task do
-  desc 'Runs rake db:admin'
+  desc 'Runs rake db:migrate, db:admin, restarts delayed_job'
   task :set_up_environment do
     on roles(:web) do
       within "#{current_path}" do
         with rails_env: fetch(:rails_env) do
+          execute :rake, "db:migrate"
+          system("\\say Database migrated!!!")
           execute :rake, "db:admin"
+          system("\\say Admin rake task complete")
+          execute "cd #{File.join(current_path)} && RAILS_ENV=#{fetch(:rails_env)} bundle exec bin/delayed_job restart"
+          system("\\say delayed job restarted!!!")
         end
       end
     end
