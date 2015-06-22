@@ -17,5 +17,6 @@
 /tmp
 .idea/*
 public/assets/*
+public/system/*
 public/ckeditor_assets/*
 mocks/*

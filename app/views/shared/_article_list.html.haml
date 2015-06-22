@@ -5,7 +5,7 @@
         .article-outline
           .article-board
             %figure
-              = link_to image_tag(asset_path("africa.jpg")), article_path(article.id)
+              = link_to (image_tag article.cover_image.url), article_path(article.id)
               %figcaption
                 = article.title
             .article-info

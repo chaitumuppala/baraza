@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618100401) do
+ActiveRecord::Schema.define(version: 20150622110021) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -49,12 +49,16 @@ ActiveRecord::Schema.define(version: 20150618100401) do
   add_index "article_tags", ["tag_id"], name: "index_article_tags_on_tag_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",      limit: 255
-    t.text     "content",    limit: 65535
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.boolean  "top_story",  limit: 1
+    t.string   "title",                    limit: 255
+    t.text     "content",                  limit: 65535
+    t.integer  "user_id",                  limit: 4
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "top_story",                limit: 1
+    t.string   "cover_image_file_name",    limit: 255
+    t.string   "cover_image_content_type", limit: 255
+    t.integer  "cover_image_file_size",    limit: 4
+    t.datetime "cover_image_updated_at"
   end
 
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree

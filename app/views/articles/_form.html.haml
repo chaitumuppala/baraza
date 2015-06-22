@@ -16,6 +16,12 @@
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"
   .field
+    = f.label :cover_image
+    - if f.object.cover_image
+      = image_tag @article.cover_image.url
+    = f.file_field :cover_image
+
+  .field
     = f.label :content
     = f.cktext_area :content
   .field#top_story_field

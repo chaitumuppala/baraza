@@ -35,7 +35,6 @@ gem 'star_it'
 gem 'activeadmin', github: 'activeadmin'
 gem 'active_skin'
 gem 'ckeditor'
-gem 'paperclip'
 gem 'declarative_authorization'
 gem 'loadjs'
 gem 'elasticsearch-model'
@@ -44,6 +43,7 @@ gem 'select2-rails'
 gem 'social-share-button'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem "paperclip", "~> 4.2"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

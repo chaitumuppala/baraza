@@ -5,6 +5,7 @@
         = @article.title
         = social_share_button_tag(@article.title)
       = @article.content.html_safe
+      = image_tag @article.cover_image.url
       = link_to 'Edit', edit_article_path(@article)
     %h4
       DISCUSSIONS
