@@ -188,4 +188,13 @@ describe Article do
       }.to change { Delayed::Job.count }.from(0).to(1)
     end
   end
+
+  context "validation" do
+    it { should have_attached_file(:cover_image) }
+    it { should validate_attachment_content_type(:cover_image).
+                    allowing('image/png', 'image/jpeg', 'image/jpg').
+                    rejecting('text/plain', 'text/xml', 'image/gif') }
+    it { should validate_attachment_size(:cover_image).
+                    less_than(2.megabytes) }
+  end
 end

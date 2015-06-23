@@ -6,8 +6,9 @@ class Article < ActiveRecord::Base
   has_many :article_categories
   has_many :categories, through: :article_categories
   attr_accessor :tag_list
-  has_attached_file :cover_image, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "africa.jpg"
-  validates_attachment_content_type :cover_image, :content_type => /\Aimage\/.*\Z/
+  has_attached_file :cover_image, styles: { medium: "400x310>", thumb: "100x100>" }, default_url: "africa.jpg"
+  validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
+  validates_attachment_size :cover_image, in: 0..2.megabytes
   index_name    "articles_#{Rails.env}"
   settings do
     mapping do
