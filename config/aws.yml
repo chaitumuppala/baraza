@@ -1,0 +1,16 @@
+default: &default
+  access_key_id: "AKIAILPCY7EYYS6V3W7Q"
+  secret_access_key: "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"
+development:
+  <<: *default
+  bucket: "cover_image_development"
+test:
+  access_key_id: "test"
+  secret_access_key: "test"
+  bucket: "cover_image_test"
+demo:
+  <<: *default
+  bucket: "cover_image_demo"
+production:
+  <<: *default
+  bucket: "cover_image_production"
