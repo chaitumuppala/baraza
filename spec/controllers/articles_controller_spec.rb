@@ -66,7 +66,8 @@ RSpec.describe ArticlesController, type: :controller do
       get :search, q: tag1.name, search: "tag"
 
       expect(assigns[:articles].class).to eq(Array)
-      expect(assigns[:articles].map(&:id)).to match_array([article1.id.to_s, article3.id.to_s])
+      expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
+      expect(assigns[:articles].map(&:cover_image)).not_to be_empty
     end
   
     it "should search articles based on the categories", search: true do
@@ -81,7 +82,7 @@ RSpec.describe ArticlesController, type: :controller do
       get :search, q: category1.name, search: "category"
 
       expect(assigns[:articles].class).to eq(Array)
-      expect(assigns[:articles].map(&:id)).to match_array([article1.id.to_s, article3.id.to_s])
+      expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
     end
   end
 end

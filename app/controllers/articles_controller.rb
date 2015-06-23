@@ -47,7 +47,7 @@ class ArticlesController < ApplicationController
   end
 
   def search
-    @articles = Article.send("search_by_#{params[:search]}", params[:q]).results
+    @articles = Article.send("search_by_#{params[:search]}", params[:q])
   end
 
   private

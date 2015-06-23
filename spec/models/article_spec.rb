@@ -46,7 +46,7 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article1.id])
     end
 
     it "should return articles of the given  new tag_name" do
@@ -56,7 +56,7 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_tag("science").collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_tag("science").collect(&:id)).to eq([article1.id])
     end
   end
 
@@ -102,9 +102,9 @@ describe Article do
 
         article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
-        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id.to_s])
-        expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id])
       end
 
       it "should update document on removing tags through tag_list", search: true do
@@ -115,7 +115,7 @@ describe Article do
 
         article.update_attributes(tag_list: "#{tag1.name}")
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id])
         expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([])
       end
     end
@@ -128,8 +128,8 @@ describe Article do
 
         article.update_attributes(category_ids: [category1.id, category2.id])
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id.to_s])
-        expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article.id])
       end
 
       it "should update document on removing categories through category_ids", search: true do
@@ -140,7 +140,7 @@ describe Article do
 
         article.update_attributes(category_ids: [category1.id])
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id.to_s])
+        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id])
         expect(Article.search_by_category(category2.name).collect(&:id)).to eq([])
       end
     end
@@ -155,7 +155,7 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id])
     end
   end
 
@@ -169,13 +169,13 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_all("article1").collect(&:id)).to eq([article1.id.to_s])
-      expect(Article.search_by_all(tag.name).collect(&:id)).to eq([article1.id.to_s])
-      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id.to_s])
+      expect(Article.search_by_all("article1").collect(&:id)).to eq([article1.id])
+      expect(Article.search_by_all(tag.name).collect(&:id)).to eq([article1.id])
+      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id])
 
-      expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id.to_s])
+      expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id])
 
-      expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id.to_s, article2.id.to_s])
+      expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id, article2.id])
     end
   end
 

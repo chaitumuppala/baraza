@@ -6,7 +6,7 @@ class Article < ActiveRecord::Base
   has_many :article_categories
   has_many :categories, through: :article_categories
   attr_accessor :tag_list
-  has_attached_file :cover_image, styles: { medium: "400x310>", thumb: "100x100>" }, default_url: "africa.jpg"
+  has_attached_file :cover_image, styles: { medium: "400x310>" }, default_url: "africa.jpg"
   validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
   validates_attachment_size :cover_image, in: 0..2.megabytes
   index_name    "articles_#{Rails.env}"
@@ -60,7 +60,7 @@ class Article < ActiveRecord::Base
       end
     end
     response = Article.__elasticsearch__.search query
-    response.results
+    response.records.to_a
   end
 
   ["tag", "category"].each do |criteria|
@@ -80,7 +80,7 @@ class Article < ActiveRecord::Base
         end
       end
       response = Article.__elasticsearch__.search query
-      response.results
+      response.records.to_a
     end
   end
 end
