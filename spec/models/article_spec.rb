@@ -200,7 +200,7 @@ describe Article do
 
   context "s3_credentials" do
     it "should return the credentials based on the environment" do
-      expect(build(:article).send(:s3_credentials)).to eq({access_key_id: "test", secret_access_key: "test", bucket: "cover_image_test"}.with_indifferent_access)
+      expect(build(:article).s3_credentials).to eq({access_key_id: "test", secret_access_key: "test", bucket: "cover_image_test"}.with_indifferent_access)
     end
   end
 end

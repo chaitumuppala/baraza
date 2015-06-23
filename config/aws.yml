@@ -3,14 +3,18 @@ default: &default
   secret_access_key: "f+pec1XZmNnVgVrsjvVAWmk3lXdBNlAEeIOHKiPC"
 development:
   <<: *default
-  bucket: "cover_image_development"
+  cover_image_bucket: "cover_image_development"
+  ckeditor_image_bucket: "ckeditor_image_development"
 test:
   access_key_id: "test"
   secret_access_key: "test"
-  bucket: "cover_image_test"
+  cover_image_bucket: "cover_image_test"
+  ckeditor_image_bucket: "ckeditor_image_test"
 demo:
   <<: *default
-  bucket: "cover_image_demo"
+  cover_image_bucket: "cover_image_demo"
+  ckeditor_image_bucket: "ckeditor_image_demo"
 production:
   <<: *default
-  bucket: "cover_image_production"
+  cover_image_bucket: "cover_image_production"
+  ckeditor_image_bucket: "ckeditor_image_production"

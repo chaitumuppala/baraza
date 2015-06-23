@@ -87,6 +87,7 @@ class Article < ActiveRecord::Base
   end
 
   def s3_credentials
-    YAML.load_file('./config/aws.yml')[Rails.env]
+    s3_hash = YAML.load_file('./config/aws.yml')[Rails.env].with_indifferent_access
+    s3_hash.slice(:access_key_id, :secret_access_key).merge!({bucket: s3_hash[:cover_image_bucket]})
   end
 end

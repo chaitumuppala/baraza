@@ -1,8 +1,8 @@
 class Ckeditor::Picture < Ckeditor::Asset
   has_attached_file :data,
-                    :url  => "/ckeditor_assets/pictures/:id/:style_:basename.:extension",
-                    :path => ":rails_root/public/ckeditor_assets/pictures/:id/:style_:basename.:extension",
-                    :styles => { :content => '800>', :thumb => '118x100#' }
+                    storage: :s3,
+                    s3_credentials: Proc.new{|a| a.instance.s3_credentials},
+                    styles: { content: '800>', thumb: '118x100#' }
 
   validates_attachment_presence :data
   validates_attachment_size :data, :less_than => 2.megabytes
@@ -10,5 +10,10 @@ class Ckeditor::Picture < Ckeditor::Asset
 
   def url_content
     url(:content)
+  end
+
+  def s3_credentials
+    s3_hash = YAML.load_file('./config/aws.yml')[Rails.env].with_indifferent_access
+    s3_hash.slice(:access_key_id, :secret_access_key).merge!({bucket: s3_hash[:ckeditor_image_bucket]})
   end
 end
