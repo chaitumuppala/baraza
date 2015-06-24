@@ -1,5 +1,7 @@
 #signInModal.reveal-modal.medium{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
   .login_page
+    .success_flash.hide
+      = t("devise.sessions.signed_in")
     .title
       %h3 Nice to have you back!
       %h2 Log in
