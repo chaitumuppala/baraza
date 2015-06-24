@@ -128,4 +128,10 @@ describe User do
       user.generate_set_password_token
     end
   end
+
+  context "full_name" do
+    it "should return full_name of user" do
+      expect(build(:user, first_name: "first", last_name: "last").full_name).to eq("first last")
+    end
+  end
 end

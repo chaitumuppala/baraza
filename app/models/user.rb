@@ -52,6 +52,10 @@ class User < ActiveRecord::Base
     self.set_reset_password_token
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
   def has_a_provider?
     uid.present? && provider.present?
