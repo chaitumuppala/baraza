@@ -1,0 +1,43 @@
+#admin-article {
+  .article {
+    height: 300px;
+    width: 300px;
+    position: relative;
+    margin: 10px;
+    border: 1px solid #777;
+    display: inline-block;
+    img {
+      height: 300px;
+      width: 300px;
+    }
+    .title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: white;
+      text-align: center;
+      padding: 7px;
+      background-color: #000000;
+    }
+
+    &.chosen {
+      -moz-box-shadow: 0 0 5px 5px #888;
+      -webkit-box-shadow: 0 0 5px 5px#888;
+      box-shadow: 0 0 5px 5px #888;
+
+      .article-overlay {
+        height: 300px;
+        width: 300px;
+        background: rgba(47, 47, 47, 0.2);
+        position: absolute;
+        bottom: 7px;
+        left: 0;
+      }
+    }
+  }
+  .article-month {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+}

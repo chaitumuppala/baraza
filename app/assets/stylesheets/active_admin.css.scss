@@ -13,7 +13,7 @@
 
 $skinLogo: url("logo.png") 297px/144px no-repeat;
 @import "active_skin";
-
+@import "scss/activeadmin_custom/articles";
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
