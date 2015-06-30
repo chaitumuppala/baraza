@@ -48,15 +48,10 @@
       .left-empty
       .middle-content
         .tabs
-          .item.left
-            %a{"aria-controls" => "category-drop", "aria-expanded" => "false", "data-dropdown" => "category-drop"} EXPLORE
-            %span.icon-down-arrow
-          .item.left
-            %a LEARN
-            %span.icon-down-arrow
-          .item.left.participate
-            %a PARTICIPATE
-            %span.icon-down-arrow
+          - if current_user
+            = render "tabs/#{current_user.type.underscore}_tab"
+          - else
+            = render "tabs/guest_tab"
           .item.right
             %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop"}
           - if current_user
