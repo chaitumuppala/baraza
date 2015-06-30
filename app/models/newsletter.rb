@@ -1,6 +1,8 @@
 class Newsletter < ActiveRecord::Base
   has_many :articles
+  has_many :category_newsletters
   accepts_nested_attributes_for :articles
+  accepts_nested_attributes_for :category_newsletters
 
   module Status
     DRAFT = "draft"
@@ -12,7 +14,7 @@ class Newsletter < ActiveRecord::Base
     article_list = Set.new
     Category.all.inject({}) do |article_hash, category|
       articles_for_category = category.articles.where("newsletter_id = ? or newsletter_id IS NULL", id).to_set
-      article_hash[category.name] = articles_for_category - article_list
+      article_hash[category] = articles_for_category - article_list
       article_list += articles_for_category
       article_hash
     end

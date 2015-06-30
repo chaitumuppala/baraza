@@ -1,5 +1,6 @@
 #admin-article
   = form_for @newsletter, url: newsletter_path(@newsletter) do |f|
+    - category_newsletters = @newsletter.category_newsletters
     - if @newsletter.errors.any?
       #error_explanation
         %h2= "#{pluralize(@newsletter.errors.count, "error")} prohibited this article from being saved:"
@@ -11,13 +12,19 @@
         %span
           = f.label :name, @newsletter.name
       .field
-        %ul.accordion{"data-accordion" => ""}
+        %ul.accordion{"data-accordion" => "", id: "category-sortable"}
           - ar_with_categories = @newsletter.eligible_articles_by_category
-          - ar_with_categories.each do |category_name, articles|
-            %li.accordion-navigation
-              %a{href: "##{category_name.parameterize.underscore}"}
-                = category_name
-              %div{id: category_name.parameterize.underscore, class: "content"}
+          - ar_with_categories.each do |category, articles|
+            - category_newsletter = category_newsletters.select{|cn| cn.category_id == category.id}.first
+            %li.accordion-navigation.ui-state-default
+              = fields_for "newsletter[category_newsletters_attributes][]", category_newsletter, index: "" do |cnf|
+                = cnf.hidden_field :position_in_newsletter, class: "cat_position"
+                = cnf.hidden_field :category_id
+                = cnf.hidden_field :newsletter_id
+                = cnf.hidden_field :id
+              %a{href: "#cat_#{category.id}"}
+                = category.name
+              %div{id: "cat_#{category.id}", class: "content"}
                 - articles.each do |article|
                   .article{class: "#{'chosen' if article.newsletter_id == @newsletter.id}"}
                     .article-overlay

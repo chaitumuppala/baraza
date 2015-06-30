@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626100825) do
+ActiveRecord::Schema.define(version: 20150630134000) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -69,6 +69,15 @@ ActiveRecord::Schema.define(version: 20150626100825) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "category_newsletters", force: :cascade do |t|
+    t.integer "category_id",            limit: 4
+    t.integer "newsletter_id",          limit: 4
+    t.integer "position_in_newsletter", limit: 4
+  end
+
+  add_index "category_newsletters", ["category_id"], name: "index_category_newsletters_on_category_id", using: :btree
+  add_index "category_newsletters", ["newsletter_id"], name: "index_category_newsletters_on_newsletter_id", using: :btree
 
   create_table "ckeditor_assets", force: :cascade do |t|
     t.string   "data_file_name",    limit: 255, null: false
@@ -150,4 +159,6 @@ ActiveRecord::Schema.define(version: 20150626100825) do
   add_foreign_key "article_tags", "articles"
   add_foreign_key "article_tags", "tags"
   add_foreign_key "articles", "users"
+  add_foreign_key "category_newsletters", "categories"
+  add_foreign_key "category_newsletters", "newsletters"
 end
