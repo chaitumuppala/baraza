@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       patch :change_email
     end
   end
+
+  resources :newsletters, except: [:new, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

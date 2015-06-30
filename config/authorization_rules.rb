@@ -26,5 +26,6 @@ authorization do
   role :administrator do
     includes :editor
     has_permission_on :users, to: [:new, :create, :edit, :update, :show, :destroy, :index]
+    has_permission_on :newsletters, to: [:edit, :update, :show, :destroy, :index]
   end
 end
