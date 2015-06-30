@@ -1,6 +1,6 @@
 .change_email
   .left
-  = form_for(@user, url: user_update_path(@user), html: { method: :patch, class: "right" }) do |f|
+  = form_for(@user, url: user_change_email_path(@user), html: { method: :patch, class: "right" }) do |f|
     %fieldset
       %legend
         Update email

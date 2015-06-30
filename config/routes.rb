@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
                    confirmations: "confirmations", sessions: "sessions", passwords: "passwords"}
 
-  get "users/:id/change_email" => "users#edit", as: "user_edit"
-  patch "users/:id/change_email" => "users#update", as: "user_update"
+  get "users/:id/change_email" => "users#change_email_form", as: "user_change_email_form"
+  patch "users/:id/change_email" => "users#change_email", as: "user_change_email"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

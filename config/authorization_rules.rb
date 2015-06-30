@@ -6,7 +6,7 @@ authorization do
 
   role :registered_user do
     includes :guest
-    has_permission_on :users, to: [:edit, :update] do
+    has_permission_on :users, to: [:change_email_form, :change_email] do
       if_attribute :id => is { user.id }
     end
 

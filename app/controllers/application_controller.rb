@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
   before_filter { |c| Authorization.current_user = c.current_user }
 
   def ensure_email_present
-    redirect_to user_edit_path(current_user) if current_user && current_user.email.blank?
+    redirect_to user_change_email_form_path(current_user) if current_user && current_user.email.blank?
   end
 end
