@@ -12,3 +12,14 @@ Machine Setup
 * CREATE USER 'baraza'@'localhost' IDENTIFIED BY 'baraza';
 * GRANT ALL PRIVILEGES ON * . * TO 'baraza'@'localhost';
 * mysql -ubaraza -p
+
+elasticsearch
+* brew install elasticsearch
+* elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+* To install elasticsearch head plugin
+    /usr/local/opt/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+* Start elasticsearch using `elasticsearch` command
+* Visit localhost:9200/_plugin/head/ to see indices
+
+imagemagick - for ckeditor image uploads
+* brew install imagemagick
