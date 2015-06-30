@@ -17,6 +17,4 @@ describe ApplicationController do
       end
     end
   end
-
-  pending "authenticate_active_admin_user!"
 end

@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     end
   end
   mount Ckeditor::Engine => '/ckeditor'
-  ActiveAdmin.routes(self)
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
                    confirmations: "confirmations", sessions: "sessions", passwords: "passwords"}
 
