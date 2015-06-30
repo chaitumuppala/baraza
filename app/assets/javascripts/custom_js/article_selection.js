@@ -18,5 +18,6 @@ $(function () {
       articleCheckBox.prop("checked", !articleCheckBox.prop("checked"));
     }
   };
-  ArticleSelection.init.bind(ArticleSelection)();
+
+  loadPageSpecificJs("newsletters", ['edit'], ArticleSelection.init.bind(ArticleSelection));
 });
