@@ -21,6 +21,9 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1.json
   def update
     respond_to do |format|
+      ns_params = params["newsletter"]
+      ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
+      ns_params.merge!(status: Newsletter::Status::APPROVED) if params[:commit] == "Approve"
       if @newsletter.update(newsletter_params)
         format.html { redirect_to @newsletter, notice: 'Newsletter was successfully updated.' }
         format.json { render :show, status: :ok, location: @newsletter }
@@ -53,7 +56,7 @@ class NewslettersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def newsletter_params
-    params.require(:newsletter).permit(:name, article_ids: [],
+    params.require(:newsletter).permit(:name, :status, article_ids: [],
                                        category_newsletters_attributes: [:id, :newsletter_id, :category_id, :position_in_newsletter],
                                        articles_attributes: [:id, :position_in_newsletter])
   end
