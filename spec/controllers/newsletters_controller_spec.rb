@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 describe NewslettersController do
+  before do
+    sign_in(create(:administrator))
+  end
   context "update" do
     it "should update and approve the newsletter if params[:commit] is APPROVE" do
-      sign_in(create(:administrator))
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
@@ -16,7 +18,6 @@ describe NewslettersController do
     end
 
     it "should remove article params which dont have ids in article_ids" do
-      sign_in(create(:administrator))
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
@@ -29,6 +30,22 @@ describe NewslettersController do
                                     "commit"=>"Approve", "id"=>newsletter.id
 
       expect(newsletter.reload.articles).to eq([article1])
+    end
+  end
+
+  context "edit" do
+    it "should allow to edit only if newsletter is in draft state" do
+      newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
+      get :edit, id: newsletter.id
+
+      expect(response).to render_template("edit")
+    end
+
+    it "should not allow to edit only if newsletter is in approved/published state" do
+      newsletter = create(:newsletter, status: Newsletter::Status::APPROVED)
+      get :edit, id: newsletter.id
+
+      expect(response).not_to render_template("edit")
     end
   end
 end
