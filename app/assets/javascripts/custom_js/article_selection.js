@@ -4,13 +4,19 @@ $(function () {
       var that = this;
       $("#category-sortable").sortable({
         placeholder: "category-placeholder",
+        cursor: "move",
+        axis: "y",
         stop: function(event, ui) {
           that.setCategoryOrder();
         }
       });
 
-      $("#admin-article .article").on('click', 'img', function (e) {
-        ArticleSelection.selectArticle($(e.target));
+      $("ul[id^=cat_]").sortable({
+        placeholder: "article-placeholder",
+        cursor: "move",
+        stop: function(event, ui) {
+          that.setArticleOrder();
+        }
       });
 
       $("#admin-article .article").on('click', '.article-overlay', function (e) {
@@ -29,6 +35,12 @@ $(function () {
     setCategoryOrder: function() {
       $("#category-sortable li").each(function(i, el){
         $(el).find(".cat_position").val($(el).index()+1);
+      });
+    },
+
+    setArticleOrder: function() {
+      $("li.article").each(function(i, el){
+        $(el).find(".article_position").val($(el).index()+1);
       });
     }
   };

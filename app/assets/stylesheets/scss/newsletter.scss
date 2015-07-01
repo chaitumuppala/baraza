@@ -1,38 +1,33 @@
 #admin-article {
   .article {
-    height: 300px;
-    width: 300px;
-    position: relative;
+    height: 100px;
+    @extend .row;
+    line-height: 50px;
     margin: 10px;
     border: 1px solid #777;
-    display: inline-block;
     img {
-      height: 300px;
-      width: 300px;
+      height: 98px;
+      @extend .column;
+      @extend .small-1;
+      @extend .medium-1;
+      @extend .large-1;
+      padding: 5px;
+      border: 1px solid #777;
     }
     .title {
-      position: absolute;
-      top: 0;
-      left: 0;
-      color: white;
+      @extend .column;
+      @extend .small-10;
+      @extend .medium-10;
+      @extend .large-10;
       text-align: center;
-      padding: 7px;
-      background-color: #000000;
     }
 
-    &.chosen {
-      -moz-box-shadow: 0 0 5px 5px #888;
-      -webkit-box-shadow: 0 0 5px 5px#888;
-      box-shadow: 0 0 5px 5px #888;
-
-      .article-overlay {
-        height: 300px;
-        width: 300px;
-        background: rgba(47, 47, 47, 0.2);
-        position: absolute;
-        bottom: 7px;
-        left: 0;
-      }
+    input[type=checkbox] {
+      @extend .column;
+      @extend .small-1;
+      @extend .medium-1;
+      @extend .large-1;
+      text-align: center;
     }
   }
   .article-month {
@@ -44,5 +39,10 @@
   .category-placeholder {
     border: 1px dashed #777;
     height: 58px;
+  }
+
+  .article-placeholder {
+    border: 1px dashed #777;
+    height: 100px;
   }
 }

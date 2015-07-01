@@ -24,13 +24,15 @@
                 = cnf.hidden_field :id
               %a{href: "#cat_#{category.id}"}
                 = category.name
-              %div{id: "cat_#{category.id}", class: "content"}
+              %ul{id: "cat_#{category.id}", class: "content"}
                 - articles.each do |article|
-                  .article{class: "#{'chosen' if article.newsletter_id == @newsletter.id}"}
-                    .article-overlay
-                    = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article), class: "hide")
+                  %li.article
+                    = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article))
+                    = fields_for "newsletter[articles_attributes][]", article, index: "" do |af|
+                      = af.hidden_field :position_in_newsletter, class: "article_position"
+                      = af.hidden_field :id
+                    = image_tag(article.cover_image.url, alt: "")
                     .title
                       = link_to article.title, article_path(article.id)
-                    = image_tag(article.cover_image.url)
     .actions
       = f.submit 'Save'
