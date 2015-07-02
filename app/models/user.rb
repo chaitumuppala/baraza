@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   after_update :send_editor_intro_mail, if: -> { type_changed? && type == Editor.name}
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
   before_create ->{ self.type = type || RegisteredUser.name }
+  has_many :articles
 
   module Roles
     extend ListValues

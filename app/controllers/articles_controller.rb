@@ -49,6 +49,10 @@ class ArticlesController < ApplicationController
     @articles = Article.send("search_by_#{params[:search]}", params[:q])
   end
 
+  def index
+    @articles = current_user.articles
+  end
+
   private
   def set_article
     @article = Article.find(params[:id])
@@ -59,11 +63,13 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, category_ids: [])
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, :author_content, category_ids: [])
   end
 
   def merge_status_to_params
-    params["article"].merge!(status: Article::Status::UNAPPROVED) if params[:commit] == "approval"
+    if params[:commit] == "approval"
+      params["article"].merge!(status: Article::Status::UNAPPROVED, author_content: params["article"]["content"])
+    end
   end
 end
 

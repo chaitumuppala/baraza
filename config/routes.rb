@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :articles, except: :index do
+  resources :articles do
     collection do
       get 'search', as: 'search'
     end

@@ -65,9 +65,9 @@ describe Article do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
       category = create(:category)
-      article = create(:article)
+      article = create(:article, category_ids: [category.id])
       article.tags << [tag1, tag2]
-      article.categories << category
+
 
       expect(article.as_indexed_json).to eq({"id"=>article.id,
                                              "title"=>article.title,
@@ -196,6 +196,16 @@ describe Article do
                     rejecting('text/plain', 'text/xml', 'image/gif') }
     it { should validate_attachment_size(:cover_image).
                     less_than(2.megabytes) }
+
+    it "should validate presence of title" do
+      expect(build(:article, title: nil)).not_to be_valid
+    end
+    it "should validate presence of content" do
+      expect(build(:article, content: nil)).not_to be_valid
+    end
+    it "should validate presence of category" do
+      expect(build(:article, category_ids: [])).not_to be_valid
+    end
   end
 
   context "s3_credentials" do

@@ -27,6 +27,12 @@ RSpec.describe ArticlesController, type: :controller do
       get :edit, id: article.id
       expect(response.code).to eq("403")
     end
+
+    it "should not allow edit after submitting for approval", sign_in: true do
+      article = create(:article, user_id: controller.current_user.id, status: Article::Status::UNAPPROVED)
+      get :edit, id: article.id
+      expect(response.code).to eq("403")
+    end
   end
 
   describe "update", sign_in: true do
@@ -52,19 +58,23 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   describe "create", sign_in: true do
+    before do
+      @category = create(:category)
+    end
     it "should allow creation of article" do
-      post :create, article: {title: "new title"}
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
     end
 
-    it "should allow creation of article and submit for approval" do
-      post :create, article: {title: "new title"}, commit: "approval"
+    it "should create, submit for approval and copy author_content to content" do
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: "approval"
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
       expect(article.status).to eq(Article::Status::UNAPPROVED)
+      expect(article.author_content).to eq("content")
     end
   end
 
@@ -99,6 +109,20 @@ RSpec.describe ArticlesController, type: :controller do
 
       expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
+    end
+  end
+
+  context "index" do
+    it "should list current user articles" do
+      registered_user = create(:user)
+      sign_in registered_user
+      article1 = create(:article, user_id: registered_user.id)
+      article2 = create(:article, user_id: create(:user).id)
+      article3 = create(:article, user_id: registered_user.id)
+
+      get :index
+
+      expect(assigns[:articles]).to match_array([article1, article3])
     end
   end
 end

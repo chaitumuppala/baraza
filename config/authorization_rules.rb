@@ -10,10 +10,10 @@ authorization do
       if_attribute :id => is { user.id }
     end
 
-    has_permission_on :articles, to: [:new, :create ]
+    has_permission_on :articles, to: [:new, :create, :index ]
 
     has_permission_on :articles, to: [:edit, :update] do
-      if_attribute :user_id => is { user.id }
+      if_attribute :user_id => is { user.id }, status: is {Article::Status::DRAFT}
     end
 
     has_permission_on :tags, to: [:index ]
