@@ -4,6 +4,9 @@ class Newsletter < ActiveRecord::Base
   has_many :categories, through: :category_newsletters
   accepts_nested_attributes_for :articles
   accepts_nested_attributes_for :category_newsletters
+  after_create do
+    categories << Category.all
+  end
 
   module Status
     DRAFT = "draft"

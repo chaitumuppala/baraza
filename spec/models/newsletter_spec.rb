@@ -43,4 +43,14 @@ describe Newsletter do
       expect(result[category].collect(&:id)).to eq([article2.id, article1.id])
     end
   end
+
+  context "after_create" do
+    it "should associate all categories to the newsletter" do
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      newsletter = create(:newsletter)
+
+      expect(newsletter.categories).to eq([category1, category2])
+    end
+  end
 end
