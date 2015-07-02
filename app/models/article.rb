@@ -29,6 +29,11 @@ class Article < ActiveRecord::Base
     index_current_document_values
   end
 
+  module Status
+    DRAFT = "draft"
+    UNAPPROVED = "unapproved"
+  end
+
   def index_current_document_values
     __elasticsearch__.index_document
   end

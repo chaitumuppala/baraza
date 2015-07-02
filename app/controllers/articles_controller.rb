@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   filter_resource_access additional_collection: [:search]
-
+  before_action :merge_status_to_params, only: [:create, :update]
   def show
   end
 
@@ -14,7 +14,6 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
-
     respond_to do |format|
       if @article.save
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
@@ -60,7 +59,11 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, category_ids: [])
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, category_ids: [])
+  end
+
+  def merge_status_to_params
+    params["article"].merge!(status: Article::Status::UNAPPROVED) if params[:commit] == "approval"
   end
 end
 

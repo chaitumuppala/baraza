@@ -41,6 +41,14 @@ RSpec.describe ArticlesController, type: :controller do
       patch :update, id: article.id, article: {title: "new title"}
       expect(response.code).to eq("403")
     end
+
+    it "should update and set status as unapproved" do
+      article = create(:article, user_id: controller.current_user.id)
+      patch :update, id: article.id, article: {title: "new title"}, commit: "approval"
+
+      expect(article.reload.title).to eq("new title")
+      expect(article.status).to eq(Article::Status::UNAPPROVED)
+    end
   end
 
   describe "create", sign_in: true do
@@ -49,6 +57,14 @@ RSpec.describe ArticlesController, type: :controller do
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
+    end
+
+    it "should allow creation of article and submit for approval" do
+      post :create, article: {title: "new title"}, commit: "approval"
+      article = Article.last
+      expect(article.id).not_to be_nil
+      expect(article.title).to eq("new title")
+      expect(article.status).to eq(Article::Status::UNAPPROVED)
     end
   end
 
