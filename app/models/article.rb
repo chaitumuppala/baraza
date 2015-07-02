@@ -32,7 +32,8 @@ class Article < ActiveRecord::Base
 
   module Status
     DRAFT = "draft"
-    UNAPPROVED = "unapproved"
+    SUBMITTED_FOR_APPROVAL = "submitted for approval"
+    PUBLISHED = "published"
   end
 
   def index_current_document_values

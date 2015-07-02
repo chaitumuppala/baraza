@@ -29,5 +29,5 @@
     %label{for: "article_top_story"} Top Story
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   .actions
-    = f.submit 'Save'
-    = f.submit 'approval'
+    = f.submit ArticlesController::SAVE
+    = f.submit current_user.editor? ? ArticlesController::PUBLISH : ArticlesController::SUBMIT_FOR_APPROVAL

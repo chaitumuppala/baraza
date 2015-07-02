@@ -2,6 +2,11 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
+
+  SAVE = "Save as draft"
+  SUBMIT_FOR_APPROVAL = "Submit for approval"
+  PUBLISH = "Publish"
+
   def show
   end
 
@@ -67,8 +72,9 @@ class ArticlesController < ApplicationController
   end
 
   def merge_status_to_params
-    if params[:commit] == "approval"
-      params["article"].merge!(status: Article::Status::UNAPPROVED, author_content: params["article"]["content"])
+    if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
+      status = current_user.editor? ? Article::Status::PUBLISHED : Article::Status::SUBMITTED_FOR_APPROVAL
+      params["article"].merge!(status: status, author_content: params["article"]["content"])
     end
   end
 end

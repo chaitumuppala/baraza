@@ -29,7 +29,7 @@ RSpec.describe ArticlesController, type: :controller do
     end
 
     it "should not allow edit after submitting for approval", sign_in: true do
-      article = create(:article, user_id: controller.current_user.id, status: Article::Status::UNAPPROVED)
+      article = create(:article, user_id: controller.current_user.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       get :edit, id: article.id
       expect(response.code).to eq("403")
     end
@@ -50,31 +50,37 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should update and set status as unapproved" do
       article = create(:article, user_id: controller.current_user.id)
-      patch :update, id: article.id, article: {title: "new title"}, commit: "approval"
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
 
       expect(article.reload.title).to eq("new title")
-      expect(article.status).to eq(Article::Status::UNAPPROVED)
+      expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
     end
   end
 
-  describe "create", sign_in: true do
+  describe "create" do
     before do
       @category = create(:category)
     end
-    it "should allow creation of article" do
+    it "should allow creation of article", sign_in: true do
       post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
     end
 
-    it "should create, submit for approval and copy author_content to content" do
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: "approval"
+    it "should create, submit for approval and copy author_content to content", sign_in: true do
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
       article = Article.last
-      expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
-      expect(article.status).to eq(Article::Status::UNAPPROVED)
+      expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(article.author_content).to eq("content")
+    end
+
+    it "should create, publish if current user is editor" do
+      sign_in(create(:editor))
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
+      article = Article.last
+      expect(article.status).to eq(Article::Status::PUBLISHED)
     end
   end
 
