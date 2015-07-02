@@ -7,33 +7,29 @@
         %ul
           - @newsletter.errors.full_messages.each do |msg|
             %li= msg
-    %fieldset{class: "inputs"}
-      %legend
-        %span
-          = f.label :name, @newsletter.name
-      .field
-        %ul.accordion{"data-accordion" => "", id: "category-sortable"}
-          - ar_with_categories = @newsletter.eligible_articles_by_category
-          - ar_with_categories.each do |category, articles|
-            - category_newsletter = category_newsletters.select{|cn| cn.category_id == category.id}.first
-            %li.accordion-navigation.ui-state-default
-              = fields_for "newsletter[category_newsletters_attributes][]", category_newsletter, index: "" do |cnf|
-                = cnf.hidden_field :position_in_newsletter, class: "cat_position"
-                = cnf.hidden_field :category_id
-                = cnf.hidden_field :newsletter_id
-                = cnf.hidden_field :id
-              %a{href: "#cat_#{category.id}"}
-                = category.name
-              %ul{id: "cat_#{category.id}", class: "content"}
-                - articles.each do |article|
-                  %li.article
-                    = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article))
-                    = fields_for "newsletter[articles_attributes][]", article, index: "" do |af|
-                      = af.hidden_field :position_in_newsletter, class: "article_position"
-                      = af.hidden_field :id
-                    = image_tag(article.cover_image.url, alt: "")
-                    .title
-                      = link_to article.title, article_path(article.id)
+    %span
+      = f.label :name, @newsletter.name
+    %ul.accordion{"data-accordion" => "", id: "category-sortable"}
+      - ar_with_categories = @newsletter.eligible_articles_by_category
+      - ar_with_categories.each do |category, articles|
+        - category_newsletter = category_newsletters.select{|cn| cn.category_id == category.id}.first
+        %li.accordion-navigation.ui-state-default
+          = fields_for "newsletter[category_newsletters_attributes][]", category_newsletter, index: "" do |cnf|
+            = cnf.hidden_field :position_in_newsletter, class: "cat_position"
+            = cnf.hidden_field :category_id
+            = cnf.hidden_field :newsletter_id
+            = cnf.hidden_field :id
+          %a{href: "#cat_#{category.id}"}
+            = category.name
+          %ul{id: "cat_#{category.id}", class: "content"}
+            - articles.each do |article|
+              %li.article
+                = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article))
+                = fields_for "newsletter[articles_attributes][]", article, index: "" do |af|
+                  = af.hidden_field :position_in_newsletter, class: "article_position"
+                  = af.hidden_field :id
+                = image_tag(article.cover_image.url, alt: "")
+                = link_to article.title, article_path(article.id), class: "title"
     .actions
       = f.submit 'Save'
       = f.submit 'Approve'

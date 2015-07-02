@@ -76,6 +76,7 @@ ul, li, ul li ul {
   }
   #mission {
     @extend .column;
+    @extend .right;
     @extend .medium-6;
     white-space: nowrap;
     line-height: 120px;

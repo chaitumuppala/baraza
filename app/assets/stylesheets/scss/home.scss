@@ -1,5 +1,6 @@
 #home-page {
   #section-1 {
+    padding-left: 0;
     #article-1 {
       padding-left: 0;
       @extend .column;
@@ -8,6 +9,7 @@
 
     #article-2 {
       padding-left: 0;
+      padding-right: 0;
       @extend .column;
       @extend .medium-4;
     }
@@ -51,13 +53,17 @@
     padding-left: 0;
     @extend .column;
     @extend .medium-4;
+
+    &:last-child {
+      padding-right: 0;
+    }
   }
 }
 
 .article-board {
   @extend .panel;
   padding: 0;
-  margin-left: 1%;
+//  margin-left: 1%;
   figure {
     position: relative;
     img {

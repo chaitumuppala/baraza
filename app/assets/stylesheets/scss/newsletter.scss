@@ -1,33 +1,19 @@
 #admin-article {
   .article {
-    height: 100px;
-    @extend .row;
-    line-height: 50px;
     margin: 10px;
     border: 1px solid #777;
     img {
       height: 98px;
-      @extend .column;
-      @extend .small-1;
-      @extend .medium-1;
-      @extend .large-1;
       padding: 5px;
       border: 1px solid #777;
     }
     .title {
-      @extend .column;
-      @extend .small-10;
-      @extend .medium-10;
-      @extend .large-10;
       text-align: center;
+      padding-bottom: 86px;
     }
 
     input[type=checkbox] {
-      @extend .column;
-      @extend .small-1;
-      @extend .medium-1;
-      @extend .large-1;
-      text-align: center;
+      margin-bottom: 0;
     }
   }
   .article-month {
@@ -44,5 +30,9 @@
   .article-placeholder {
     border: 1px dashed #777;
     height: 100px;
+  }
+
+  ul.content {
+    @extend .clearfix;
   }
 }
