@@ -1,50 +1,84 @@
 #home-page {
-  .article-row {
-    @extend .row;
-
-    &:last-child {
-      .article-outline {
-        &:nth-child(2) {
-          float: left;
-        }
-      }
+  #section-1 {
+    #article-1 {
+      padding-left: 0;
+      @extend .column;
+      @extend .medium-8;
     }
 
-    .article-outline {
+    #article-2 {
       padding-left: 0;
       @extend .column;
       @extend .medium-4;
-      .article-board {
-        @extend .panel;
-        padding: 0;
-        margin-left: 1%;
-        figure {
-          position: relative;
-          img {
-            height: 300px;
-            width: 100%;
-          }
-          figcaption {
-            position: absolute;
-            bottom: 7px;
-            left: 0;
-            width: 100%;;
-            color: white;
-            padding: 10px;
-            background: rgba(47, 47, 47, 0.7);
-            font-weight: 900;
-            font-size: 35px;
-          }
-        }
-        .article-info {
-          border-bottom: 1px solid $gainsboro;
-        }
-
-        .article-related, .article-info {
-          font-size: 13px;
-          padding: 10px;
-        }
-      }
     }
+  }
+
+  #section-1, #section-2, #section-4 {
+    @extend .row;
+  }
+
+  #section-3 {
+    @extend .panel;
+    padding: 0;
+  }
+
+  .newsletter {
+    padding: 0;
+    @extend .row;
+    line-height: 117px;
+    padding: 10px;
+    #title {
+      font-size: 27px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    #title, #text, #submit {
+      @extend .column;
+    }
+    #text {
+      height: 117px;
+    }
+    #title, #text {
+      @extend .medium-5;
+    }
+
+    #submit {
+      @extend .medium-2;
+    }
+  }
+
+  .three-column-article {
+    padding-left: 0;
+    @extend .column;
+    @extend .medium-4;
+  }
+}
+
+.article-board {
+  @extend .panel;
+  padding: 0;
+  margin-left: 1%;
+  figure {
+    position: relative;
+    img {
+      height: 350px;
+      width: 100%;
+    }
+    figcaption {
+      position: absolute;
+      bottom: 7px;
+      left: 0;
+      width: 100%;;
+      color: white;
+      padding: 10px;
+      background: rgba(47, 47, 47, 0.7);
+      font-weight: 900;
+      font-size: 35px;
+    }
+  }
+  .article-info {
+    border-bottom: 1px solid $gainsboro;
+    font-size: 13px;
+    padding: 10px;
   }
 }

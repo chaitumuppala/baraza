@@ -1,0 +1,19 @@
+#search-result {
+  .article-row {
+    @extend .row;
+
+    &:last-child {
+      .article-outline {
+        &:nth-child(2) {
+          float: left;
+        }
+      }
+    }
+
+    .article-outline {
+      padding-left: 0;
+      @extend .column;
+      @extend .medium-4;
+    }
+  }
+}

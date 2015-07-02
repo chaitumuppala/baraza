@@ -1,1 +1,25 @@
-= render "shared/article_list"
+#home-page
+  - articles = Article.all
+  #section-1
+    #article-1
+      = render "shared/article_board", article: articles[0]
+    #article-2
+      = render "shared/article_board", article: articles[1]
+
+  #section-2
+    - articles[2..4].each do |article|
+      .three-column-article
+        = render "shared/article_board", article: article
+  #section-3
+    .newsletter
+      #title
+        SUBSCRIBE TO OUR NEWSLETTER
+      = form_tag "" do
+        #text
+          = text_field_tag "", "", placeholder: "Enter your email"
+        #submit
+          = submit_tag "Subscribe", value: "Subscribe"
+  #section-4
+    - articles[5..7].each do |article|
+      .three-column-article
+        = render "shared/article_board", article: article
