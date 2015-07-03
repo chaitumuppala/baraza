@@ -21,6 +21,10 @@ authorization do
 
   role :editor do
     includes :registered_user
+    has_permission_on :articles, to: [:edit, :update] do
+      if_attribute :user_id => is { user.id }, status: is {Article::Status::DRAFT}
+      if_attribute status: is {Article::Status::SUBMITTED_FOR_APPROVAL}
+    end
   end
 
   role :administrator do

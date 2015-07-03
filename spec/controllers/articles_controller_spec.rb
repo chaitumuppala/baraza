@@ -28,10 +28,33 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response.code).to eq("403")
     end
 
-    it "should not allow edit after submitting for approval", sign_in: true do
-      article = create(:article, user_id: controller.current_user.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      get :edit, id: article.id
-      expect(response.code).to eq("403")
+    context "registered_user" do
+      it "should not allow edit after submitting for approval", sign_in: true do
+        article = create(:article, user_id: controller.current_user.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+        get :edit, id: article.id
+        expect(response.code).to eq("403")
+      end
+    end
+
+    context "editor/admin" do
+      it "should not allow edit after publishing" do
+        editor = create(:editor)
+        sign_in editor
+
+        article = create(:article, user_id: controller.current_user.id, status: Article::Status::PUBLISHED)
+        get :edit, id: article.id
+        expect(response.code).to eq("403")
+      end
+
+      it "should allow edit of articles that are submitted for approval" do
+        editor = create(:editor)
+        sign_in editor
+
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+        get :edit, id: article.id
+        expect(response.code).to eq("200")
+        expect(response).to render_template("edit")
+      end
     end
   end
 
@@ -149,7 +172,7 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context "index" do
-    it "should list current user articles" do
+    it "should list current user articles if registered_user" do
       registered_user = create(:user)
       sign_in registered_user
       article1 = create(:article, user_id: registered_user.id)
@@ -159,6 +182,36 @@ RSpec.describe ArticlesController, type: :controller do
       get :index
 
       expect(assigns[:articles]).to match_array([article1, article3])
+    end
+
+    it "should list current user articles and all articles submitted for approval if editor" do
+      editor = create(:editor)
+      sign_in editor
+      article1 = create(:article, user_id: editor.id)
+      article2 = create(:article, user_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article3 = create(:article, user_id: create(:user).id, status: Article::Status::DRAFT)
+      article4 = create(:article, user_id: create(:user).id, status: Article::Status::PUBLISHED)
+      article5 = create(:article, user_id: editor.id)
+
+      get :index
+
+      expect(assigns[:articles]).to match_array([article1, article5])
+      expect(assigns[:articles_submitted]).to match_array([article2])
+    end
+
+    it "should list current user articles and all articles submitted for approval if administrator" do
+      administrator = create(:administrator)
+      sign_in administrator
+      article1 = create(:article, user_id: administrator.id)
+      article2 = create(:article, user_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article3 = create(:article, user_id: create(:user).id, status: Article::Status::DRAFT)
+      article4 = create(:article, user_id: create(:user).id, status: Article::Status::PUBLISHED)
+      article5 = create(:article, user_id: administrator.id)
+
+      get :index
+
+      expect(assigns[:articles]).to match_array([article1, article5])
+      expect(assigns[:articles_submitted]).to match_array([article2])
     end
   end
 end

@@ -1,5 +1,5 @@
 .panel
-  %h4 Listing articles
+  %h4 My articles
 
   %table
     %thead
@@ -22,3 +22,25 @@
   %br
 
   = link_to 'New article', new_article_path
+
+- if @articles_submitted
+  .panel
+    %h4 Submitted Articles
+
+    %table
+      %thead
+        %tr
+          %th
+            Title
+          %th
+            Status
+          %th
+            Actions
+
+      %tbody
+        - @articles.each do |article|
+          %tr
+            %td= link_to article.title, article_path(article)
+            %td= article.status
+            - if permitted_to?(:edit, article)
+              %td= link_to 'Edit', edit_article_path(article)

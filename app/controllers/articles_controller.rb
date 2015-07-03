@@ -58,6 +58,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = current_user.articles
+    @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL) unless current_user.registered_user?
   end
 
   private
