@@ -1,0 +1,10 @@
+%p
+  = "Dear #{@user.full_name},"
+  %br
+  .div
+    Thanks for submitting your article.
+  .div
+    - if @article.status == Article::Status::PUBLISHED
+      It is published in the baraza website.
+    - else
+      We will publish it once the review process is over.

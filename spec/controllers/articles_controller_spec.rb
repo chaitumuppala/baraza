@@ -38,12 +38,16 @@ RSpec.describe ArticlesController, type: :controller do
   describe "update", sign_in: true do
     it "should allow update of own article" do
       article = create(:article, user_id: controller.current_user.id)
+      expect(ArticleMailer).not_to receive(:notification_to_creator)
+      expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}
       expect(response.code).to eq("302")
     end
 
     it "should not allow update of others article" do
       article = create(:article, user_id: create(:user).id)
+      expect(ArticleMailer).not_to receive(:notification_to_creator)
+      expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}
       expect(response.code).to eq("403")
     end
@@ -54,6 +58,16 @@ RSpec.describe ArticlesController, type: :controller do
 
       expect(article.reload.title).to eq("new title")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
+    end
+
+    it "should send notification on submitting if publishing or submitting_for_approval" do
+      editor = create(:editor)
+      sign_in(editor)
+      article = create(:article, user_id: controller.current_user.id)
+      mailer = double("mailer", deliver_later: "")
+      expect(ArticleMailer).to receive(:notification_to_creator).with(controller.current_user, article).and_return(mailer)
+      expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
     end
   end
 
@@ -81,6 +95,15 @@ RSpec.describe ArticlesController, type: :controller do
       post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
+    end
+
+    it "should send notification on submitting if publishing or submitting_for_approval" do
+      editor = create(:editor)
+      sign_in(editor)
+      mailer = double("mailer", deliver_later: "")
+      expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
+      expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
     end
   end
 

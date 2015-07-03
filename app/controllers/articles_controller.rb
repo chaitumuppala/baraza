@@ -21,6 +21,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params)
     respond_to do |format|
       if @article.save
+        article_arrival_notification
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
@@ -33,6 +34,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        article_arrival_notification
         format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -72,9 +74,22 @@ class ArticlesController < ApplicationController
   end
 
   def merge_status_to_params
-    if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
+    for_publish_or_approval do
       status = current_user.editor? ? Article::Status::PUBLISHED : Article::Status::SUBMITTED_FOR_APPROVAL
       params["article"].merge!(status: status, author_content: params["article"]["content"])
+    end
+  end
+
+  def article_arrival_notification
+    for_publish_or_approval do
+      ArticleMailer.notification_to_creator(current_user, @article).deliver_later
+      ArticleMailer.notification_to_editors(@article).deliver_later
+    end
+  end
+
+  def for_publish_or_approval
+    if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
+      yield if block_given?
     end
   end
 end

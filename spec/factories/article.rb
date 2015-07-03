@@ -3,5 +3,6 @@ FactoryGirl.define do
     title "unite all"
     content "*"*50
     categories {[build(:category)]}
+    user
   end
 end

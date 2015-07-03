@@ -1,0 +1,11 @@
+%p
+  = "Dear editors,"
+  %br
+  .div
+    - if @article.status == Article::Status::PUBLISHED
+      = "An article is published in the baraza website by #{@article.user.full_name}"
+    - else
+      = "An article is submitted for approval in the baraza website by #{@article.user.full_name}"
+  .div
+    Link to the article
+    = article_url(@article)
