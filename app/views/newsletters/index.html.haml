@@ -1,22 +1,23 @@
-%h1 Listing newsletters
+.panel
+  %h1 Listing newsletters
 
-%table
-  %thead
-    %tr
-      %th
-        Name
-      %th
-        Month
-      %th
-        Status
-      %th
-        Actions
-
-  %tbody
-    - @newsletters.each do |newsletter|
+  %table
+    %thead
       %tr
-        %td= newsletter.name
-        %td= newsletter.created_at.strftime("%B")
-        %td= newsletter.status
-        - if permitted_to?(:edit, newsletter)
-          %td= link_to 'Edit', edit_newsletter_path(newsletter)
+        %th
+          Name
+        %th
+          Month
+        %th
+          Status
+        %th
+          Actions
+
+    %tbody
+      - @newsletters.each do |newsletter|
+        %tr
+          %td= newsletter.name
+          %td= newsletter.created_at.strftime("%B")
+          %td= newsletter.status
+          - if permitted_to?(:edit, newsletter)
+            %td= link_to 'Edit', edit_newsletter_path(newsletter)
