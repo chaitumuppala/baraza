@@ -75,7 +75,7 @@ class ArticlesController < ApplicationController
 
   def merge_status_to_params
     for_publish_or_approval do
-      status = current_user.editor? ? Article::Status::PUBLISHED : Article::Status::SUBMITTED_FOR_APPROVAL
+      status = current_user.registered_user? ? Article::Status::SUBMITTED_FOR_APPROVAL : Article::Status::PUBLISHED
       params["article"].merge!(status: status, author_content: params["article"]["content"])
     end
   end

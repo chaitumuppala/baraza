@@ -30,4 +30,4 @@
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   .actions
     = f.submit ArticlesController::SAVE
-    = f.submit current_user.editor? ? ArticlesController::PUBLISH : ArticlesController::SUBMIT_FOR_APPROVAL
+    = f.submit current_user.registered_user? ? ArticlesController::SUBMIT_FOR_APPROVAL : ArticlesController::PUBLISH

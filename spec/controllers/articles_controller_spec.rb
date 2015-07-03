@@ -97,6 +97,13 @@ RSpec.describe ArticlesController, type: :controller do
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
 
+    it "should create, publish if current user is admin" do
+      sign_in(create(:administrator))
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
+      article = Article.last
+      expect(article.status).to eq(Article::Status::PUBLISHED)
+    end
+
     it "should send notification on submitting if publishing or submitting_for_approval" do
       editor = create(:editor)
       sign_in(editor)
