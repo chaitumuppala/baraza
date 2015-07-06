@@ -13,6 +13,8 @@ describe NewslettersController do
                        "category_newsletters_attributes"=>[{"position_in_newsletter"=>"100", "category_id"=>category.id, "newsletter_id"=>newsletter.id, "id" => cn.id}], "articles_attributes"=>[],},
                        "commit"=>NewslettersController::PUBLISH, "id"=>newsletter.id
 
+      expect(flash[:notice]).to eq("Newsletter publish was successful.")
+      expect(response).to redirect_to(newsletters_path)
       expect(CategoryNewsletter.where(newsletter: newsletter, category: category).first.position_in_newsletter).to eq(100)
       expect(newsletter.reload.status).to eq(Newsletter::Status::PUBLISHED)
     end
@@ -27,8 +29,9 @@ describe NewslettersController do
       newsletter.articles << [article1, article2, article3]
       patch :update, "newsletter"=>{"article_ids"=>[article1.id],
                                     "articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}, {"position_in_newsletter"=>"2", "id"=>article2.id}, {"position_in_newsletter"=>"3", "id"=>article3.id}]},
-                                    "commit"=>"Approve", "id"=>newsletter.id
+                                    "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
 
+      expect(flash[:notice]).to eq("Newsletter save was successful.")
       expect(newsletter.reload.articles).to eq([article1])
     end
   end

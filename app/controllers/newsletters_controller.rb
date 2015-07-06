@@ -45,7 +45,7 @@ class NewslettersController < ApplicationController
       ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
       ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
       if @newsletter.update(newsletter_params)
-        format.html { redirect_to @newsletter, notice: 'Newsletter was successfully updated.' }
+        format.html { redirect_to newsletters_path, notice: "Newsletter #{params[:commit].downcase} was successful." }
         format.json { render :show, status: :ok, location: @newsletter }
       else
         format.html { render :edit }
