@@ -17,6 +17,7 @@ class Article < ActiveRecord::Base
     mapping do
       indexes :title, analyzer: 'snowball'
       indexes :content, analyzer: 'snowball'
+      indexes :status, index: 'not_analyzed'
       indexes :tags do
         indexes :name, index: 'not_analyzed'
       end
@@ -54,40 +55,56 @@ class Article < ActiveRecord::Base
 
   def as_indexed_json(options={})
     self.as_json(
-        only: [:id, :title, :content],
+        only: [:id, :title, :content, :status],
         include: {tags: {only: :name},
                   categories: {only: :name}}
     )
   end
 
   def self.search_by_all(search_text)
-    query = Jbuilder.encode do |json|
-      json.query do
-        json.match do
-          json.set!("_all", search_text)
-        end
-      end
-    end
+    query = {
+        query: {
+            match: {
+                _all: search_text
+            }
+        },
+        filter: {
+            and: [
+                {
+                    term: {
+                        status: Status::PUBLISHED
+                    }
+                }
+            ]
+        }
+    }.to_json
     response = Article.__elasticsearch__.search query
     response.records.to_a
   end
 
   ["tag", "category"].each do |criteria|
     define_singleton_method "search_by_#{criteria}" do |search_text|
-      query = Jbuilder.encode do |json|
-        json.query do
-          json.filtered do
-            json.query do
-              json.set!("match_all", {})
-            end
-            json.filter do
-              json.term do
-                json.set!("#{criteria.pluralize}.name", search_text)
-              end
-            end
-          end
-        end
-      end
+      query = {
+          query: {
+              filtered: {
+                  query: {
+                      match_all: {}
+                  },
+                  filter: {
+                      bool: {
+                          must: [
+                              {
+                                  term: {:"#{criteria.pluralize}.name" => search_text}
+                              },
+                              {
+                                  term: {status: Status::PUBLISHED}
+                              }
+                          ]
+                      }
+                  }
+              }
+          }
+      }.to_json
       response = Article.__elasticsearch__.search query
       response.records.to_a
     end

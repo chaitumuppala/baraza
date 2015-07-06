@@ -132,9 +132,9 @@ RSpec.describe ArticlesController, type: :controller do
       tag1 = create(:tag, name: "science")
       tag2 = create(:tag, name: "history")
       tag3 = create(:tag, name: "politics")
-      article1 = create(:article, tag_list: "#{tag1.name},#{tag2.name}", content: "article1")
-      article2 = create(:article, tag_list: tag3.name, content: "article2")
-      article3 = create(:article, tag_list: "#{tag1.name},#{tag3.name}", content: "article3")
+      article1 = create(:article, tag_list: "#{tag1.name},#{tag2.name}", content: "article1", status: Article::Status::PUBLISHED)
+      article2 = create(:article, tag_list: tag3.name, content: "article2", status: Article::Status::PUBLISHED)
+      article3 = create(:article, tag_list: "#{tag1.name},#{tag3.name}", content: "article3", status: Article::Status::PUBLISHED)
       Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
@@ -149,9 +149,9 @@ RSpec.describe ArticlesController, type: :controller do
       category1 = create(:category, name: "science")
       category2 = create(:category, name: "history")
       category3 = create(:category, name: "politics")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id])
-      article2 = create(:article, content: "article2", category_ids: [category3.id])
-      article3 = create(:article, content: "article3", category_ids: [category1.id, category3.id])
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article2", category_ids: [category3.id], status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article3", category_ids: [category1.id, category3.id], status: Article::Status::PUBLISHED)
       Article.__elasticsearch__.refresh_index!
 
       get :search, q: category1.name, search: "category"

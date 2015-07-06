@@ -3,6 +3,7 @@ FactoryGirl.define do
     title "unite all"
     content "*"*50
     categories {[build(:category)]}
+    status Article::Status::DRAFT
     user
   end
 end

@@ -41,7 +41,7 @@ describe Article do
     it "should return articles of the given tag_name" do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
-      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},#{tag2.name}")
+      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},#{tag2.name}", status: Article::Status::PUBLISHED)
       article2 = create(:article, content: "article2", tag_list: tag1.name)
 
       Article.__elasticsearch__.refresh_index!
@@ -51,7 +51,7 @@ describe Article do
 
     it "should return articles of the given  new tag_name" do
       tag1 = create(:tag, name: "history")
-      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},science")
+      article1 = create(:article, content: "article1", tag_list: "#{tag1.name},science", status: Article::Status::PUBLISHED)
       article2 = create(:article, content: "article2", tag_list: tag1.name)
 
       Article.__elasticsearch__.refresh_index!
@@ -73,7 +73,8 @@ describe Article do
                                              "title"=>article.title,
                                              "content"=>article.content,
                                              "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}],
-                                             "categories"=>[{"name"=>category.name}]})
+                                             "categories"=>[{"name"=>category.name}],
+                                             "status"=>"draft"})
     end
   end
 
@@ -88,6 +89,7 @@ describe Article do
       mapping = Article.mapping.to_hash[:article][:properties]
       expect(mapping[:title][:analyzer]).to eq("snowball")
       expect(mapping[:content][:analyzer]).to eq("snowball")
+      expect(mapping[:status]).to eq({:index=>"not_analyzed", :type=>"string"})
       expect(mapping[:tags][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
       expect(mapping[:categories][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
     end
@@ -98,7 +100,7 @@ describe Article do
       it "should update document on adding tags through tag_list", search: true do
         tag1 = create(:tag, name: "history")
         tag2 = create(:tag, name: "science")
-        article = create(:article, tag_list: tag1.name)
+        article = create(:article, tag_list: tag1.name, status: Article::Status::PUBLISHED)
 
         article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
         Article.__elasticsearch__.refresh_index!
@@ -110,7 +112,7 @@ describe Article do
       it "should update document on removing tags through tag_list", search: true do
         tag1 = create(:tag, name: "history")
         tag2 = create(:tag, name: "science")
-        article = create(:article)
+        article = create(:article, status: Article::Status::PUBLISHED)
         article.tags << [tag1, tag2]
 
         article.update_attributes(tag_list: "#{tag1.name}")
@@ -124,7 +126,7 @@ describe Article do
       it "should update document on adding categories through category_ids", search: true do
         category1 = create(:category, name: "history")
         category2 = create(:category, name: "science")
-        article = create(:article, category_ids: [category1.id])
+        article = create(:article, category_ids: [category1.id], status: Article::Status::PUBLISHED)
 
         article.update_attributes(category_ids: [category1.id, category2.id])
         Article.__elasticsearch__.refresh_index!
@@ -135,7 +137,7 @@ describe Article do
       it "should update document on removing categories through category_ids", search: true do
         category1 = create(:category, name: "history")
         category2 = create(:category, name: "science")
-        article = create(:article)
+        article = create(:article, status: Article::Status::PUBLISHED)
         article.categories << [category1, category2]
 
         article.update_attributes(category_ids: [category1.id])
@@ -150,8 +152,10 @@ describe Article do
     it "should return articles of the given category name" do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "science")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id])
-      article2 = create(:article, content: "article2", category_ids: [category1.id])
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article3 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::DRAFT)
+      article4 = create(:article, content: "article2", category_ids: [category1.id])
 
       Article.__elasticsearch__.refresh_index!
 
@@ -164,8 +168,9 @@ describe Article do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "science")
       tag = create(:category, name: "tag1")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name)
-      article2 = create(:article, content: "article2", category_ids: [category1.id])
+      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article2", category_ids: [category1.id], status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article2", category_ids: [category1.id], status: Article::Status::DRAFT)
 
       Article.__elasticsearch__.refresh_index!
 
