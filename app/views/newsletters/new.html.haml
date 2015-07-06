@@ -1,5 +1,17 @@
-%h1 New newsletter
+.newsletter
+  .panel
+    %h4 Create newsletter
+    = form_for @newsletter do |f|
+      - if @newsletter.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@newsletter.errors.count, "error")} prohibited this newsletter from being saved:"
+          %ul
+            - @newsletter.errors.full_messages.each do |msg|
+              %li= msg
+      .field
+        = f.label :name
+        = f.text_field :name
+      .actions
+        = f.submit 'Create'
 
-= render 'form'
-
-= link_to 'Back', newsletters_path
+      = link_to 'Back', newsletters_path

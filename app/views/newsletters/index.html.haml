@@ -1,5 +1,5 @@
 .panel
-  %h1 Listing newsletters
+  %h4 Listing newsletters
 
   %table
     %thead
@@ -21,3 +21,7 @@
           %td= newsletter.status
           - if permitted_to?(:edit, newsletter)
             %td= link_to 'Edit', edit_newsletter_path(newsletter)
+
+  %br
+
+  = link_to 'New Newsletter', new_newsletter_path

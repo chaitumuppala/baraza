@@ -2,6 +2,9 @@ class NewslettersController < ApplicationController
   before_action :set_newsletter, only: [:show, :edit, :update, :destroy]
   filter_resource_access
 
+  SAVE = "Save"
+  PUBLISH = "Publish"
+
   # GET /newsletters
   # GET /newsletters.json
   def index
@@ -11,6 +14,23 @@ class NewslettersController < ApplicationController
   # GET /newsletters/1
   # GET /newsletters/1.json
   def show
+  end
+
+  def new
+    @newsletter = Newsletter.new
+  end
+
+  def create
+    @newsletter = Newsletter.new(newsletter_params)
+    respond_to do |format|
+      if @newsletter.save
+        format.html { redirect_to edit_newsletter_path(@newsletter), notice: 'Newsletter was successfully created.' }
+        format.json { render :show, status: :created, location: @newsletter }
+      else
+        format.html { render :new }
+        format.json { render json: @newsletter.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # GET /newsletters/1/edit
@@ -23,7 +43,7 @@ class NewslettersController < ApplicationController
     respond_to do |format|
       ns_params = params["newsletter"]
       ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
-      ns_params.merge!(status: Newsletter::Status::APPROVED) if params[:commit] == "Approve"
+      ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
       if @newsletter.update(newsletter_params)
         format.html { redirect_to @newsletter, notice: 'Newsletter was successfully updated.' }
         format.json { render :show, status: :ok, location: @newsletter }

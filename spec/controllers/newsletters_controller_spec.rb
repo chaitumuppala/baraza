@@ -5,16 +5,16 @@ describe NewslettersController do
     sign_in(create(:administrator))
   end
   context "update" do
-    it "should update and approve the newsletter if params[:commit] is APPROVE" do
+    it "should update and approve the newsletter if params[:commit] is PUBLISH" do
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
       patch :update, "newsletter"=>{
                        "category_newsletters_attributes"=>[{"position_in_newsletter"=>"100", "category_id"=>category.id, "newsletter_id"=>newsletter.id, "id" => cn.id}], "articles_attributes"=>[],},
-                       "commit"=>"Approve", "id"=>newsletter.id
+                       "commit"=>NewslettersController::PUBLISH, "id"=>newsletter.id
 
       expect(CategoryNewsletter.where(newsletter: newsletter, category: category).first.position_in_newsletter).to eq(100)
-      expect(newsletter.reload.status).to eq(Newsletter::Status::APPROVED)
+      expect(newsletter.reload.status).to eq(Newsletter::Status::PUBLISHED)
     end
 
     it "should remove article params which dont have ids in article_ids" do
@@ -46,6 +46,21 @@ describe NewslettersController do
       get :edit, id: newsletter.id
 
       expect(response).not_to render_template("edit")
+    end
+  end
+
+  context "create" do
+    it "should create and redirect to edit_newsletter path" do
+      post :create, newsletter: {name: "june"}
+
+      newsletter = Newsletter.last
+      expect(response).to redirect_to(edit_newsletter_path(newsletter))
+    end
+
+    it "should render new if error" do
+      post :create, newsletter: {name: ""}
+
+      expect(response).to render_template("new")
     end
   end
 end
