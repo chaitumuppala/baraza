@@ -24,4 +24,15 @@ describe ArticleMailer do
       expect(mailer.subject).to eq("An article is received")
     end
   end
+
+  context "published_notification_to_creator" do
+    it "should send mail to creator" do
+      user = create(:user)
+      article = create(:article)
+      mailer = ArticleMailer.published_notification_to_creator(user, article)
+
+      expect(mailer.to).to eq([user.email])
+      expect(mailer.subject).to eq("Your article is published")
+    end
+  end
 end

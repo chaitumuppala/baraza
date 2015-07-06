@@ -23,6 +23,9 @@ authorization do
     includes :registered_user
     has_permission_on :articles, to: [:edit, :update] do
       if_attribute :user_id => is { user.id }, status: is {Article::Status::DRAFT}
+    end
+
+    has_permission_on :articles, to: [:approve_form, :approve] do
       if_attribute status: is {Article::Status::SUBMITTED_FOR_APPROVAL}
     end
   end

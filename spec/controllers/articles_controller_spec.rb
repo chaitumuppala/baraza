@@ -45,16 +45,6 @@ RSpec.describe ArticlesController, type: :controller do
         get :edit, id: article.id
         expect(response.code).to eq("403")
       end
-
-      it "should allow edit of articles that are submitted for approval" do
-        editor = create(:editor)
-        sign_in editor
-
-        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-        get :edit, id: article.id
-        expect(response.code).to eq("200")
-        expect(response).to render_template("edit")
-      end
     end
   end
 
@@ -75,7 +65,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response.code).to eq("403")
     end
 
-    it "should update and set status as unapproved" do
+    it "should update and set status as submitted_for_approval" do
       article = create(:article, user_id: controller.current_user.id)
       patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
 
@@ -212,6 +202,40 @@ RSpec.describe ArticlesController, type: :controller do
 
       expect(assigns[:articles]).to match_array([article1, article5])
       expect(assigns[:articles_submitted]).to match_array([article2])
+    end
+  end
+
+  context "approve_form" do
+    it "should render approve article form", editor_sign_in: true do
+      article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      get :approve_form, id: article.id
+
+      expect(response).to render_template("approve_form")
+      expect(assigns(:article)).to eq(article)
+    end
+  end
+
+  context "approve" do
+    it "should allow update of own article", admin_sign_in: true do
+      article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      mailer = double("mailer", deliver_later: "")
+      expect(ArticleMailer).to receive(:published_notification_to_creator).with(User.find(article.user_id), article).and_return(mailer)
+
+      patch :approve, id: article.id, article: {title: "title by admin"}
+
+      expect(article.reload.title).to eq("title by admin")
+      expect(article.status).to eq(Article::Status::PUBLISHED)
+      expect(response.code).to eq("302")
+    end
+
+    it "should render approve_form on error", admin_sign_in: true do
+      article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      expect(ArticleMailer).not_to receive(:published_notification_to_creator)
+
+      patch :approve, id: article.id, article: {title: ""}
+
+      expect(article.reload.status).not_to eq(Article::Status::PUBLISHED)
+      expect(response).to render_template("approve_form")
     end
   end
 end

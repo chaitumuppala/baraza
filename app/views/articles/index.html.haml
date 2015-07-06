@@ -38,9 +38,9 @@
             Actions
 
       %tbody
-        - @articles.each do |article|
+        - @articles_submitted.each do |article|
           %tr
             %td= link_to article.title, article_path(article)
             %td= article.status
-            - if permitted_to?(:edit, article)
-              %td= link_to 'Edit', edit_article_path(article)
+            - if permitted_to?(:approve_form, article)
+              %td= link_to 'Edit', approve_form_article_path(article)

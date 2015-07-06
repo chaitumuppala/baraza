@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve]
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
 
@@ -59,6 +59,19 @@ class ArticlesController < ApplicationController
   def index
     @articles = current_user.articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL) unless current_user.registered_user?
+  end
+
+  def approve_form
+  end
+
+  def approve
+    params["article"].merge!(status: Article::Status::PUBLISHED)
+    if @article.update(article_params)
+      ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
+      redirect_to @article, notice: 'Article was successfully approved.'
+    else
+      render :approve_form
+    end
   end
 
   private

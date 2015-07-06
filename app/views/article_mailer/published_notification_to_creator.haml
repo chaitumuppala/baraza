@@ -1,0 +1,7 @@
+%p
+  = "Dear #{@user.full_name},"
+  %br
+  .div
+    Your article is published in the baraza website.
+  .div
+    = "Use the following #{link_to 'link', article_url(@article)} to view the article."

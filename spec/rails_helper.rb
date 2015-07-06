@@ -43,6 +43,16 @@ RSpec.configure do |config|
   config.before(:each, sign_in: true) do
     @user = create(:user)
     sign_in @user
+    end
+  
+  config.before(:each, editor_sign_in: true) do
+    @editor = create(:editor)
+    sign_in @editor
+  end
+
+  config.before(:each, admin_sign_in: true) do
+    @admin = create(:administrator)
+    sign_in @admin
   end
 
   config.before(:each, search: true) do

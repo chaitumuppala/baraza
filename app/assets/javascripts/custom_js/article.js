@@ -44,5 +44,5 @@ $(function () {
       });
     }
   };
-  loadPageSpecificJs("articles", ['new', 'edit'], ArticleTag.init.bind(ArticleTag));
+  loadPageSpecificJs("articles", ['new', 'edit', 'create', 'update', 'approve_form', 'approve'], ArticleTag.init.bind(ArticleTag));
 });

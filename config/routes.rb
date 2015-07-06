@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   resources :articles do
+    member do
+      get 'approve_form'
+      patch 'approve'
+    end
     collection do
       get 'search', as: 'search'
     end
