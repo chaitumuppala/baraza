@@ -49,8 +49,8 @@ describe NewslettersController do
       expect(response).to render_template("edit")
     end
 
-    it "should not allow to edit only if newsletter is in approved/published state" do
-      newsletter = create(:newsletter, status: Newsletter::Status::APPROVED)
+    it "should not allow to edit if newsletter is in published state" do
+      newsletter = create(:newsletter, status: Newsletter::Status::PUBLISHED)
       get :edit, id: newsletter.id
 
       expect(response).not_to render_template("edit")

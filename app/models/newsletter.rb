@@ -11,16 +11,15 @@ class Newsletter < ActiveRecord::Base
 
   module Status
     DRAFT = "draft"
-    APPROVED = "approved"
     PUBLISHED = "published"
   end
 
   def eligible_articles_by_category
-    group_articles_by_category { |category| category.articles.where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }
   end
 
   def articles_by_category
-    group_articles_by_category { |category| category.articles.where("newsletter_id = ?", id).to_set }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }
   end
 
   private
