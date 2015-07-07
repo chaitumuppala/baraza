@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Newsletter do
-  # draft, approved, published
   context "eligible_articles" do
     it "should include articles that are not part of any newsletter" do
       newsletter = create(:newsletter)
@@ -51,6 +50,24 @@ describe Newsletter do
       newsletter = create(:newsletter)
 
       expect(newsletter.categories).to eq([category1, category2])
+    end
+  end
+
+  context "articles_by_category" do
+    it "should list associated articles by category in order" do
+      newsletter = create(:newsletter)
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      CategoryNewsletter.create(category: category1, newsletter: newsletter, position_in_newsletter: 2)
+      CategoryNewsletter.create(category: category2, newsletter: newsletter, position_in_newsletter: 1)
+      article1 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: newsletter.id, category_ids: [category1.id, category2.id], position_in_newsletter: 2)
+      article2 = create(:article, created_at: Date.today, newsletter_id: newsletter.id, category_ids: [category2.id], position_in_newsletter: 1)
+      article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_ids: [category1.id, category2.id])
+      article4 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: nil, category_ids: [category1.id, category2.id])
+      article5 = create(:article, created_at: Date.today, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 1)
+
+      result_hash = { category2 => [article2, article1].to_set, category1 => [article5].to_set}
+      expect(newsletter.articles_by_category).to eq(result_hash)
     end
   end
 end

@@ -9,6 +9,8 @@ describe NewslettersController do
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
+      mailer = double("mailer", deliver_later: "")
+      expect(NewsletterMailer).to receive(:send_mail).with(newsletter).and_return(mailer)
       patch :update, "newsletter"=>{
                        "category_newsletters_attributes"=>[{"position_in_newsletter"=>"100", "category_id"=>category.id, "newsletter_id"=>newsletter.id, "id" => cn.id}], "articles_attributes"=>[],},
                        "commit"=>NewslettersController::PUBLISH, "id"=>newsletter.id
@@ -27,6 +29,9 @@ describe NewslettersController do
       article2 = create(:article)
       article3 = create(:article)
       newsletter.articles << [article1, article2, article3]
+
+      expect(NewsletterMailer).not_to receive(:send_mail).with(newsletter)
+
       patch :update, "newsletter"=>{"article_ids"=>[article1.id],
                                     "articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}, {"position_in_newsletter"=>"2", "id"=>article2.id}, {"position_in_newsletter"=>"3", "id"=>article3.id}]},
                                     "commit"=>NewslettersController::SAVE, "id"=>newsletter.id

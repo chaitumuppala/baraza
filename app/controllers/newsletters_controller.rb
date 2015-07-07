@@ -1,5 +1,5 @@
 class NewslettersController < ApplicationController
-  before_action :set_newsletter, only: [:show, :edit, :update, :destroy]
+  before_action :set_newsletter, only: [:show, :edit, :update, :destroy, :preview]
   filter_resource_access
 
   SAVE = "Save"
@@ -45,6 +45,7 @@ class NewslettersController < ApplicationController
       ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
       ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
       if @newsletter.update(newsletter_params)
+        NewsletterMailer.send_mail(@newsletter).deliver_later if params[:commit] == PUBLISH
         format.html { redirect_to newsletters_path, notice: "Newsletter #{params[:commit].downcase} was successful." }
         format.json { render :show, status: :ok, location: @newsletter }
       else
@@ -64,6 +65,9 @@ class NewslettersController < ApplicationController
     end
   end
 
+  def preview
+    render layout: false
+  end
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_newsletter

@@ -1,0 +1,11 @@
+#newsletter-mail{style: "background-color: white; padding: 15px;"}
+  - @newsletter.articles_by_category.each do |category, articles|
+    - if true
+      %h3{style: "text-decoration: underline; margin: 5px;"}
+        = category.name
+      - articles.each do |article|
+        %div{style: "text-decoration: none; margin-left: 30px;"}
+          = link_to article.title, article_path(article)
+          %div
+            = article.content[0..50].html_safe
+        %br
