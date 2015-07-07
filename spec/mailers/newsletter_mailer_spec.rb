@@ -4,10 +4,11 @@ describe NewsletterMailer do
   context "send_mail" do
     it "should send mail to subscribers" do
       newsletter = create(:newsletter)
-      u1, u2, u3 = create_list(:user, 3)
+      s1 = Subscriber.create(email: "e1@e.com")
+      s2 = Subscriber.create(email: "e2@e.com")
       mailer = NewsletterMailer.send_mail(newsletter)
 
-      expect(mailer.to).to match_array([u1.email, u2.email, u3.email])
+      expect(mailer.to).to match_array(["e1@e.com", "e2@e.com"])
       expect(mailer.subject).to eq("Baraza newsletter")
     end
   end

@@ -20,11 +20,11 @@
   }
 
   #section-3 {
-    @extend .panel;
     padding: 0;
   }
 
   .newsletter {
+    @extend .panel;
     padding: 0;
     @extend .row;
     line-height: 117px;
@@ -38,7 +38,9 @@
       @extend .column;
     }
     #text {
-      height: 117px;
+      input {
+        display: inline-block;
+      }
     }
     #title, #text {
       @extend .medium-5;

@@ -2,6 +2,7 @@ authorization do
   role :guest do
     has_permission_on :home, to: [:index]
     has_permission_on :articles, to: [ :index, :show, :search ]
+    has_permission_on :newsletters, to: :subscribe
   end
 
   role :registered_user do

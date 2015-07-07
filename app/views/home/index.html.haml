@@ -14,9 +14,9 @@
     .newsletter
       #title
         SUBSCRIBE TO OUR NEWSLETTER
-      = form_tag "" do
+      = form_tag subscribe_newsletters_path do
         #text
-          = text_field_tag "", "", placeholder: "Enter your email"
+          = text_field_tag :email, "", placeholder: "Enter your email", type: "email"
         #submit
           = submit_tag "Subscribe", value: "Subscribe"
   #section-4

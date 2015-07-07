@@ -71,4 +71,25 @@ describe NewslettersController do
       expect(response).to render_template("new")
     end
   end
+
+  context "subscribe" do
+    it "should subscribe to newsletter" do
+      email = "email@email.com"
+      post :subscribe, email: email
+
+      expect(Subscriber.last.email).to eq(email)
+      expect(flash[:notice]).to eq("Subscribed successfully")
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "should throw error if already subscribed to newsletter" do
+      email = "email@email.com"
+      Subscriber.create(email: email)
+      post :subscribe, email: email
+
+      expect(Subscriber.count).to eq(1)
+      expect(flash[:alert]).to eq("Email already subscribed")
+      expect(response).to redirect_to(root_path)
+    end
+  end
 end

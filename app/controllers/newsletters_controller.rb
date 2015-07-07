@@ -1,6 +1,6 @@
 class NewslettersController < ApplicationController
   before_action :set_newsletter, only: [:show, :edit, :update, :destroy, :preview]
-  filter_resource_access
+  filter_resource_access additional_collection: [:subscribe]
 
   SAVE = "Save"
   PUBLISH = "Publish"
@@ -68,6 +68,17 @@ class NewslettersController < ApplicationController
   def preview
     render layout: false
   end
+
+  def subscribe
+    subscriber = Subscriber.new(email: params[:email])
+    if subscriber.save
+      flash[:notice] = "Subscribed successfully"
+    else
+      flash[:alert] = "Email already subscribed"
+    end
+    redirect_to root_path
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_newsletter
