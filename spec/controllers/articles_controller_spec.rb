@@ -238,4 +238,68 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response).to render_template("approve_form")
     end
   end
+
+  context "show" do
+    context "general user" do
+      it "should render show only articles that are published" do
+        article = create(:article, status: Article::Status::PUBLISHED)
+        get :show, id: article.id
+
+        expect(response.code).to eq("200")
+      end
+
+      it "should not render show articles that are draft/submitted_for_approval" do
+        article = create(:article, status: Article::Status::DRAFT)
+        get :show, id: article.id
+
+        expect(response.code).to eq("403")
+      end
+
+      it "should not render show articles that are draft/submitted_for_approval" do
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+        get :show, id: article.id
+
+        expect(response.code).to eq("403")
+      end
+    end
+
+    context "creator" do
+      it "should show own article when it is in any status", sign_in: true do
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL, user_id: controller.current_user.id)
+        get :show, id: article.id
+
+        expect(response.code).to eq("200")
+      end
+
+      it "should show own article when it is in any status", sign_in: true do
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL, user_id: create(:user).id)
+        get :show, id: article.id
+
+        expect(response.code).to eq("403")
+      end
+    end
+
+    context "editor/admin" do
+      it "should show any article not draft", editor_sign_in: true do
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+        get :show, id: article.id
+
+        expect(response.code).to eq("200")
+      end
+
+      it "should show any article not draft", editor_sign_in: true do
+        article = create(:article, status: Article::Status::PUBLISHED)
+        get :show, id: article.id
+
+        expect(response.code).to eq("200")
+      end
+
+      it "should not show any article draft", editor_sign_in: true do
+        article = create(:article, status: Article::Status::DRAFT)
+        get :show, id: article.id
+
+        expect(response.code).to eq("403")
+      end
+    end
+  end
 end

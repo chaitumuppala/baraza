@@ -4,4 +4,5 @@
       %h4 Editing article
       = render 'form'
   = render 'tips'
-  = link_to 'Show', @article
+  - if permitted_to?(:show, article)
+    = link_to 'Show', @article
