@@ -19,7 +19,7 @@ class Newsletter < ActiveRecord::Base
   end
 
   def articles_by_category
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }.reject { |category, articles| articles.empty? }
   end
 
   private

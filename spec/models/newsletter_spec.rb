@@ -80,5 +80,17 @@ describe Newsletter do
       result_hash = { category2 => [article2, article1].to_set, category1 => [article5].to_set}
       expect(newsletter.articles_by_category).to eq(result_hash)
     end
+
+    it "should list only those categories with articles" do
+      newsletter = create(:newsletter)
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      CategoryNewsletter.create(category: category1, newsletter: newsletter, position_in_newsletter: 2)
+      CategoryNewsletter.create(category: category2, newsletter: newsletter, position_in_newsletter: 1)
+      article1 = create(:article, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 2, status: Article::Status::PUBLISHED)
+      article2 = create(:article, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 1, status: Article::Status::PUBLISHED)
+
+      expect(newsletter.articles_by_category).to eq({ category1 => [article2, article1].to_set })
+    end
   end
 end

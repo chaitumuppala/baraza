@@ -14,4 +14,8 @@ module ApplicationHelper
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
   end
+
+  def strip_html_content(content)
+    strip_tags(content.squish).squish
+  end
 end
