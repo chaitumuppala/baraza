@@ -37,6 +37,18 @@ describe Newsletter do
       CategoryNewsletter.create(category: category, newsletter: newsletter)
       article1 = create(:article, title: "123", created_at: 1.month.ago.to_datetime, category_ids: [category.id], position_in_newsletter: 2)
       article2 = create(:article, created_at: Date.today, category_ids: [category.id], position_in_newsletter: 1)
+      article3 = create(:article, created_at: Date.today, category_ids: [category.id], position_in_newsletter: nil)
+
+      result = newsletter.reload.eligible_articles_by_category
+      expect(result[category].collect(&:id)).to eq([article2.id, article1.id, article3.id])
+      end
+
+    it "should include articles in order of position_in_newsletter and then newsletter_id" do
+      newsletter = create(:newsletter)
+      category = create(:category, name: "science")
+      CategoryNewsletter.create(category: category, newsletter: newsletter)
+      article1 = create(:article, created_at: Date.today, category_ids: [category.id], position_in_newsletter: 1, newsletter_id: nil)
+      article2 = create(:article, created_at: Date.today, category_ids: [category.id], position_in_newsletter: 1, newsletter_id: newsletter.id)
 
       result = newsletter.reload.eligible_articles_by_category
       expect(result[category].collect(&:id)).to eq([article2.id, article1.id])
