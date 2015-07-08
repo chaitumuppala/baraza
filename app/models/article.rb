@@ -11,7 +11,8 @@ class Article < ActiveRecord::Base
                     s3_credentials: Proc.new{|a| a.instance.s3_credentials}
   validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
   validates_attachment_size :cover_image, in: 0..2.megabytes
-  validates_presence_of :title, :content, :categories
+  validates_presence_of :title, :content, :categories, :summary
+  validates_length_of :summary, maximum: 150
   index_name    "articles_#{Rails.env}"
   settings do
     mapping do

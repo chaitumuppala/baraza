@@ -89,14 +89,14 @@ RSpec.describe ArticlesController, type: :controller do
       @category = create(:category)
     end
     it "should allow creation of article", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
     end
 
     it "should create, submit for approval and copy author_content to content", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
       article = Article.last
       expect(article.title).to eq("new title")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
@@ -105,14 +105,14 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should create, publish if current user is editor" do
       sign_in(create(:editor))
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
 
     it "should create, publish if current user is admin" do
       sign_in(create(:administrator))
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
@@ -123,7 +123,7 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id]}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
     end
   end
 
@@ -251,7 +251,7 @@ RSpec.describe ArticlesController, type: :controller do
                                                                 site: "Baraza",
                                                                 title: article.title,
                                                                 url: article_url(article),
-                                                                description: "desc",
+                                                                description: article.summary,
                                                                 image: article.cover_image.url
                                                             },
                                                             twitter: {
@@ -259,7 +259,7 @@ RSpec.describe ArticlesController, type: :controller do
                                                                 site: "Baraza",
                                                                 title: article.title,
                                                                 url: article_url(article),
-                                                                description: "desc",
+                                                                description: article.summary,
                                                                 image: article.cover_image.url
                                                             }
                                                            })

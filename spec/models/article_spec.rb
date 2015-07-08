@@ -219,6 +219,15 @@ describe Article do
     it "should validate presence of category" do
       expect(build(:article, category_ids: [])).not_to be_valid
     end
+
+    it "should validate presence of summary" do
+      expect(build(:article, summary: "")).not_to be_valid
+    end
+
+    it "should validate length of summary" do
+      expect(build(:article, summary: "*"*151)).not_to be_valid
+      expect(build(:article, summary: "*"*150)).to be_valid
+    end
   end
 
   context "s3_credentials" do

@@ -7,5 +7,5 @@
         %div{style: "text-decoration: none; margin-left: 30px;"}
           = link_to article.title, article_path(article)
           %div
-            = truncate(strip_html_content(article.content), length: 200)
+            = article.summary
         %br
