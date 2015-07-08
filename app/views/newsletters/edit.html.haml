@@ -1,6 +1,6 @@
 .newsletter
   .panel
     %h4 Choose Articles
-    = link_to 'Preview', preview_newsletter_path(@newsletter)
+    = link_to 'Preview', preview_newsletter_path(@newsletter), target: "_blank"
     = render 'form'
     = link_to 'Back', newsletters_path

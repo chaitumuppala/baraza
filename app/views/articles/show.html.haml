@@ -6,7 +6,7 @@
         = social_share_button_tag(@article.title)
       = image_tag @article.cover_image.url
       = @article.content.html_safe
-      - if permitted_to?(:edit, article)
+      - if permitted_to?(:edit, @article)
         = link_to 'Edit', edit_article_path(@article)
     %h4
       DISCUSSIONS
