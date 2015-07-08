@@ -17,6 +17,11 @@
       = form_tag search_articles_path, method: :get do
         = text_field_tag :q, params[:q], placeholder: "search...."
         = hidden_field_tag :search, "all"
+    %ul#user-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+      %li
+        = link_to "ARTICLES", articles_path
+      %li
+        = link_to "LOGOUT", destroy_user_session_path, :method => :get
     .logo-bar
       .left-empty
       .middle-content
@@ -43,7 +48,8 @@
             %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop"}
           - if current_user
             .item.right
-              = link_to "LOGOUT", destroy_user_session_path, :method => :get
+              %a{"aria-controls" => "user-drop", "aria-expanded" => "false", "data-dropdown" => "user-drop"}
+                = current_user.first_name
             .item.right
               = link_to "+ CREATE", new_article_path
           - else
