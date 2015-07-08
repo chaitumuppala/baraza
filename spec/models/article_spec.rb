@@ -166,7 +166,7 @@ describe Article do
   context "search_by_all", search: true do
     it "should return articles of the given name" do
       category1 = create(:category, name: "history")
-      category2 = create(:category, name: "science")
+      category2 = create(:category, name: "culture")
       tag = create(:category, name: "tag1")
       article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: "article2", category_ids: [category1.id], status: Article::Status::PUBLISHED)
@@ -191,6 +191,14 @@ describe Article do
       expect {
         create(:article, content: "article1")
       }.to change { Delayed::Job.count }.from(0).to(1)
+    end
+
+    it "should index using article index job" do
+      article_id = 100
+      mock_article_index_job = double("article_index_job")
+      expect(ArticleIndexJob).to receive(:new).with(article_id).and_return(mock_article_index_job)
+      expect(Delayed::Job).to receive(:enqueue).with(mock_article_index_job)
+      create(:article, content: "article1", id: article_id)
     end
   end
 
