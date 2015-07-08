@@ -2,19 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .articles {
-  h4 {
+  h2, h4 {
     font-family: "Roboto Slab", serif;
     padding-bottom: 20px;
   }
-  @extend .row;
+  h2 {
+    text-align: center;
+  }
   .block {
     @extend .column;
     &.article-content {
       padding-left: 0;
-      @extend .medium-9;
-    }
-    &.side-content {
-      @extend .medium-3;
     }
   }
   form {
@@ -39,5 +37,19 @@
     #article_top_story {
       width: auto;
     }
+  }
+  .cover-image {
+    margin: 20px;
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  .tags {
+    @extend .right;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
   }
 }
