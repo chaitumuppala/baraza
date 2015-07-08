@@ -44,6 +44,7 @@ gem 'daemons'
 gem "paperclip", "~> 4.2"
 gem 'aws-sdk', '~> 1.6'
 gem 'whenever', :require => false
+gem 'meta-tags'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

@@ -3,7 +3,8 @@
     .panel
       %h4
         = @article.title
-        = social_share_button_tag(@article.title)
+        - if @article.status == Article::Status::PUBLISHED
+          = social_share_button_tag(@article.title)
       = image_tag @article.cover_image.url
       = @article.content.html_safe
       - if permitted_to?(:edit, @article)

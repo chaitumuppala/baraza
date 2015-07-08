@@ -2,12 +2,34 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve]
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
+  skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = "Save as draft"
   SUBMIT_FOR_APPROVAL = "Submit for approval"
   PUBLISH = "Publish"
 
   def show
+    set_meta_tags ({
+                  site: "Baraza",
+                  title: @article.title,
+                  separator: "|",
+                  description: "desc",
+                  og: {
+                      site: "Baraza",
+                      title: @article.title,
+                      url: article_url(@article),
+                      description: "desc",
+                      image: @article.cover_image.url
+                  },
+                  twitter: {
+                      card: "summary",
+                      site: "Baraza",
+                      title: @article.title,
+                      url: article_url(@article),
+                      description: "desc",
+                      image: @article.cover_image.url
+                  }
+    })
   end
 
   def new
