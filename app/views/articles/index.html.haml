@@ -5,15 +5,16 @@
     %thead
       %tr
         %th
-          Title
+          TITLE
         %th
-          Status
+          STATUS
         %th
           Actions
 
     %tbody
       - @articles.each do |article|
         %tr
+          %td= link_to article.title, article_path(article)
           %td= link_to article.title, article_path(article)
           %td= article.status
           - if permitted_to?(:edit, article)
@@ -31,9 +32,9 @@
       %thead
         %tr
           %th
-            Title
+            TITLE
           %th
-            Status
+            STATUS
           %th
             Actions
 
