@@ -13,7 +13,6 @@ class ArticlesController < ApplicationController
                   site: "Baraza",
                   title: @article.title,
                   separator: "|",
-                  description: "desc",
                   og: {
                       site: "Baraza",
                       title: @article.title,

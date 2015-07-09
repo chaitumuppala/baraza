@@ -246,7 +246,6 @@ RSpec.describe ArticlesController, type: :controller do
         expect(controller).to receive(:set_meta_tags).with({site: "Baraza",
                                                             title: article.title,
                                                             separator: "|",
-                                                            description: "desc",
                                                             og: {
                                                                 site: "Baraza",
                                                                 title: article.title,

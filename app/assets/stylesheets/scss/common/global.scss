@@ -8,7 +8,7 @@ dl, dt, dd, ol, ul, li, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, menu, nav, section, summary,
-time, mark, audio, video, input, textarea {
+time, mark, audio, video, input {
   margin: 0;
   padding: 0;
   outline: 0;
@@ -56,9 +56,10 @@ ul, li, ul li ul {
 
 .star_it:before {
   color: red;
-  content: " ";
-  background: transparent url(image_path('red_asterisk.gif')) center right no-repeat;
-  padding: 5px;
+  content: "*";
+  font-weight: bold;
+  vertical-align: middle;
+  font-size: 18px;
   margin-right: 2px;
 }
 
