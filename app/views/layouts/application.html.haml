@@ -47,9 +47,9 @@
           .item.right
             %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop"}
           - if current_user
-            .item.right
+            .item.right#username
               %a{"aria-controls" => "user-drop", "aria-expanded" => "false", "data-dropdown" => "user-drop"}
-                = current_user.first_name
+                = current_user.first_name.upcase
             .item.right
               = link_to "+ CREATE", new_article_path
           - else

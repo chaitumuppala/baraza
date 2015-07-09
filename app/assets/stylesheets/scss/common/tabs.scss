@@ -29,4 +29,11 @@ div.tabs {
       }
     }
   }
+
+  #username {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    padding: 0 5px;
+  }
 }
