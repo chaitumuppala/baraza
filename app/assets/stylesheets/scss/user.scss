@@ -30,9 +30,9 @@
 
 .login_page {
   .title { text-align: center; }
-  .social_media_sign_up {
+  .social_media_sign_in {
     @extend .row;
-    .fb_sign_up, .google_sign_up {
+    .fb_sign_in, .google_sign_in {
       @extend .column;
       @extend .small-6;
       @extend .medium-6;
@@ -46,11 +46,32 @@
 }
 
 .fb_sign_in, .google_sign_in, .fb_sign_up, .google_sign_up {
-  img {
-    width: 300px;
-    height: 60px;
-    margin-top: 20px;
-  }
+  background: url('sprites.png') no-repeat;
+  display: block;
+}
+
+.google_sign_in{
+  background-position: -413px -350px;
+  width: 408px;
+  height: 65px;
+}
+
+.fb_sign_in {
+  background-position: -413px -450px;
+  width: 408px;
+  height: 65px;
+}
+
+.fb_sign_up {
+  background-position: 0 -450px;
+  width: 408px;
+  height: 65px;
+}
+.google_sign_up {
+  background-position: 0 -350px;
+  width: 408px;
+  height: 65px;
+  margin: 20px 0;
 }
 
 .sign_up, .sign_in {

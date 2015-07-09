@@ -1,15 +1,13 @@
-#signInModal.reveal-modal.medium{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+#signInModal.reveal-modal.large{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
   .login_page
     .success_flash.hide
       = t("devise.sessions.signed_in")
     .title
       %h3 Nice to have you back!
       %h2 Log in
-    .social_media_sign_up
-      %div.fb_sign_up
-        = link_to (image_tag "signup_with_facebook.png"), omniauth_authorize_path(resource_name, "facebook")
-      %div.google_sign_up
-        = link_to (image_tag "signup_with_google.png"), omniauth_authorize_path(resource_name, "google_oauth2")
+    .social_media_sign_in
+      = link_to "", omniauth_authorize_path(resource_name, "google_oauth2"), class: "google_sign_in"
+      = link_to "", omniauth_authorize_path(resource_name, "facebook"), class: "fb_sign_in"
     .or
       %h5 Or
     = form_for(resource, as: resource_name, url: session_path(resource_name), remote: true) do |f|

@@ -1,4 +1,4 @@
-#signUpModal.medium.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+#signUpModal.large.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
   .registration_page
     .success_flash.hide
       = t("devise.registrations.signed_up_but_unconfirmed")
@@ -7,10 +7,8 @@
     .register
       .omniauth
         %h5 Use your preferred social network
-        %div.google_sign_in
-          = link_to (image_tag "signup_with_google.png"), omniauth_authorize_path(resource_name, "google_oauth2")
-        %div.fb_sign_in
-          = link_to (image_tag "signup_with_facebook.png"), omniauth_authorize_path(resource_name, "facebook")
+        = link_to "", omniauth_authorize_path(resource_name, "google_oauth2"), class: "google_sign_up"
+        = link_to "", omniauth_authorize_path(resource_name, "facebook"), class: "fb_sign_up"
         %br/
       .or
         %h5 Or
