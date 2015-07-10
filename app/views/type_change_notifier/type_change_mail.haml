@@ -1,8 +1,8 @@
 %p
-  = "Hi #{@user.first_name} #{@user.last_name},"
+  = "Hi #{@name},"
   %br
   .div
-    You are being assigned with the Editorial role on the platform “Baraza”.
+    = "You are being assigned with the #{@type.underscore.humanize.downcase} role on the platform 'Baraza'."
   %br
   .div
     A luta continua

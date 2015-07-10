@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UsersController do
-  describe "update" do
+  describe "change_email" do
     it "should update valid email" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
       sign_in user
@@ -42,6 +42,13 @@ describe UsersController do
     end
   end
 
+  context "create" do
+    it "should create user", admin_sign_in: true do
+      post :create, "user"=>{"first_name"=>"x", "last_name"=>"xx", "email"=>"x@x.com", "type"=>"Administrator"}, "commit"=>"Save"
+      expect(User.last.id).not_to be_nil
+    end
+  end
+
   describe "edit" do
     it "should set the user" do
       user = create(:user, uid: "uid001", provider: "facebook", email: "")
@@ -50,6 +57,41 @@ describe UsersController do
 
       expect(assigns[:user].id).to eq(user.id)
       expect(response).to render_template("change_email_form")
+    end
+  end
+
+  context "update" do
+    it "should update registered_user" do
+      admin = create(:administrator)
+      sign_in admin
+      user = create(:user)
+      mailer = double("mailer")
+      expect(TypeChangeNotifier).to receive(:type_change_mail).with(user.email, user.full_name, User::Roles::EDITOR).and_return(mailer)
+      expect(mailer).to receive(:deliver_later)
+      patch :update, registered_user: { type: User::Roles::EDITOR }, id: user.id
+
+      expect(Editor.find(user.id)).to be_present
+    end
+
+    it "should update editor" do
+      admin = create(:administrator)
+      sign_in admin
+      editor = create(:editor)
+      mailer = double("mailer")
+      expect(TypeChangeNotifier).to receive(:type_change_mail).with(editor.email, editor.full_name, User::Roles::REGISTERED_USER).and_return(mailer)
+      expect(mailer).to receive(:deliver_later)
+      patch :update, editor: { type: User::Roles::REGISTERED_USER }, id: editor.id
+
+      expect(User.find(editor.id).type).to eq(User::Roles::REGISTERED_USER)
+    end
+
+    it "should update admin" do
+      admin = create(:administrator)
+      sign_in admin
+      administrator = create(:administrator)
+      patch :update, administrator: { type: User::Roles::REGISTERED_USER }, id: administrator.id
+
+      expect(User.find(administrator.id).type).to eq(User::Roles::REGISTERED_USER)
     end
   end
 end

@@ -60,36 +60,13 @@ describe User do
     end
   end
 
-  describe "send_editor_intro_mail" do
-    it "should send mail to the user on assignment of editorial role" do
-      user = create(:user)
-      mailer = double("mailer")
-      expect(EditorWelcomeNotifier).to receive(:welcome).with(user).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
-      user.update_attributes(type: Editor.name)
-    end
+  context "delayed_job" do
+    it "should asynchronously send mail" do
+      Delayed::Worker.delay_jobs = true
 
-    it "should not send mail to the user if other attributes are changed" do
-      user = create(:user)
-      expect(EditorWelcomeNotifier).not_to receive(:welcome)
-      user.update_attributes(first_name: "hi")
-    end
-
-    it "should not send mail to the user if type is changed to value other than editor" do
-      user = create(:user, type: RegisteredUser.name)
-      expect(EditorWelcomeNotifier).not_to receive(:welcome)
-      user.update_attributes(type: nil)
-    end
-
-    context "delayed_job" do
-      it "should asynchronously send mail" do
-        user = create(:user)
-        Delayed::Worker.delay_jobs = true
-
-        expect {
-          user.update_attributes(type: Editor.name)
-        }.to change { Delayed::Job.count }.from(0).to(1)
-      end
+      expect {
+        administrator = create(:administrator)
+      }.to change { Delayed::Job.count }.from(0).to(1)
     end
   end
 
