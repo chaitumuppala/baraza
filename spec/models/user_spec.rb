@@ -60,16 +60,6 @@ describe User do
     end
   end
 
-  context "delayed_job" do
-    it "should asynchronously send mail" do
-      Delayed::Worker.delay_jobs = true
-
-      expect {
-        administrator = create(:administrator)
-      }.to change { Delayed::Job.count }.from(0).to(1)
-    end
-  end
-
   describe "GenderCategory" do
     context "values" do
       it "should return all values of gender category" do

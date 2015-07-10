@@ -19,8 +19,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :admin_users, controller: "users", only: [:create]
-
   resources :newsletters do
     member do
       get :preview

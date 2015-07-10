@@ -41,7 +41,7 @@ authorization do
 
   role :administrator do
     includes :editor
-    has_permission_on :users, to: [:new, :create, :edit, :update, :show, :destroy, :index]
+    has_permission_on :users, to: [:edit, :update, :destroy, :index]
     has_permission_on :newsletters, to: [:new, :create, :update, :show, :destroy, :index, :preview]
     has_permission_on :newsletters, to: :edit do
       if_attribute :status => is {Newsletter::Status::DRAFT}
