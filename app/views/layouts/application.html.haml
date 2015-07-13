@@ -45,10 +45,10 @@
           - else
             = render "tabs/guest_tab"
           .item.right
-            %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop"}
+            %a.icon-search{"aria-controls" => "search-drop", "aria-expanded" => "false", "data-dropdown" => "search-drop", "data-options" => "is_hover:true"}
           - if current_user
             .item.right#username
-              %a{"aria-controls" => "user-drop", "aria-expanded" => "false", "data-dropdown" => "user-drop"}
+              %a{"aria-controls" => "user-drop", "aria-expanded" => "false", "data-dropdown" => "user-drop", "data-options" => "is_hover:true"}
                 = current_user.first_name.upcase
             .item.right
               = link_to "+ CREATE", new_article_path
