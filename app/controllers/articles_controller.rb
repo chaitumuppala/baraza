@@ -112,7 +112,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, :author_content, :summary, category_ids: [])
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, :author_content, :summary, :home_page_order, category_ids: [])
   end
 
   def merge_status_to_params

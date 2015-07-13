@@ -1,23 +1,23 @@
 #home-page
   #section-1
     #article-1
-      - article = @articles.select{|article| article.home_page_order == 10}.first
-      = render "shared/choose_article_board", article: article
+      - article = @articles.select{|article| article.home_page_order == 1}.last
+      = render "shared/choose_article_board", article: article, order: 1
     #article-2
       - article = @articles.select{|article| article.home_page_order == 2}.first
-      = render "shared/choose_article_board", article: article
+      = render "shared/choose_article_board", article: article, order: 2
 
   #section-2
-    - Array.wrap(@articles[2..4]).each do |article|
+    - Array.wrap(@articles[2..4]).each_with_index do |article, index|
       .three-column-article
-        = render "shared/choose_article_board", article: article
+        = render "shared/choose_article_board", article: article, order: index+3
   #section-4
-    - Array.wrap(@articles[5..7]).each do |article|
+    - Array.wrap(@articles[5..7]).each_with_index do |article, index|
       .three-column-article
-        = render "shared/choose_article_board", article: article
+        = render "shared/choose_article_board", article: article, order: index+6
 
   %div#chooseArticlesModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Choose articles", "data-reveal" => "", :role => "dialog"}
     - @published_articles.each do |article|
       %div
-        = article.title
+        = link_to article.title, "#", class: "article", data: {article_id: article.id}
     %a.close-reveal-modal{"aria-label" => "Close"} ×
