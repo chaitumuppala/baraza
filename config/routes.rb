@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
+  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
+                   confirmations: "confirmations", sessions: "sessions", passwords: "passwords"}
+
   resources :articles do
     member do
       get 'approve_form'
@@ -6,11 +10,9 @@ Rails.application.routes.draw do
     end
     collection do
       get 'search', as: 'search'
+      get 'home_page_order'
     end
   end
-  mount Ckeditor::Engine => '/ckeditor'
-  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
-                   confirmations: "confirmations", sessions: "sessions", passwords: "passwords"}
 
   resources :users do
     member do

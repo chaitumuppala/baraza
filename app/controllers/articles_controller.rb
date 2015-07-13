@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve]
-  filter_resource_access additional_collection: [:search]
+  filter_resource_access additional_collection: [:search, :home_page_order]
   before_action :merge_status_to_params, only: [:create, :update]
   skip_before_action :application_meta_tag, only: [:show]
 
@@ -95,6 +95,11 @@ class ArticlesController < ApplicationController
     else
       render :approve_form
     end
+  end
+
+  def home_page_order
+    @published_articles = Article.where(status: Article::Status::PUBLISHED)
+    @articles = @published_articles.select{ |article| article.home_page_order.present? }
   end
 
   private

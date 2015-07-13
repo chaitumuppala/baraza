@@ -339,4 +339,29 @@ RSpec.describe ArticlesController, type: :controller do
       end
     end
   end
+
+  context "home_page_order" do
+    it "should fetch published articles with home_page_order", admin_sign_in: true do
+      article1 = create(:article, home_page_order: 5, status: Article::Status::PUBLISHED)
+      article2 = create(:article, home_page_order: 1, status: Article::Status::PUBLISHED)
+      article3 = create(:article, home_page_order: 1, status: Article::Status::PUBLISHED)
+      article4 = create(:article, home_page_order: nil, status: Article::Status::PUBLISHED)
+      create(:article, home_page_order: 4, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      create(:article, home_page_order: nil)
+
+      get :home_page_order
+
+      expect(assigns[:published_articles]).to match_array([article1, article2, article3, article4])
+      expect(assigns[:articles]).to match_array([article1, article2, article3])
+    end
+
+    it "should allow only admin to order", editor_sign_in: true do
+      article1 = create(:article, home_page_order: 5)
+      create(:article, home_page_order: nil)
+
+      get :home_page_order
+
+      expect(response.code).to eq("403")
+    end
+  end
 end

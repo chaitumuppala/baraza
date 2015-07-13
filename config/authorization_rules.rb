@@ -46,5 +46,6 @@ authorization do
     has_permission_on :newsletters, to: :edit do
       if_attribute :status => is {Newsletter::Status::DRAFT}
     end
+    has_permission_on :articles, to: [ :home_page_order ]
   end
 end
