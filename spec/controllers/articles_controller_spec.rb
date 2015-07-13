@@ -221,7 +221,7 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:published_notification_to_creator).with(User.find(article.user_id), article).and_return(mailer)
 
-      patch :approve, id: article.id, article: {title: "title by admin"}
+      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PUBLISH
 
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::PUBLISHED)
@@ -232,10 +232,20 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(ArticleMailer).not_to receive(:published_notification_to_creator)
 
-      patch :approve, id: article.id, article: {title: ""}
+      patch :approve, id: article.id, article: {title: ""}, commit: ArticlesController::PUBLISH
 
       expect(article.reload.status).not_to eq(Article::Status::PUBLISHED)
       expect(response).to render_template("approve_form")
+    end
+
+    it "should save as draft and not publish", admin_sign_in: true do
+      article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      expect(ArticleMailer).not_to receive(:published_notification_to_creator)
+      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::SAVE
+
+      expect(article.reload.title).to eq("title by admin")
+      expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
+      expect(response.code).to eq("302")
     end
   end
 

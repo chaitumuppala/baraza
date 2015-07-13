@@ -10,6 +10,8 @@
       = @article.content.html_safe
       - if permitted_to?(:edit, @article)
         = link_to 'Edit', edit_article_path(@article)
+      - if permitted_to?(:approve_form, @article)
+        %td= link_to 'Edit', approve_form_article_path(@article)
     .tags
       TAGGED UNDER
       %div

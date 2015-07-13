@@ -86,10 +86,12 @@ class ArticlesController < ApplicationController
   end
 
   def approve
-    params["article"].merge!(status: Article::Status::PUBLISHED)
     if @article.update(article_params)
-      ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
-      redirect_to @article, notice: 'Article was successfully approved.'
+      if params[:commit] == PUBLISH
+        @article.update_attributes(status: Article::Status::PUBLISHED)
+        ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
+      end
+      redirect_to @article, notice: 'Article was successfully updated.'
     else
       render :approve_form
     end

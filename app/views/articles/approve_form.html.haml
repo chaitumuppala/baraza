@@ -31,4 +31,5 @@
           = f.check_box :top_story
           %label{for: "article_top_story"} Top Story
         .actions
+          = f.submit ArticlesController::SAVE
           = f.submit ArticlesController::PUBLISH
