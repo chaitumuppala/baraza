@@ -19,22 +19,22 @@
           .name
             .field.first_name
               = f.label :first_name
-              = f.text_field :first_name
+              = f.text_field :first_name, required: ""
             .field.last_name
               = f.label :last_name
-              = f.text_field :last_name
+              = f.text_field :last_name, required: ""
           .field
             = f.label :email
-            = f.email_field :email, autofocus: true
+            = f.email_field :email, autofocus: true, required: ""
           .field
             = f.label :password
             - if @validatable
               %em
                 (#{@minimum_password_length} characters minimum)
-            = f.password_field :password, autocomplete: "off"
+            = f.password_field :password, autocomplete: "off", required: ""
           .field
             = f.label :password_confirmation
-            = f.password_field :password_confirmation, autocomplete: "off"
+            = f.password_field :password_confirmation, autocomplete: "off", required: ""
           .field
             = f.label :year_of_birth
             = f.select(:year_of_birth, (Time.zone.now.year - 100)..(Time.zone.now.year - 14), prompt: "Select a year")

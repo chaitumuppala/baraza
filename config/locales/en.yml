@@ -28,3 +28,5 @@ en:
             attributes:
               password:
                 invalid: "should include at-least one of the following characters - one uppercase letter; one lowercase letter; one numeral; one special character."
+              email:
+                taken: "already has a user associated with it. To retrieve password for the email id, click on forgot password"

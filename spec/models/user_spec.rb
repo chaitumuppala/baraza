@@ -28,6 +28,13 @@ describe User do
 
       expect(build(:user, password: "Password1!")).to be_valid
     end
+
+    it "should return error message if email is not unique" do
+      create(:user, email: "again@gm.com")
+      invalid_user = build(:user, email: "again@gm.com")
+      expect(invalid_user).not_to be_valid
+      expect(invalid_user.errors.full_messages).to eq(["Email already has a user associated with it. To retrieve password for the email id, click on forgot password"])
+    end
   end
 
   describe "before_create" do
