@@ -33,7 +33,7 @@ describe User do
       create(:user, email: "again@gm.com")
       invalid_user = build(:user, email: "again@gm.com")
       expect(invalid_user).not_to be_valid
-      expect(invalid_user.errors.full_messages).to eq(["Email already has a user associated with it. To retrieve password for the email id, click on forgot password"])
+      expect(invalid_user.errors.full_messages).to eq(["Email already has a user associated with it. To retrieve password for the email id click on forgot password"])
     end
   end
 
