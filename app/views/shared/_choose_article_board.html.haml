@@ -4,6 +4,9 @@
       = link_to (image_tag article.cover_image.url), article_path(article.id)
       %figcaption
         = article.title
+  - else
+    .panel
+      Empty
   %a.choose-article{href: "#", "data-reveal-id" => "chooseArticlesModal", data: {order: order}} Choose article
 
   = form_tag("", method: :put, id: "article-order-#{order}", class: "hidexx") do

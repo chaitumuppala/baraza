@@ -1,8 +1,9 @@
 .article-board
-  %figure
-    = link_to (image_tag article.cover_image.url), article_path(article.id)
-    %figcaption
-      = article.title
-  .article-info
-    - article.tags.each do |tag|
-      = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
+  - if article
+    %figure
+      = link_to (image_tag article.cover_image.url), article_path(article.id)
+      %figcaption
+        = article.title
+    .article-info
+      - article.tags.each do |tag|
+        = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)

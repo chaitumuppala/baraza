@@ -1,20 +1,18 @@
 #home-page
   #section-1
     #article-1
-      - article = @articles.select{|article| article.home_page_order == 1}.last
-      = render "shared/choose_article_board", article: article, order: 1
+      = render "shared/choose_article_board", article: @articles_with_order[1], order: 1
     #article-2
-      - article = @articles.select{|article| article.home_page_order == 2}.first
-      = render "shared/choose_article_board", article: article, order: 2
+      = render "shared/choose_article_board", article: @articles_with_order[2], order: 2
 
   #section-2
-    - Array.wrap(@articles[2..4]).each_with_index do |article, index|
+    - @articles_with_order.slice(3,4,5).each do |order, article|
       .three-column-article
-        = render "shared/choose_article_board", article: article, order: index+3
+        = render "shared/choose_article_board", article: article, order: order
   #section-4
-    - Array.wrap(@articles[5..7]).each_with_index do |article, index|
+    - @articles_with_order.slice(6,7,8).each do |order, article|
       .three-column-article
-        = render "shared/choose_article_board", article: article, order: index+6
+        = render "shared/choose_article_board", article: article, order: order
 
   %div#chooseArticlesModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Choose articles", "data-reveal" => "", :role => "dialog"}
     - @published_articles.each do |article|
