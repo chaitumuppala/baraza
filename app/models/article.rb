@@ -29,6 +29,7 @@ class Article < ActiveRecord::Base
     end
   end
 
+  before_save :set_date_published, if: -> {status_changed? && status == Status::PUBLISHED}
   after_save do
     Delayed::Job.enqueue(ArticleIndexJob.new(id))
   end
@@ -113,5 +114,9 @@ class Article < ActiveRecord::Base
   def s3_credentials
     s3_hash = YAML.load_file('./config/aws.yml')[Rails.env].with_indifferent_access
     s3_hash.slice(:access_key_id, :secret_access_key).merge!({bucket: s3_hash[:cover_image_bucket]})
+  end
+
+  def set_date_published
+    self.date_published = Date.today
   end
 end

@@ -240,4 +240,17 @@ describe Article do
       expect(build(:article).s3_credentials).to eq({access_key_id: "test", secret_access_key: "test", bucket: "cover_image_test"}.with_indifferent_access)
     end
   end
+
+  context "after_save" do
+    it "should set date_published on create and publishing article" do
+      article = create(:article, status: Article::Status::PUBLISHED)
+      expect(article.date_published.to_date).to eq(Date.today)
+    end
+
+    it "should set date_published on update and publishing article" do
+      article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article.update_attributes(status: Article::Status::PUBLISHED)
+      expect(article.date_published.to_date).to eq(Date.today)
+    end
+  end
 end
