@@ -1,11 +1,11 @@
 #home-page
-  #section-1
+  #section-1{"data-equalizer" => ""}
     #article-1
       = render "shared/article_board", article: @articles_with_order[1]
     #article-2
       = render "shared/article_board", article: @articles_with_order[2]
 
-  #section-2
+  #section-2{"data-equalizer" => ""}
     - @articles_with_order.slice(3,4,5).each do |order, article|
       .three-column-article
         = render "shared/article_board", article: article
@@ -18,7 +18,7 @@
           = text_field_tag :email, "", placeholder: "Enter your email", type: "email"
         #submit
           = submit_tag "Subscribe", value: "Subscribe"
-  #section-4
+  #section-4{"data-equalizer" => ""}
     - @articles_with_order.slice(6,7,8).each do |order, article|
       .three-column-article
         = render "shared/article_board", article: article
