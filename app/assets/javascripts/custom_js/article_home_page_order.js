@@ -6,7 +6,10 @@ $(function () {
         e.preventDefault();
         order = $(e.target).data("order");
       });
-
+      $(document).on('open.fndtn.reveal', '[data-reveal]', function () {
+        var modal = $(this);
+        modal.find("h4").text("Change Block "+ order +" article");
+      });
       $("#chooseArticlesModal").on('click', '.article', function(e){
         e.preventDefault();
         articleId = $(e.target).data("article-id");

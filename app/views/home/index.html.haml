@@ -25,7 +25,16 @@
 
   - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))
     %div#chooseArticlesModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Choose articles", "data-reveal" => "", :role => "dialog"}
-      - @published_articles.each do |article|
-        %div
-          = link_to article.title, "#", class: "article", data: {article_id: article.id}
-      %a.close-reveal-modal{"aria-label" => "Close"} ×
+      #modal-content{style: "margin: 20px; overflow: scroll; height: 600px"}
+        #title{style: "margin-bottom: 10px;"}
+          %h4 Change Block article
+          Please choose from the list below which article you would like to appear in block.
+        - @published_articles.each do |article|
+          #articles-list{style: "border-bottom: 1px solid #DDDDDD;"}
+            %div
+              = link_to article.title, "#", class: "article", data: {article_id: article.id}
+            %div{style: "font-size: 11px"}
+              = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
+            %div
+              = article.summary
+        %a.close-reveal-modal{"aria-label" => "Close"} ×
