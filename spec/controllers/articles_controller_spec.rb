@@ -365,4 +365,23 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response.code).to eq("403")
     end
   end
+
+  context "home_page_order_update" do
+    it "should allow only admin to update the home_page_order of article" do
+      article = create(:article)
+      patch :home_page_order_update, id: article.id, article: {home_page_order: 1}
+
+      expect(response.code).to eq("403")
+    end
+
+    it "should update the home_page_order of article", admin_sign_in: true do
+      article_at_order_one = create(:article, home_page_order: 1)
+      article = create(:article)
+      patch :home_page_order_update, id: article.id, article: {home_page_order: 1}
+
+      expect(response).to redirect_to(home_page_order_articles_path)
+      expect(article.reload.home_page_order).to eq(1)
+      expect(article_at_order_one.reload.home_page_order).to be_nil
+    end
+  end
 end

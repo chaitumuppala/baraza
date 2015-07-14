@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     member do
       get 'approve_form'
       patch 'approve'
+      patch 'home_page_order_update'
     end
     collection do
       get 'search', as: 'search'

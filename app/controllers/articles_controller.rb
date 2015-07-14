@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve]
+  before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve, :home_page_order_update]
   filter_resource_access additional_collection: [:search, :home_page_order]
   before_action :merge_status_to_params, only: [:create, :update]
   skip_before_action :application_meta_tag, only: [:show]
@@ -104,6 +104,13 @@ class ArticlesController < ApplicationController
       result[order] = articles[order].try(:first)
       result
     end
+  end
+
+  def home_page_order_update
+    order_params = { home_page_order: article_params[:home_page_order] }
+    Article.where(order_params).update_all(home_page_order: nil)
+    @article.update_attributes(order_params)
+    redirect_to home_page_order_articles_path
   end
 
   private
