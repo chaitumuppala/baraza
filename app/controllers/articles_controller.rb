@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve, :home_page_order_update]
-  filter_resource_access additional_collection: [:search, :home_page_order]
+  filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
   skip_before_action :application_meta_tag, only: [:show]
 
@@ -97,20 +97,11 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def home_page_order
-    @published_articles = Article.where(status: Article::Status::PUBLISHED).order(:home_page_order)
-    articles = @published_articles.select{ |article| article.home_page_order.present? }.group_by(&:home_page_order)
-    @articles_with_order = (1..8).inject({}) do |result, order|
-      result[order] = articles[order].try(:first)
-      result
-    end
-  end
-
   def home_page_order_update
     order_params = { home_page_order: article_params[:home_page_order] }
     Article.where(order_params).update_all(home_page_order: nil)
     @article.update_attributes(order_params)
-    redirect_to home_page_order_articles_path
+    redirect_to root_path(configure_home: true)
   end
 
   private

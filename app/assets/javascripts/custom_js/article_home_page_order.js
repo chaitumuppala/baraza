@@ -2,14 +2,14 @@ $(function () {
   var ArticleHomePageOrder = {
     init: function () {
       var order, articleId, articleForm;
-      $('a.choose-article').on('click', function() {
-        event.preventDefault();
-        order = $(event.target).data("order");
+      $('a.choose-article').on('click', function(e) {
+        e.preventDefault();
+        order = $(e.target).data("order");
       });
 
-      $("#chooseArticlesModal .article").on('click', function(){
-        event.preventDefault();
-        articleId = $(event.target).data("article-id");
+      $("#chooseArticlesModal").on('click', '.article', function(e){
+        e.preventDefault();
+        articleId = $(e.target).data("article-id");
         articleForm = $("#home-page .article-board #article-order-"+order);
         articleForm.find(".article-id").val(articleId);
         articleForm.attr("action", "/articles/"+articleId+"/home_page_order_update");
@@ -18,5 +18,5 @@ $(function () {
     }
   };
 
-  loadPageSpecificJs("articles", ['home_page_order'], ArticleHomePageOrder.init.bind(ArticleHomePageOrder));
+  loadPageSpecificJs("home", ['index'], ArticleHomePageOrder.init.bind(ArticleHomePageOrder));
 });

@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     end
     collection do
       get 'search', as: 'search'
-      get 'home_page_order'
     end
   end
 

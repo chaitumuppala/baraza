@@ -340,32 +340,6 @@ RSpec.describe ArticlesController, type: :controller do
     end
   end
 
-  context "home_page_order" do
-    it "should fetch published articles with home_page_order", admin_sign_in: true do
-      article1 = create(:article, home_page_order: 5, status: Article::Status::PUBLISHED)
-      article2 = create(:article, home_page_order: 1, status: Article::Status::PUBLISHED)
-      article3 = create(:article, home_page_order: 2, status: Article::Status::PUBLISHED)
-      article4 = create(:article, home_page_order: nil, status: Article::Status::PUBLISHED)
-      create(:article, home_page_order: 4, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      create(:article, home_page_order: nil)
-
-      get :home_page_order
-
-      expected_result = { 1 => article2, 2 => article3, 3 => nil, 4 => nil, 5 => article1, 6 => nil, 7 => nil, 8 => nil }
-      expect(assigns[:published_articles]).to eq([article4, article2, article3, article1])
-      expect(assigns[:articles_with_order]).to eq(expected_result)
-    end
-
-    it "should allow only admin to order", editor_sign_in: true do
-      article1 = create(:article, home_page_order: 5)
-      create(:article, home_page_order: nil)
-
-      get :home_page_order
-
-      expect(response.code).to eq("403")
-    end
-  end
-
   context "home_page_order_update" do
     it "should allow only admin to update the home_page_order of article" do
       article = create(:article)
@@ -379,7 +353,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article)
       patch :home_page_order_update, id: article.id, article: {home_page_order: 1}
 
-      expect(response).to redirect_to(home_page_order_articles_path)
+      expect(response).to redirect_to("/?configure_home=true")
       expect(article.reload.home_page_order).to eq(1)
       expect(article_at_order_one.reload.home_page_order).to be_nil
     end

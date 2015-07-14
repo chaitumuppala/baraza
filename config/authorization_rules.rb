@@ -37,6 +37,8 @@ authorization do
     has_permission_on :articles, to: [ :show ] do
       if_attribute status: is_not {Article::Status::DRAFT}
     end
+
+    has_permission_on :articles, to: [ :home_page_order_update ]
   end
 
   role :administrator do
@@ -46,6 +48,5 @@ authorization do
     has_permission_on :newsletters, to: :edit do
       if_attribute :status => is {Newsletter::Status::DRAFT}
     end
-    has_permission_on :articles, to: [ :home_page_order, :home_page_order_update ]
   end
 end
