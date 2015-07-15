@@ -4,7 +4,9 @@
   .div
     = "We are pleased to let you know that your article #{@article.title} has been published on the Pan-African Baraza website. We plan to include the article in the next edition of the e-magazine. Thank you for your contribution."
   .div
-    = "Use the following #{link_to 'link', article_url(@article)} to view the article."
+    Use the following
+    = link_to 'link', article_url(@article)
+    to view the article."
 
   %br
   .div

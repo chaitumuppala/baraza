@@ -33,7 +33,11 @@
           %th
             TITLE
           %th
+            AUTHOR
+          %th
             STATUS
+          %th
+            PUBLISHED DATE
           %th
             Actions
 
@@ -41,6 +45,8 @@
         - @articles_submitted.each do |article|
           %tr
             %td= link_to article.title, article_path(article)
+            %td= article.user.full_name
             %td= article.status
+            %td= article.date_published.to_date.strftime("%d-%m-%Y")
             - if permitted_to?(:approve_form, article)
               %td= link_to 'Edit', approve_form_article_path(article)
