@@ -9,27 +9,7 @@
             %ul
               - @article.errors.full_messages.each do |msg|
                 %li= msg
-
-        .field
-          = f.label :title
-          = f.text_field :title
-        .field#category_field
-          = f.label "Category"
-          = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select")
-        .field#tags_field
-          = label_tag "Tags"
-          = f.text_field :tag_list, id: "tags"
-        .field
-          = f.label :cover_image
-          - if f.object.cover_image
-            = image_tag @article.cover_image.url
-
-        .field
-          = f.label :content
-          = f.cktext_area :content
-        .field#top_story_field
-          = f.check_box :top_story
-          %label{for: "article_top_story"} Top Story
+        = render "form_fields", f: f
         .actions
           = f.submit ArticlesController::SAVE
           = f.submit ArticlesController::PUBLISH
