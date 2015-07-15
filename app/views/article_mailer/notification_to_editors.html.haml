@@ -4,8 +4,16 @@
   .div
     - if @article.status == Article::Status::PUBLISHED
       = "An article is published in the baraza website by #{@article.user.full_name}"
+      %br
+      .div
+        Link to the article
+        = article_url(@article)
     - else
       = "An article is submitted for approval in the baraza website by #{@article.user.full_name}"
-  .div
-    Link to the article
-    = article_url(@article)
+      %br
+      .div
+        Link to the article
+        = article_url(@article)
+      %br
+      .div
+        Please could you have a read and we'll discuss whether this is something that we are able to include.  Thanks for your help with this.

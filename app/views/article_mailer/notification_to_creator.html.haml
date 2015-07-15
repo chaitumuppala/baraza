@@ -2,9 +2,20 @@
   = "Dear #{@user.full_name},"
   %br
   .div
-    Thanks for submitting your article.
+    = "Thanks for submitting your article entitled #{@article.title}."
+  %br
   .div
     - if @article.status == Article::Status::PUBLISHED
       It is published in the baraza website.
     - else
-      We will publish it once the review process is over.
+      .div
+        Your article will be reviewed by the editors and we will let you know if there are any changes that we would recommend and whether we are able to publish it on the Pan-African Baraza website and in our e-magazine.
+      %br
+      .div
+        We will will be in touch once the review process is over.
+
+  %br
+  .div
+    Firoze Manji and Orville Khagale
+  .div
+    Editors@panafricanbaraza.org

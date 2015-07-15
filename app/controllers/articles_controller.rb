@@ -90,6 +90,7 @@ class ArticlesController < ApplicationController
       if params[:commit] == PUBLISH
         @article.update_attributes(status: Article::Status::PUBLISHED)
         ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
+        ArticleMailer.published_notification_to_editors(@article).deliver_later
       end
       redirect_to @article, notice: 'Article was successfully updated.'
     else

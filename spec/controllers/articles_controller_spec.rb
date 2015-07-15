@@ -220,6 +220,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:published_notification_to_creator).with(User.find(article.user_id), article).and_return(mailer)
+      expect(ArticleMailer).to receive(:published_notification_to_editors).with(article).and_return(mailer)
 
       patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PUBLISH
 

@@ -21,7 +21,20 @@ describe ArticleMailer do
       mailer = ArticleMailer.notification_to_editors(article)
 
       expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
-      expect(mailer.subject).to eq("An article is received")
+      expect(mailer.subject).to eq("unite all and Patrick Jane")
+    end
+  end
+
+  context "published_notification_to_editors" do
+    it "should send mail to editors and administrator" do
+      editor1 = create(:editor)
+      editor2 = create(:editor)
+      admin1 = create(:administrator)
+      article = create(:article)
+      mailer = ArticleMailer.published_notification_to_editors(article)
+
+      expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
+      expect(mailer.subject).to eq("unite all and Patrick Jane")
     end
   end
 
