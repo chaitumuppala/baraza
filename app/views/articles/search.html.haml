@@ -1,7 +1,7 @@
 .search-results
   - if @articles.present?
     %h4
-      Tag search results for
+      Search results for
       %span.search-param
         = params[:q]
     = render "shared/article_list"
