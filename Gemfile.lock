@@ -332,7 +332,7 @@ DEPENDENCIES
   elasticsearch-model
   elasticsearch-rails
   factory_girl_rails
-  foundation-rails
+  foundation-rails (~> 5.5.0)
   haml
   haml-rails
   jbuilder (~> 2.0)
