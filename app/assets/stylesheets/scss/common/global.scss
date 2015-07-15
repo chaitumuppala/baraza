@@ -49,8 +49,12 @@ ul, li, ul li ul {
   list-style-type: none;
 }
 
-.display_error {
+.display_error, #error_explanation li {
   color: red;
+  font-size: small;
+}
+
+#error_explanation h2 {
   font-size: small;
 }
 
