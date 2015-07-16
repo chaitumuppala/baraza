@@ -17,8 +17,9 @@
       %div
         - @article.tags.each do |tag|
           = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
-    %br
-    %h4
-      DISCUSSIONS
-    .panel
-      #disqus_thread
+    - if @article.status == Article::Status::PUBLISHED
+      %br
+      %h4
+        DISCUSSIONS
+      .panel
+        #disqus_thread
