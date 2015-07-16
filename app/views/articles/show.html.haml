@@ -1,4 +1,19 @@
 .articles
+  - set_meta_tags ({site: "Baraza",
+    title: @article.title,
+    separator: "|",
+    og: { site: "Baraza",
+      title: @article.title,
+      url: article_url(@article),
+      description: @article.summary,
+      image: cover_image_url_for(@article)},
+    twitter: {card: "summary",
+      site: "Baraza",
+      title: @article.title,
+      url: article_url(@article),
+      description: @article.summary,
+      image: cover_image_url_for(@article)}})
+
   .block.article-content
     .panel
       %h2

@@ -9,26 +9,6 @@ class ArticlesController < ApplicationController
   PUBLISH = "Publish"
 
   def show
-    set_meta_tags ({
-                  site: "Baraza",
-                  title: @article.title,
-                  separator: "|",
-                  og: {
-                      site: "Baraza",
-                      title: @article.title,
-                      url: article_url(@article),
-                      description: @article.summary,
-                      image: @article.cover_image.url
-                  },
-                  twitter: {
-                      card: "summary",
-                      site: "Baraza",
-                      title: @article.title,
-                      url: article_url(@article),
-                      description: @article.summary,
-                      image: @article.cover_image.url
-                  }
-    })
   end
 
   def new

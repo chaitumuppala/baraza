@@ -251,33 +251,6 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context "show" do
-    context "set_meta_tags" do
-      it "should set_meta_tag" do
-        article = create(:article, status: Article::Status::PUBLISHED)
-        expect(controller).to receive(:set_meta_tags).with({site: "Baraza",
-                                                            title: article.title,
-                                                            separator: "|",
-                                                            og: {
-                                                                site: "Baraza",
-                                                                title: article.title,
-                                                                url: article_url(article),
-                                                                description: article.summary,
-                                                                image: article.cover_image.url
-                                                            },
-                                                            twitter: {
-                                                                card: "summary",
-                                                                site: "Baraza",
-                                                                title: article.title,
-                                                                url: article_url(article),
-                                                                description: article.summary,
-                                                                image: article.cover_image.url
-                                                            }
-                                                           })
-
-
-        get :show, id: article.id
-      end
-    end
     context "general user" do
       it "should render show only articles that are published" do
         article = create(:article, status: Article::Status::PUBLISHED)
