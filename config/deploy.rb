@@ -43,10 +43,12 @@ namespace :run_task do
     on roles(:web) do
       within "#{current_path}" do
         with rails_env: fetch(:rails_env) do
+          execute :rake, "db:create"
           execute :rake, "db:migrate"
           system("\\say Database migrated!!!")
           execute :rake, "db:admin"
           system("\\say Admin rake task complete")
+          execute :rake, "db:category"
           execute "cd #{File.join(current_path)} && RAILS_ENV=#{fetch(:rails_env)} bundle exec bin/delayed_job restart"
           system("\\say delayed job restarted!!!")
         end
