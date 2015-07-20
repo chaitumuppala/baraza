@@ -1,12 +1,14 @@
 #admin-article
   = form_for @newsletter, url: newsletter_path(@newsletter) do |f|
     - category_newsletters = @newsletter.category_newsletters
-    - if @newsletter.errors.any?
-      #error_explanation
+    #error_explanation
+      - if @newsletter.errors.any?
         %h2= "#{pluralize(@newsletter.errors.count, "error")} prohibited this article from being saved:"
-        %ul
-          - @newsletter.errors.full_messages.each do |msg|
-            %li= msg
+      %ul
+        %li
+          = flash[:alert]
+        - @newsletter.errors.full_messages.each do |msg|
+          %li= msg
     %span
       = @newsletter.name
     %dl.accordion{"data-accordion" => "", id: "category-sortable"}

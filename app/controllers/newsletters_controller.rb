@@ -42,6 +42,7 @@ class NewslettersController < ApplicationController
   def update
     respond_to do |format|
       ns_params = params["newsletter"]
+      flash[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
       ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
       ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
       if @newsletter.update(newsletter_params)

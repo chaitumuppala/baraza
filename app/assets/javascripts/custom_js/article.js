@@ -65,7 +65,6 @@ $(function () {
         errorMessages.push("<li> Content can't be blank </li>");
       }
       if(errorMessages.length > 0) {
-        debugger;
         var list = errorDiv.append('<ul></ul>').find('ul');
         _.each(errorMessages, function(msg){
           list.append(msg);
