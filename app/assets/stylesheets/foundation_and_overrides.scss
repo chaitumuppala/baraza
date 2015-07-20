@@ -87,9 +87,9 @@ $row-width: rem-calc(1440);
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // We use these to define default font stacks
-$font-family-sans-serif: "Proxima Nova Alt Thin", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-// $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
-// $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
+$font-family-sans-serif: "Roboto Slab", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+$font-family-serif: "Roboto Slab", Georgia, Cambria, "Times New Roman", Times, serif;
+$font-family-monospace: "Roboto Slab", Consolas, "Liberation Mono", Courier, monospace;
 
 // We use these to define default font weights
 // $font-weight-normal: normal;

@@ -32,7 +32,6 @@
     padding: 10px;
     #title {
       font-size: 27px;
-      font-weight: bold;
       white-space: nowrap;
     }
     #title, #text, #submit {
@@ -62,11 +61,37 @@
     }
   }
 }
-
 .article-board {
   @extend .panel;
+  padding: 10px 20px 0 20px;
+  .title {
+    font-size: 36px;
+  }
+  .article-info {
+    font-weight: 300;
+    .title {
+      font-size: 36px;
+      color: #d45934;
+      font-weight: 400;
+    }
+    .categories {
+      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 12px;
+    }
+    .desc {
+      font-size: 12px;
+      padding-bottom: 10px;
+    }
+    .summary {
+      font-size: 14px;
+      padding-bottom: 10px;
+    }
+  }
+}
+.top-story-board {
+  @extend .panel;
   padding: 0;
-//  margin-left: 1%;
   figure {
     position: relative;
     img {
@@ -79,14 +104,23 @@
       left: 0;
       width: 100%;;
       color: white;
-      padding: 10px;
+      padding: 10px 20px 0 20px;
       background: rgba(47, 47, 47, 0.7);
-      font-weight: 900;
-      font-size: 35px;
+      .article-info {
+        font-weight: 300;
+        .title {
+          font-weight: 400;
+          font-size: 36px;
+        }
+        .desc {
+          font-size: 12px;
+          padding-bottom: 10px;
+        }
+        .summary {
+          font-size: 14px;
+          padding-bottom: 10px;
+        }
+      }
     }
-  }
-  .article-info {
-    font-size: 13px;
-    padding: 10px;
   }
 }

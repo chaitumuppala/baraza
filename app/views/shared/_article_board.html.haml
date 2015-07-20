@@ -1,12 +1,18 @@
 .article-board{"data-equalizer-watch" => ""}
   - if article
-    %figure
-      = link_to (image_tag article.cover_image.url), article_path(article.id)
-      %figcaption
-        = article.title
     .article-info
-      - article.tags.each do |tag|
-        = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
+      .categories
+        = article.categories.collect(&:name).join(", ")
+      .title
+        = article.title
+      .desc
+        = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
+      .summary
+        = article.summary
+      .desc
+        - tags = article.tags.collect do |tag|
+          - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
+        = tags.join(", ").html_safe
 
   - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))
     %a.choose-article{href: "#", "data-reveal-id" => "chooseArticlesModal", data: {order: order}} Change article
