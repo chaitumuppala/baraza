@@ -1,9 +1,9 @@
 .field
   = f.label :title
-  = f.text_field :title
+  = f.text_field :title, required: ""
   .field#category_field
     = f.label "Category", class: "star_it"
-    = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select")
+    = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select", required: "")
   .field#tags_field
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"
@@ -11,10 +11,10 @@
     = f.label :cover_image
     - if f.object.cover_image
       = image_tag @article.cover_image.url
-    = f.file_field :cover_image
+    = f.file_field :cover_image, id: "file_upload"
   .field
     = f.label :summary
-    = f.text_area :summary
+    = f.text_area :summary, required: ""
   .field
     = f.label :content
     = f.cktext_area :content

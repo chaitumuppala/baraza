@@ -1,4 +1,5 @@
-= form_for @article do |f|
+= form_for @article, html: {id: 'article_form'} do |f|
+  #error_explanation
   - if @article.errors.any?
     - @article.errors.delete(:cover_image)
     #error_explanation
