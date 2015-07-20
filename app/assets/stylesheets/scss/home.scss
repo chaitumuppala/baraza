@@ -70,9 +70,12 @@
   .article-info {
     font-weight: 300;
     .title {
-      font-size: 36px;
-      color: #d45934;
-      font-weight: 400;
+      a {
+        font-size: 36px;
+        color: #d45934;
+        font-weight: 400;
+        word-wrap: break-word;
+      }
     }
     .categories {
       text-transform: uppercase;
@@ -83,7 +86,14 @@
       font-size: 12px;
       padding-bottom: 10px;
     }
+    img {
+      float: left;
+      margin: 3px;
+      width: 127px;
+      height: 127px;
+    }
     .summary {
+      @extend .clearfix;
       font-size: 14px;
       padding-bottom: 10px;
     }
@@ -111,6 +121,7 @@
         .title {
           font-weight: 400;
           font-size: 36px;
+          word-wrap: break-word;
         }
         .desc {
           font-size: 12px;
