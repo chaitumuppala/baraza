@@ -31,8 +31,11 @@
 .login_page {
   .title { text-align: center; }
   .social_media_sign_in {
+    padding-top: 20px;
     @extend .row;
     .fb_sign_in, .google_sign_in {
+      padding-left: 15px;
+      padding-top: 20px;
       @extend .column;
       @extend .small-6;
       @extend .medium-6;
@@ -41,7 +44,8 @@
   }
 
   .or {
-   text-align: center;
+    text-align: center;
+    padding: 35px;
   }
 }
 

@@ -43,6 +43,11 @@ describe User do
       expect(user.type).to eq(RegisteredUser.name)
     end
 
+    it "should set type as registeredUser if type is empty" do
+      user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod", type: "")
+      expect(user.type).to eq(RegisteredUser.name)
+    end
+
     it "should use the provided type" do
       user = User.create(email: "random@gmai.com", password: "Password1!", first_name: "deepthi", last_name: "vinod", type: Administrator.name)
       expect(user.type).to eq(Administrator.name)

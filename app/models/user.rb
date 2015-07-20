@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   alias_attribute :role, :type
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
-  before_create ->{ self.type = type || RegisteredUser.name }
+  before_create ->{ self.type = type.present? ? type : RegisteredUser.name }
   has_many :articles
 
   module Roles
