@@ -2,6 +2,21 @@ require 'rails_helper'
 
 describe Newsletter do
   context "eligible_articles" do
+    it "should include categories in order of position_in_newsletter with nil values last" do
+      newsletter = create(:newsletter)
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      CategoryNewsletter.create(category: category1, newsletter: newsletter, position_in_newsletter: nil)
+      CategoryNewsletter.create(category: category2, newsletter: newsletter, position_in_newsletter: 1)
+      article1 = create(:article, title: "123", created_at: 1.month.ago.to_datetime, category_ids: [category1.id], status: Article::Status::PUBLISHED)
+      article2 = create(:article, created_at: Date.today, category_ids: [category2.id], status: Article::Status::PUBLISHED)
+      expected_result = { category2 => [article2].to_set, category1 => [article1].to_set }
+
+      result = newsletter.reload.eligible_articles_by_category
+      expect(result).to eq(expected_result)
+      expect(result.keys).to eq([category2, category1])
+    end
+
     it "should include articles that are not part of any newsletter" do
       newsletter = create(:newsletter)
       category1 = create(:category, name: "history")
@@ -11,11 +26,10 @@ describe Newsletter do
       article1 = create(:article, title: "123", created_at: 1.month.ago.to_datetime, category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Date.today, category_ids: [category2.id], status: Article::Status::PUBLISHED)
       article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_ids: [category1.id], status: Article::Status::PUBLISHED)
-      expected_result = { category2 => [article1, article2].to_set, category1 => [].to_set }
+      expected_result = { category2 => [article1, article2].to_set }
 
       result = newsletter.reload.eligible_articles_by_category
       expect(result).to eq(expected_result)
-      expect(result.keys).to eq([category2, category1])
     end
 
     it "should include articles that are part of this newsletter" do
@@ -65,7 +79,7 @@ describe Newsletter do
     end
   end
 
-  context "articles_by_category" do
+  context "associated_articles_by_category" do
     it "should list associated articles by category in order" do
       newsletter = create(:newsletter)
       category1 = create(:category, name: "history")
@@ -78,7 +92,7 @@ describe Newsletter do
       article4 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: nil, category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
       article5 = create(:article, created_at: Date.today, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 1, status: Article::Status::PUBLISHED)
       result_hash = { category2 => [article2, article1].to_set, category1 => [article5].to_set}
-      expect(newsletter.articles_by_category).to eq(result_hash)
+      expect(newsletter.associated_articles_by_category).to eq(result_hash)
     end
 
     it "should list only those categories with articles" do
@@ -90,7 +104,7 @@ describe Newsletter do
       article1 = create(:article, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 2, status: Article::Status::PUBLISHED)
       article2 = create(:article, newsletter_id: newsletter.id, category_ids: [category1.id], position_in_newsletter: 1, status: Article::Status::PUBLISHED)
 
-      expect(newsletter.articles_by_category).to eq({ category1 => [article2, article1].to_set })
+      expect(newsletter.associated_articles_by_category).to eq({ category1 => [article2, article1].to_set })
     end
   end
 end

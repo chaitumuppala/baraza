@@ -1,5 +1,5 @@
 #newsletter-mail{style: "background-color: white; padding: 15px;"}
-  - @newsletter.articles_by_category.each do |category, articles|
+  - @newsletter.associated_articles_by_category.each do |category, articles|
     - if true
       %h3{style: "text-decoration: underline; margin: 5px;"}
         = category.name
