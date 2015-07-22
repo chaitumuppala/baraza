@@ -56,7 +56,6 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  private
   def has_a_provider?
     uid.present? && provider.present?
   end

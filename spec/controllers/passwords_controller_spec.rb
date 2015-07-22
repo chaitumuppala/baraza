@@ -19,5 +19,12 @@ describe PasswordsController do
       expect(response.code).to eq("422")
       expect(response.body).to eq("Email not found")
     end
+
+    it "should not send reset password for social login users" do
+      post :create, user: {email: create(:user, uid: "uid", provider: "google_oauth2").email}
+
+      expect(response.code).to eq("422")
+      expect(response.body).to eq("Email not found")
+    end
   end
 end

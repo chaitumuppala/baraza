@@ -1,5 +1,7 @@
 class PasswordsController < Devise::PasswordsController
   def create
+    user = resource_class.where(email: params[:user][:email]).first
+    render json: "Email not found", status: 422 and return if user.try(:has_a_provider?)
     self.resource = resource_class.send_reset_password_instructions(resource_params)
     yield resource if block_given?
 
