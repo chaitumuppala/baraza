@@ -8,7 +8,7 @@
       .desc
         = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase} AGO"
       .summary
-        = link_to (image_tag article.cover_image.url), article_path(article.id)
+        = link_to (image_tag article.cover_image.url(:thumb)), article_path(article.id)
         = article.summary
       .desc
         - tags = article.tags.collect do |tag|

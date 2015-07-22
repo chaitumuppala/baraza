@@ -6,7 +6,7 @@ class Article < ActiveRecord::Base
   has_many :article_categories
   has_many :categories, through: :article_categories
   attr_accessor :tag_list
-  has_attached_file :cover_image, styles: { medium: "400x310>" }, default_url: "z.png",
+  has_attached_file :cover_image, styles: { medium: "758x350>", thumb: "77x77" }, default_url: "z.png",
                     storage: :s3,
                     s3_credentials: Proc.new{|a| a.instance.s3_credentials}
   validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']

@@ -1,7 +1,7 @@
 .top-story-board{"data-equalizer-watch" => ""}
   - if article
     %figure
-      = link_to (image_tag article.cover_image.url), article_path(article.id)
+      = link_to (image_tag article.cover_image.url(:medium)), article_path(article.id)
       %figcaption
         .article-info
           .title
