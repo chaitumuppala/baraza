@@ -89,8 +89,8 @@
     img {
       float: left;
       margin: 3px;
-      width: 127px;
-      height: 127px;
+      width: 77px;
+      height: 77px;
     }
     .summary {
       @extend .clearfix;
@@ -107,10 +107,11 @@
     img {
       height: 350px;
       width: 100%;
+      display: block;
     }
     figcaption {
       position: absolute;
-      bottom: 7px;
+      bottom: 0;
       left: 0;
       width: 100%;;
       color: white;
