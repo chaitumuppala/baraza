@@ -13,7 +13,7 @@ $(function () {
       $("#chooseArticlesModal").on('click', '.article', function(e){
         e.preventDefault();
         articleId = $(e.target).data("article-id");
-        articleForm = $("#home-page .article-board #article-order-"+order);
+        articleForm = $("#home-page #article-order-"+order);
         articleForm.find(".article-id").val(articleId);
         articleForm.attr("action", "/articles/"+articleId+"/home_page_order_update");
         articleForm.submit();
