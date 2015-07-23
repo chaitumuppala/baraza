@@ -16,7 +16,7 @@
         = f.label :email
         = f.email_field :email, autofocus: true, required: ""
       .field
-        = f.label :password
+        = f.label :password, data: { hint: "Minimum of 8 characters" }
         = f.password_field :password, autocomplete: "off", required: ""
       .actions
         = f.submit "Log in"

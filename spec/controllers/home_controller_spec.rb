@@ -16,8 +16,8 @@ describe HomeController do
 
     get :index
 
-    expected_result = { 1 => article2, 2 => article3, 3 => article4, 4 => article5, 5 => article1, 6 => nil, 7 => nil, 8 => nil }
-    expect(assigns[:published_articles]).to eq([article4, article5, article1, article3, article2])
+    expected_result = { 1 => article2, 2 => article3, 3 => article5, 4 => article4, 5 => article1, 6 => nil, 7 => nil, 8 => nil }
+    expect(assigns[:published_articles]).to eq([article5, article4, article1, article3, article2])  
     expect(assigns[:articles_with_order]).to eq(expected_result)
   end
 

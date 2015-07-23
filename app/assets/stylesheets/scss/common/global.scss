@@ -124,3 +124,16 @@ ul, li, ul li ul {
     }
   }
 }
+
+form {
+  .field {
+    label[data-hint]:after {
+      margin-left: 4px;
+      font-size: 11px;
+      font-style: italic;
+      color: $base;
+      vertical-align: middle;
+      content: " ( " attr(data-hint) " ) ";
+    }
+  }
+}
