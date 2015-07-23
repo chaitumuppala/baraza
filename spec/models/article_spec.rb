@@ -251,6 +251,7 @@ describe Article do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       article.update_attributes(status: Article::Status::PUBLISHED)
       expect(article.date_published.to_date).to eq(Date.today)
+      expect(article.date_published).to be_within(1.minute).of(Time.now)
     end
   end
 end
