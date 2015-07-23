@@ -55,15 +55,47 @@ $(function () {
       var validTypes = ["image/jpeg", "image/jpg", "image/png"];
       var formValid = true;
 
-      if(file && file.size > validSize) {
-        errorMessages.push("<li> Cover image can't be greater than 2MB </li>");
-      }
-      if(file && !_.contains(validTypes, file.type)) {
-        errorMessages.push("<li> Cover image content type is invalid </li>");
-      }
-      if(CKEDITOR.instances.article_content.getData().length == 0) {
-        errorMessages.push("<li> Content can't be blank </li>");
-      }
+      var conditions = {
+        title: function() {
+          return $("input[name='article[title]']").val().length == 0;
+        },
+
+        category: function() {
+          return $('#category-select> option:selected').length == 0;
+        },
+
+        summary: function() {
+          return $("textarea[name='article[summary]']").val().length == 0;
+        },
+
+        imageSize: function() {
+          return file && (file.size > validSize);
+        },
+
+        imageType: function() {
+          return file && !_.contains(validTypes, file.type);
+        },
+
+        content: function() {
+          return CKEDITOR.instances.article_content.getData().length == 0;
+        }
+       };
+
+      var errorMessageMap = {
+        title: "<li> Title can't be blank </li>",
+        category: "<li> Category can't be blank </li>",
+        summary: "<li> Summary can't be blank </li>",
+        imageSize: "<li> Cover image can't be greater than 2MB </li>",
+        imageType: "<li> Cover image content type is invalid </li>",
+        content: "<li> Content can't be blank </li>"
+      };
+
+      _.forEach(errorMessageMap, function(message, field){
+        if(conditions[field]()) {
+          errorMessages.push(message);
+        }
+      });
+
       if(errorMessages.length > 0) {
         var list = errorDiv.append('<ul></ul>').find('ul');
         _.each(errorMessages, function(msg){
