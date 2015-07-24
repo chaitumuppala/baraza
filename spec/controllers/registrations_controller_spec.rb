@@ -4,12 +4,6 @@ describe RegistrationsController do
   before do
     @request.env["devise.mapping"] = Devise.mappings[:user]
   end
-  it "should return json on error" do
-    post "create", user: {first_name: "", last_name: "", email: "", password: "Password1!",
-                          password_confirmation: "Password1!", year_of_birth: "", country: "", gender: ""}
-    expect(response.code).to eq("422")
-    expect(response.body).to eq("Email can't be blank, First name can't be blank, and Last name can't be blank")
-  end
 
   it "should permit :first_name, :last_name, :year_of_birth, :country, :gender" do
     emailid = "email@email.com"

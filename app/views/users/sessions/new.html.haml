@@ -1,4 +1,4 @@
-#signInModal.reveal-modal.large{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+#signInModal.panel
   .login_page
     .success_flash.hide
       = t("devise.sessions.signed_in")
@@ -8,8 +8,9 @@
     .social_media_sign_in
       = link_to "", omniauth_authorize_path(resource_name, "google_oauth2"), class: "google_sign_in"
       = link_to "", omniauth_authorize_path(resource_name, "facebook"), class: "fb_sign_in"
-    = form_for(resource, as: resource_name, url: session_path(resource_name), remote: true) do |f|
-      .display_error
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      = devise_error_messages!
+      .error
       .field
         = f.label :email
         = f.email_field :email, autofocus: true, required: ""
@@ -19,4 +20,3 @@
       .actions
         = f.submit "Log in"
     = render "users/shared/links"
-  = render "users/shared/close"

@@ -3,10 +3,6 @@ $(function () {
     var errorSection = $(form).find(".display_error");
     var submitButton = $(form).find("input[type=submit]");
     var successFlash = $(form).parents(".reveal-modal").find(".success_flash");
-    $(form).on('submit', function() {
-      submitButton.attr('disabled','disabled');
-    });
-
     $(form).on('ajax:success', function (e, data, status, xhr) {
       errorSection.empty();
       successFlash.show();
@@ -18,6 +14,13 @@ $(function () {
       submitButton.removeAttr('disabled');
       errorSection.append(xhr.responseText.split(", ").join(" <br> "));
       $(form).parents(".reveal-modal").foundation('reveal', 'open');
+    });
+  });
+
+  $('form.no-double-click').each(function(i, form) {
+    var submitButton = $(form).find("input[type=submit]");
+    $(form).on('submit', function() {
+      submitButton.attr('disabled','disabled');
     });
   });
 });

@@ -55,17 +55,11 @@
               = link_to "+ CREATE", new_article_path
           - else
             .item.right
-              %a{href: "#", "data-reveal-id" => "signInModal"}
-                LOGIN
+              = link_to "LOGIN", new_user_session_path
               %span
                 |
-              %a{href: "#", "data-reveal-id" => "signUpModal"}
-                SIGN UP
+              = link_to "SIGN UP", new_user_registration_path
 
-            = render "users/registrations/new"
-            = render "users/sessions/new"
-            = render "users/confirmations/new"
-            = render "users/passwords/new"
       .right-empty
     .main-content
       .left-empty
