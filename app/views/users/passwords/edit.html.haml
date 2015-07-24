@@ -4,7 +4,7 @@
     = devise_error_messages!
     = f.hidden_field :reset_password_token
     .field
-      = f.label :password, "New password"
+      = f.label :password, "New password", data: { hint: "Minimum of 8 characters, 1 special character & 1 number" }
       = f.password_field :password, autofocus: true, autocomplete: "off"
     .field
       = f.label :password_confirmation, "Confirm new password"

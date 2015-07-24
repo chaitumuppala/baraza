@@ -8,15 +8,13 @@
     .social_media_sign_in
       = link_to "", omniauth_authorize_path(resource_name, "google_oauth2"), class: "google_sign_in"
       = link_to "", omniauth_authorize_path(resource_name, "facebook"), class: "fb_sign_in"
-    .or
-      %h5 Or
     = form_for(resource, as: resource_name, url: session_path(resource_name), remote: true) do |f|
       .display_error
       .field
         = f.label :email
         = f.email_field :email, autofocus: true, required: ""
       .field
-        = f.label :password, data: { hint: "Minimum of 8 characters" }
+        = f.label :password
         = f.password_field :password, autocomplete: "off", required: ""
       .actions
         = f.submit "Log in"

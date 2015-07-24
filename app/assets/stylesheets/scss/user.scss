@@ -4,17 +4,11 @@
   h3 {font-weight: bold}
   .register {
     margin-top: 20px;
-    .or {
-      @extend .column;
-      @extend .small-2;
-      @extend .medium-2;
-      @extend .large-2;
-    }
     .omniauth, .custom {
       @extend .column;
-      @extend .small-5;
-      @extend .medium-5;
-      @extend .large-5;
+      @extend .small-6;
+      @extend .medium-6;
+      @extend .large-6;
     }
   }
   .name {
@@ -41,11 +35,6 @@
       @extend .medium-6;
       @extend .large-6;
     }
-  }
-
-  .or {
-    text-align: center;
-    padding: 35px;
   }
 }
 

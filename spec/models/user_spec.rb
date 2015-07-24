@@ -2,14 +2,10 @@ require 'rails_helper'
 
 describe User do
   describe "validation" do
-    it "should be inavlid if password length is less than 6 characters" do
+    it "should be inavlid if password length is less than 8 characters" do
       user = build(:user, password: "Pa1!")
       expect(user).not_to be_valid
-      expect(user.errors.full_messages).to eq(["Password is too short (minimum is 6 characters)"])
-    end
-
-    it "should be inavlid if password length is more than 10 characters" do
-      expect(build(:user, password: "Pa1!213456675856432456463452")).not_to be_valid
+      expect(user.errors.full_messages).to eq(["Password is too short (minimum is 8 characters)"])
     end
 
     it "should validate presence" do
@@ -20,13 +16,12 @@ describe User do
       expect(build(:user, password: "Password1!", password_confirmation: "Password2!")).not_to be_valid
     end
 
-    it "should validate to include at-least one uppercase letter, lowercase letter, numeral and special character" do
-      expect(build(:user, password: "Password1")).not_to be_valid
-      expect(build(:user, password: "PASSWORD1!")).not_to be_valid
+    it "should validate to include at-least one letter, numeral and special character" do
+      expect(build(:user, password: "password1!")).to be_valid
+      expect(build(:user, password: "PASSWORD1!")).to be_valid
       expect(build(:user, password: "Password!")).not_to be_valid
       expect(build(:user, password: "Password1")).not_to be_valid
-
-      expect(build(:user, password: "Password1!")).to be_valid
+      expect(build(:user, password: "1234567!")).not_to be_valid
     end
 
     it "should return error message if email is not unique" do
