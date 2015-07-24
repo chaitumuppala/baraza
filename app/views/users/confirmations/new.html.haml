@@ -3,7 +3,7 @@
     .success_flash.hide
       = t("devise.confirmations.send_instructions")
     %h2 Resend confirmation instructions
-    = form_for(resource, as: resource_name, url: confirmation_path(resource_name)) do |f|
+    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {class: "no-double-click"}) do |f|
       = devise_error_messages!
       .error
       .field
