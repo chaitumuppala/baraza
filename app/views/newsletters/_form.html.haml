@@ -3,9 +3,9 @@
     - category_newsletters = @newsletter.category_newsletters
     #error_explanation
       - if @newsletter.errors.any?
-      %ul
-        - @newsletter.errors.full_messages.each do |msg|
-          %li= msg
+        %ul
+          - @newsletter.errors.full_messages.each do |msg|
+            %li= msg
     %span
       = @newsletter.name
     %dl.accordion{"data-accordion" => "", id: "category-sortable"}
