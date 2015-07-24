@@ -5,7 +5,7 @@ RSpec.describe ArticlesController, type: :controller do
   describe "GET #new" do
     it "assigns a new article as @article" do
       get :new, {}, valid_session
-      expect(response.code).to eq("403")
+      expect(response).to redirect_to(new_user_session_path)
     end
 
     it "assigns a new article for a signed_in user", sign_in: true do
@@ -25,14 +25,14 @@ RSpec.describe ArticlesController, type: :controller do
     it "should not allow others to edit" do
       article = create(:article, user_id: create(:user).id)
       get :edit, id: article.id
-      expect(response.code).to eq("403")
+      expect(response).to redirect_to(new_user_session_path)
     end
 
     context "registered_user" do
       it "should not allow edit after submitting for approval", sign_in: true do
         article = create(:article, user_id: controller.current_user.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
         get :edit, id: article.id
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(root_path)
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe ArticlesController, type: :controller do
 
         article = create(:article, user_id: controller.current_user.id, status: Article::Status::PUBLISHED)
         get :edit, id: article.id
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(ArticleMailer).not_to receive(:notification_to_creator)
       expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}
-      expect(response.code).to eq("403")
+      expect(response).to redirect_to(root_path)
     end
 
     it "should update and set status as submitted_for_approval" do
@@ -263,14 +263,14 @@ RSpec.describe ArticlesController, type: :controller do
         article = create(:article, status: Article::Status::DRAFT)
         get :show, id: article.id
 
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(new_user_session_path)
       end
 
       it "should not render show articles that are draft/submitted_for_approval" do
         article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
         get :show, id: article.id
 
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
 
@@ -286,7 +286,7 @@ RSpec.describe ArticlesController, type: :controller do
         article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL, user_id: create(:user).id)
         get :show, id: article.id
 
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(root_path)
       end
     end
 
@@ -309,7 +309,7 @@ RSpec.describe ArticlesController, type: :controller do
         article = create(:article, status: Article::Status::DRAFT)
         get :show, id: article.id
 
-        expect(response.code).to eq("403")
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -319,7 +319,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article)
       patch :home_page_order_update, id: article.id, article: {home_page_order: 1}
 
-      expect(response.code).to eq("403")
+      expect(response).to redirect_to(new_user_session_path)
     end
 
     it "should update the home_page_order of article", admin_sign_in: true do
