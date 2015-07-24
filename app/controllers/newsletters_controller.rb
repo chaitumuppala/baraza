@@ -40,19 +40,19 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1
   # PATCH/PUT /newsletters/1.json
   def update
-    respond_to do |format|
-      ns_params = params["newsletter"]
-      flash[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
-      ns_params["articles_attributes"] = ns_params["articles_attributes"].select {|art_attr| ns_params["article_ids"].include?(art_attr["id"])}
-      ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
-      if @newsletter.update(newsletter_params)
-        NewsletterMailer.send_mail(@newsletter).deliver_later if params[:commit] == PUBLISH
-        format.html { redirect_to newsletters_path, notice: "Newsletter #{params[:commit].downcase} was successful." }
-        format.json { render :show, status: :ok, location: @newsletter }
-      else
-        format.html { render :edit }
-        format.json { render json: @newsletter.errors, status: :unprocessable_entity }
+    ns_params = params["newsletter"]
+    flash[:alert] = "There are no subscribers" and render :edit and return if Subscriber.all.empty?
+    flash[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
+    ns_params["articles_attributes"] = ns_params["articles_attributes"].select { |art_attr| ns_params["article_ids"].include?(art_attr["id"]) }
+    ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
+    if @newsletter.update(newsletter_params)
+      if params[:commit] == PUBLISH
+        NewsletterMailer.send_mail(@newsletter).deliver_later
+        flash[:notice] = "Newsletter was successfully sent out to the subscribers"
       end
+      redirect_to newsletters_path
+    else
+      render :edit
     end
   end
 

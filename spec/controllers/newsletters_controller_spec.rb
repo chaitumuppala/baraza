@@ -6,6 +6,7 @@ describe NewslettersController do
   end
   context "update" do
     it "should update and approve the newsletter if params[:commit] is PUBLISH" do
+      create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
       article1 = create(:article)
@@ -18,13 +19,14 @@ describe NewslettersController do
                        "articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}]},
                        "commit"=>NewslettersController::PUBLISH, "id"=>newsletter.id
 
-      expect(flash[:notice]).to eq("Newsletter publish was successful.")
+      expect(flash[:notice]).to eq("Newsletter was successfully sent out to the subscribers")
       expect(response).to redirect_to(newsletters_path)
       expect(CategoryNewsletter.where(newsletter: newsletter, category: category).first.position_in_newsletter).to eq(100)
       expect(newsletter.reload.status).to eq(Newsletter::Status::PUBLISHED)
     end
 
     it "should remove article params which dont have ids in article_ids" do
+      create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
@@ -39,11 +41,11 @@ describe NewslettersController do
                                     "articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}, {"position_in_newsletter"=>"2", "id"=>article2.id}, {"position_in_newsletter"=>"3", "id"=>article3.id}]},
                                     "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
 
-      expect(flash[:notice]).to eq("Newsletter save was successful.")
       expect(newsletter.reload.articles).to eq([article1])
     end
 
     it "should throw error if no article is selected" do
+      create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
@@ -56,6 +58,20 @@ describe NewslettersController do
             "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
 
       expect(flash[:alert]).to eq("Select at least one article")
+      expect(response).to render_template("edit")
+    end
+
+    it "should throw error if no subscribers" do
+      newsletter = create(:newsletter)
+      category = create(:category)
+      cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
+      article1 = create(:article)
+      newsletter.articles << [article1]
+
+      patch :update, "newsletter"=>{"articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}]},
+            "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
+
+      expect(flash[:alert]).to eq("There are no subscribers")
       expect(response).to render_template("edit")
     end
   end

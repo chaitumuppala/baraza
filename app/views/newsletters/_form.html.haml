@@ -5,8 +5,6 @@
       - if @newsletter.errors.any?
         %h2= "#{pluralize(@newsletter.errors.count, "error")} prohibited this article from being saved:"
       %ul
-        %li
-          = flash[:alert]
         - @newsletter.errors.full_messages.each do |msg|
           %li= msg
     %span
