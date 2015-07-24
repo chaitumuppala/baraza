@@ -3,7 +3,6 @@
     - category_newsletters = @newsletter.category_newsletters
     #error_explanation
       - if @newsletter.errors.any?
-        %h2= "#{pluralize(@newsletter.errors.count, "error")} prohibited this article from being saved:"
       %ul
         - @newsletter.errors.full_messages.each do |msg|
           %li= msg
