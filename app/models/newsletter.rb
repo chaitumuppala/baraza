@@ -8,6 +8,7 @@ class Newsletter < ActiveRecord::Base
   after_create do
     categories << Category.all
   end
+  before_update :set_date_published, if: -> {status_changed? && status == Status::PUBLISHED}
 
   module Status
     DRAFT = "draft"
@@ -29,5 +30,9 @@ class Newsletter < ActiveRecord::Base
       article_hash[category] = articles_for_category
       article_hash
     end
+  end
+
+  def set_date_published
+    self.date_published = DateTime.now
   end
 end

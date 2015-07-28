@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728071959) do
+ActiveRecord::Schema.define(version: 20150728104024) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -110,10 +110,11 @@ ActiveRecord::Schema.define(version: 20150728071959) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "newsletters", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "status",     limit: 255, default: "draft"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.string   "name",           limit: 255
+    t.string   "status",         limit: 255, default: "draft"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.datetime "date_published"
   end
 
   create_table "subscribers", force: :cascade do |t|

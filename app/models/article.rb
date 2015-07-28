@@ -115,6 +115,7 @@ class Article < ActiveRecord::Base
     s3_hash.slice(:access_key_id, :secret_access_key).merge!({bucket: s3_hash[:cover_image_bucket]})
   end
 
+  private
   def set_date_published
     self.date_published = DateTime.now
   end

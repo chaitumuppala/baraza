@@ -1,11 +1,92 @@
-#newsletter-mail{style: "background-color: white; padding: 15px;"}
-  - @newsletter.associated_articles_by_category.each do |category, articles|
-    - if true
-      %h3{style: "text-decoration: underline; margin: 5px;"}
-        = category.name
-      - articles.each do |article|
-        %div{style: "text-decoration: none; margin-left: 30px;"}
-          = link_to article.title, article_path(article)
-          %div
-            = article.summary
-        %br
+%html
+  %head
+    :css
+      /* Client-specific Styles */
+      #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
+      body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
+      /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+      .ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+      #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
+      /* End reset */
+
+      img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+      a img {border:none;}
+      table td {border-collapse: collapse;}
+      table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+
+  %body{bgcolor: "#FFFFFF", leftmargin: "0", marginheight: "0", marginwidth: "0", topmargin: "0"}
+    %table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border: 1px solid #c4c4c4; background: #ffffff;", :width => "650"}
+      %br
+      /
+        *********************************************************************************************************
+        NEWSLETTER HEADER IMAGE
+        *********************************************************************************************************
+      %tr
+        %td{:colspan => "5", :height => "153", :style => "border-bottom: 1px solid #c4c4c4;", :width => "650"}
+          %a{:href => ""}
+            %img{:alt => "Baraza", :height => "153", :src => image_url('logo.png'), :width => "650"}/
+
+      /
+        *********************************************************************************************************
+        NEWSLETTER HEADING AND DATE STRAP
+        *********************************************************************************************************
+      %tr
+        %td{:colspan => "5", :height => "50", :style => "background: #ebebea;"}
+          %table
+            %tr
+              %td{:style => "font-family: Arial, Helvetica; font-size: 26px; font-weight: bold; padding-left: 20px;", :valign => "middle", :width => "500"}
+                Newsletter
+              %td{:style => "font-family: Arial, Helvetica; font-size: 14px; padding-right: 20px; text-align: right;", :valign => "middle", :width => "148"}
+                = @newsletter.date_published.try(:strftime, "%d %b %Y")
+
+      - @newsletter.associated_articles_by_category.each do |category, articles|
+        %tr
+          %td{:colspan => "5"}
+            %table
+              / CATEGORY NAME
+              %tr
+                %td{:colspan => "5", :style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px;"}
+                  %p
+                    %b
+                      = category.name
+              / ARTCILES 2X2 COLUMNS
+              - articles.to_a.in_groups_of(2, "empty") do |article_pair|
+                %tr
+                  - article_pair.each do |article|
+                    - if article == "empty"
+                      %td{:style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-right: 20px;"}
+                        &nbsp;
+                    - else
+                      %td{:style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-right: 20px;"}
+                        %span
+                          %a{:href => article_path(article), :style => "color: #d6562f; font-size: 16px; font-weight: bold; text-decoration: none;", :target => "_blank"}
+                            = article.title
+                        %br
+                          %span
+                            = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
+                          %br
+                            %span
+                              = article.summary
+                            %br
+                              %span
+                                %a{:href => article_path(article), :style => "color: #1595c0; text-decoration: none;"} Read more
+                  / EMPTY SPACE BETWEEN ARTICLE ROWS
+              %tr
+                %td{:colspan => "5"} &nbsp;
+
+      %tr
+        %td{:colspan => "5", :style => "border-bottom: 1px solid #e1e1e1;"} &nbsp;
+
+      /
+        *********************************************************************************************************
+        NEWSLETTER FOOTER
+        *********************************************************************************************************
+      %tr
+        %td{:colspan => "5", :height => "105", :style => "border-top: 1px solid #c4c4c4; font-family: Arial, Helvetica; font-size: 14px; color: #353535; text-align: center;"}
+          %p
+            %b Find us at
+          %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
+            %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
+          %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}
+            %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/

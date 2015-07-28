@@ -107,4 +107,13 @@ describe Newsletter do
       expect(newsletter.associated_articles_by_category).to eq({ category1 => [article2, article1].to_set })
     end
   end
+
+  context "after_save" do
+    it "should set date_published on update and publishing newsletter" do
+      newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
+      newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
+      expect(newsletter.date_published.to_date).to eq(Date.today)
+      expect(newsletter.date_published).to be_within(1.minute).of(Time.now)
+    end
+  end
 end
