@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714102421) do
+ActiveRecord::Schema.define(version: 20150728053128) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -66,8 +66,10 @@ ActiveRecord::Schema.define(version: 20150714102421) do
     t.text     "summary",                  limit: 65535
     t.integer  "home_page_order",          limit: 4
     t.datetime "date_published"
+    t.integer  "category_id",              limit: 4
   end
 
+  add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
   add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -170,6 +172,7 @@ ActiveRecord::Schema.define(version: 20150714102421) do
   add_foreign_key "article_categories", "categories"
   add_foreign_key "article_tags", "articles"
   add_foreign_key "article_tags", "tags"
+  add_foreign_key "articles", "categories"
   add_foreign_key "articles", "users"
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"

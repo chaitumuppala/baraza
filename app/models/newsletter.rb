@@ -24,11 +24,9 @@ class Newsletter < ActiveRecord::Base
 
   private
   def group_articles_by_category
-    article_list = Set.new
     categories.inject({}) do |article_hash, category|
       articles_for_category = yield(category) if block_given?
-      article_hash[category] = articles_for_category - article_list
-      article_list += articles_for_category
+      article_hash[category] = articles_for_category
       article_hash
     end
   end

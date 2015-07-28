@@ -2,7 +2,7 @@
   - if article
     .article-info
       .categories
-        = article.categories.first.name
+        = article.category.name
       .title
         = link_to article.title, article_path(article.id)
       .desc
@@ -12,7 +12,7 @@
         = article.summary
       .desc
         - tags = article.tags.collect do |tag|
-          - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
+          - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
         = tags.join(", ").html_safe
 
   - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))

@@ -3,7 +3,7 @@
   = f.text_field :title
   .field#category_field
     = f.label "Category", class: "star_it"
-    = f.select(:category_ids, Category.all.collect{|c| [c.name, c.id]}, {}, multiple: true, id: "category-select")
+    = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")
   .field#tags_field
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"

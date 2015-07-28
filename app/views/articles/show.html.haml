@@ -31,7 +31,7 @@
       TAGGED UNDER
       %div
         - @article.tags.each do |tag|
-          = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase)
+          = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
     - if @article.status == Article::Status::PUBLISHED
       %br
       %h4

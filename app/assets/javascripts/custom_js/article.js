@@ -61,7 +61,7 @@ $(function () {
         },
 
         category: function() {
-          return $('#category-select> option:selected').length == 0;
+          return $('#category-select> option:selected').val().length == 0;
         },
 
         summary: function() {

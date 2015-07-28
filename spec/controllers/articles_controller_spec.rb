@@ -89,14 +89,14 @@ RSpec.describe ArticlesController, type: :controller do
       @category = create(:category)
     end
     it "should allow creation of article", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
     end
 
     it "should create, submit for approval and copy author_content to content", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
       article = Article.last
       expect(article.title).to eq("new title")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
@@ -105,14 +105,14 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should create, publish if current user is editor" do
       sign_in(create(:editor))
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
 
     it "should create, publish if current user is admin" do
       sign_in(create(:administrator))
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
@@ -123,7 +123,7 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
-      post :create, article: {title: "new title", content: "content", category_ids: [@category.id], summary: "summary"}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
     end
   end
 
@@ -138,26 +138,26 @@ RSpec.describe ArticlesController, type: :controller do
       Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
 
-      get :search, q: tag1.name, search: "tag"
+      get :search, q: tag1.name, search: "tags"
 
       expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
       expect(assigns[:articles].map(&:cover_image)).not_to be_empty
     end
   
-    it "should search articles based on the categories", search: true do
+    it "should search articles based on the category", search: true do
       category1 = create(:category, name: "science")
       category2 = create(:category, name: "history")
       category3 = create(:category, name: "politics")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: "article2", category_ids: [category3.id], status: Article::Status::PUBLISHED)
-      article3 = create(:article, content: "article3", category_ids: [category1.id, category3.id], status: Article::Status::PUBLISHED)
+      article1 = create(:article, content: "article1", category_id: category1.id, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article2", category_id: category3.id, status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article3", category_id: category2.id, status: Article::Status::PUBLISHED)
       Article.__elasticsearch__.refresh_index!
 
       get :search, q: category1.name, search: "category"
 
       expect(assigns[:articles].class).to eq(Array)
-      expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
+      expect(assigns[:articles].map(&:id)).to match_array([article1.id])
     end
   end
 

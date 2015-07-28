@@ -37,7 +37,7 @@ describe Article do
     end
   end
 
-  context "search_by_tag", search: true do
+  context "search_by_tags", search: true do
     it "should return articles of the given tag_name" do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
@@ -46,7 +46,7 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article1.id])
+      expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([article1.id])
     end
 
     it "should return articles of the given  new tag_name" do
@@ -56,7 +56,7 @@ describe Article do
 
       Article.__elasticsearch__.refresh_index!
 
-      expect(Article.search_by_tag("science").collect(&:id)).to eq([article1.id])
+      expect(Article.search_by_tags("science").collect(&:id)).to eq([article1.id])
     end
   end
 
@@ -65,7 +65,7 @@ describe Article do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
       category = create(:category)
-      article = create(:article, category_ids: [category.id])
+      article = create(:article, category_id: category.id)
       article.tags << [tag1, tag2]
 
 
@@ -73,7 +73,7 @@ describe Article do
                                              "title"=>article.title,
                                              "content"=>article.content,
                                              "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}],
-                                             "categories"=>[{"name"=>category.name}],
+                                             "category"=>{"name"=>category.name},
                                              "status"=>"draft"})
     end
   end
@@ -91,7 +91,7 @@ describe Article do
       expect(mapping[:content][:analyzer]).to eq("snowball")
       expect(mapping[:status]).to eq({:index=>"not_analyzed", :type=>"string"})
       expect(mapping[:tags][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
-      expect(mapping[:categories][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
+      expect(mapping[:category][:properties]).to eq({:name=>{:index=>"not_analyzed", :type=>"string"}})
     end
   end
 
@@ -104,9 +104,9 @@ describe Article do
 
         article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id])
-        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([article.id])
-        expect(Article.search_by_tag("abcd").collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tags(tag1.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tags("abcd").collect(&:id)).to eq([article.id])
       end
 
       it "should update document on removing tags through tag_list", search: true do
@@ -117,33 +117,21 @@ describe Article do
 
         article.update_attributes(tag_list: "#{tag1.name}")
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_tag(tag1.name).collect(&:id)).to eq([article.id])
-        expect(Article.search_by_tag(tag2.name).collect(&:id)).to eq([])
+        expect(Article.search_by_tags(tag1.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([])
       end
     end
     
-    context "categories" do
-      it "should update document on adding categories through category_ids", search: true do
+    context "category" do
+      it "should update document on adding category through category_id", search: true do
         category1 = create(:category, name: "history")
         category2 = create(:category, name: "science")
-        article = create(:article, category_ids: [category1.id], status: Article::Status::PUBLISHED)
+        article = create(:article, category_id: category1.id, status: Article::Status::PUBLISHED)
 
-        article.update_attributes(category_ids: [category1.id, category2.id])
+        article.update_attributes(category_id: category2.id)
         Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id])
+        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([])
         expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article.id])
-      end
-
-      it "should update document on removing categories through category_ids", search: true do
-        category1 = create(:category, name: "history")
-        category2 = create(:category, name: "science")
-        article = create(:article, status: Article::Status::PUBLISHED)
-        article.categories << [category1, category2]
-
-        article.update_attributes(category_ids: [category1.id])
-        Article.__elasticsearch__.refresh_index!
-        expect(Article.search_by_category(category1.name).collect(&:id)).to eq([article.id])
-        expect(Article.search_by_category(category2.name).collect(&:id)).to eq([])
       end
     end
   end
@@ -152,10 +140,10 @@ describe Article do
     it "should return articles of the given category name" do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "science")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      article3 = create(:article, content: "article1", category_ids: [category1.id, category2.id], status: Article::Status::DRAFT)
-      article4 = create(:article, content: "article2", category_ids: [category1.id])
+      article1 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article3 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::DRAFT)
+      article4 = create(:article, content: "article2", category_id: category1.id)
 
       Article.__elasticsearch__.refresh_index!
 
@@ -168,15 +156,14 @@ describe Article do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "culture")
       tag = create(:category, name: "tag1")
-      article1 = create(:article, content: "article1", category_ids: [category1.id, category2.id], tag_list: tag.name, status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: "article2", category_ids: [category1.id], status: Article::Status::PUBLISHED)
-      article3 = create(:article, content: "article2", category_ids: [category1.id], status: Article::Status::DRAFT)
+      article1 = create(:article, content: "article1", category_id: category1.id, tag_list: tag.name, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article2", category_id: category1.id, status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article2", category_id: category1.id, status: Article::Status::DRAFT)
 
       Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_all("article1").collect(&:id)).to eq([article1.id])
       expect(Article.search_by_all(tag.name).collect(&:id)).to eq([article1.id])
-      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id])
 
       expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id])
 
@@ -217,7 +204,7 @@ describe Article do
       expect(build(:article, content: nil)).not_to be_valid
     end
     it "should validate presence of category" do
-      expect(build(:article, category_ids: [])).not_to be_valid
+      expect(build(:article, category_id: nil)).not_to be_valid
     end
 
     it "should validate presence of summary" do

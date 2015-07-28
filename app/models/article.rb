@@ -3,15 +3,14 @@ class Article < ActiveRecord::Base
   belongs_to :user
   has_many :article_tags
   has_many :tags, through: :article_tags
-  has_many :article_categories
-  has_many :categories, through: :article_categories
+  belongs_to :category
   attr_accessor :tag_list
   has_attached_file :cover_image, styles: { medium: "758x350!", thumb: "77x77!" }, default_url: "z_:style.png",
                     storage: :s3,
                     s3_credentials: Proc.new{|a| a.instance.s3_credentials}
   validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
   validates_attachment_size :cover_image, in: 0..2.megabytes
-  validates_presence_of :title, :content, :categories, :summary
+  validates_presence_of :title, :content, :category, :summary
   validates_length_of :summary, maximum: 150
   validates :home_page_order, uniqueness: true, allow_blank: true
   index_name    "articles_#{Rails.env}"
@@ -23,7 +22,7 @@ class Article < ActiveRecord::Base
       indexes :tags do
         indexes :name, index: 'not_analyzed'
       end
-      indexes :categories do
+      indexes :category do
         indexes :name, index: 'not_analyzed'
       end
     end
@@ -58,7 +57,7 @@ class Article < ActiveRecord::Base
     self.as_json(
         only: [:id, :title, :content, :status],
         include: {tags: {only: :name},
-                  categories: {only: :name}}
+                  category: {only: :name}}
     )
   end
 
@@ -83,7 +82,7 @@ class Article < ActiveRecord::Base
     response.records.to_a
   end
 
-  ["tag", "category"].each do |criteria|
+  ["tags", "category"].each do |criteria|
     define_singleton_method "search_by_#{criteria}" do |search_text|
       query = {
           query: {
@@ -95,7 +94,7 @@ class Article < ActiveRecord::Base
                       bool: {
                           must: [
                               {
-                                  term: {:"#{criteria.pluralize}.name" => search_text}
+                                  term: {:"#{criteria}.name" => search_text}
                               },
                               {
                                   term: {status: Status::PUBLISHED}
