@@ -41,14 +41,14 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1.json
   def update
     ns_params = params["newsletter"]
-    flash[:alert] = "There are no subscribers" and render :edit and return if Subscriber.all.empty?
-    flash[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
+    flash.now[:alert] = "There are no subscribers" and render :edit and return if Subscriber.all.empty?
+    flash.now[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
     ns_params["articles_attributes"] = ns_params["articles_attributes"].select { |art_attr| ns_params["article_ids"].include?(art_attr["id"]) }
     ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
     if @newsletter.update(newsletter_params)
       if params[:commit] == PUBLISH
         NewsletterMailer.send_mail(@newsletter).deliver_later
-        flash[:notice] = "Newsletter was successfully sent out to the subscribers"
+        flash.now[:notice] = "Newsletter was successfully sent out to the subscribers"
       end
       redirect_to newsletters_path
     else
@@ -73,9 +73,9 @@ class NewslettersController < ApplicationController
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
-      flash[:notice] = "Subscribed successfully"
+      flash.now[:notice] = "Subscribed successfully"
     else
-      flash[:alert] = "Email already subscribed"
+      flash.now[:alert] = "Email already subscribed"
     end
     redirect_to root_path
   end
