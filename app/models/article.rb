@@ -11,7 +11,6 @@ class Article < ActiveRecord::Base
   validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
   validates_attachment_size :cover_image, in: 0..2.megabytes
   validates_presence_of :title, :content, :category, :summary
-  validates_length_of :summary, maximum: 150
   validates :home_page_order, uniqueness: true, allow_blank: true
   index_name    "articles_#{Rails.env}"
   settings do

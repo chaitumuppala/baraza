@@ -36,6 +36,19 @@
     #article_top_story {
       width: auto;
     }
+
+    #summary {
+      display: inline-block;
+      width: 50%;
+      margin: 0;
+    }
+
+    #char-count {
+      font-style: italic;
+      font-size: 11px;
+      color: red;
+      vertical-align: middle;
+    }
   }
   .cover-image {
     margin: 20px;

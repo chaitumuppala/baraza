@@ -1,5 +1,5 @@
 .field
-  = f.label :title
+  = f.label :title, data: { hint: "Maximum 12 words" }
   = f.text_field :title
   .field#category_field
     = f.label "Category", class: "star_it"
@@ -14,7 +14,8 @@
     = f.file_field :cover_image, id: "file_upload"
   .field
     = f.label :summary
-    = f.text_area :summary
+    = f.text_area :summary, id: "summary"
+    %span#char-count
   .field
     = f.label :content
     = f.cktext_area :content

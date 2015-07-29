@@ -211,11 +211,6 @@ describe Article do
       expect(build(:article, summary: "")).not_to be_valid
     end
 
-    it "should validate length of summary" do
-      expect(build(:article, summary: "*"*151)).not_to be_valid
-      expect(build(:article, summary: "*"*150)).to be_valid
-    end
-
     it "should validate uniqueness of home_page_order" do
       create(:article, home_page_order: 1)
       expect(build(:article, home_page_order: 1)).not_to be_valid

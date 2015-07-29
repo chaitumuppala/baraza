@@ -3,6 +3,7 @@ $(function () {
     init: function () {
       this.initTags();
       $("#category-select").select2();
+      $("#summary").on("keyup", this.remainingCharCount);
       $(".articles form#article_form").on("submit", this.validateFile);
     },
 
@@ -56,16 +57,24 @@ $(function () {
       var formValid = true;
 
       var conditions = {
-        title: function() {
+        titlePresence: function() {
           return $("input[name='article[title]']").val().length == 0;
         },
 
-        category: function() {
+        titleLength: function() {
+          return $("input[name='article[title]']").val().split(" ").length > 12;
+        },
+
+        categoryPresence: function() {
           return $('#category-select> option:selected').val().length == 0;
         },
 
-        summary: function() {
-          return $("textarea[name='article[summary]']").val().length == 0;
+        summaryPresence: function() {
+          return $("#summary").val().length == 0;
+        },
+
+        summaryLength: function() {
+          return $("#summary").val().length > 500;
         },
 
         imageSize: function() {
@@ -82,9 +91,11 @@ $(function () {
        };
 
       var errorMessageMap = {
-        title: "<li> Title can't be blank </li>",
-        category: "<li> Category can't be blank </li>",
-        summary: "<li> Summary can't be blank </li>",
+        titlePresence: "<li> Title can't be blank </li>",
+        titleLength: "<li> Title can't be more than 12 words </li>",
+        categoryPresence: "<li> Category can't be blank </li>",
+        summaryPresence: "<li> Summary can't be blank </li>",
+        summaryLength: "<li> Summary can't be more than 500 characters </li>",
         imageSize: "<li> Cover image can't be greater than 2MB </li>",
         imageType: "<li> Cover image content type is invalid </li>",
         content: "<li> Content can't be blank </li>"
@@ -105,6 +116,17 @@ $(function () {
         formValid = false;
       }
       formValid;
+    },
+
+    remainingCharCount: function (evt) {
+      var textContent = $(evt.target);
+      var limit = 500;
+      var len = textContent.val().length;
+      if (len > limit) {
+        textContent.val(textContent.val().substring(0, limit));
+      } else {
+        $('#char-count').text((limit - len) + " characters remaining");
+      }
     }
   };
   loadPageSpecificJs("articles", ['new', 'edit', 'create', 'update', 'approve_form', 'approve'], ArticleTag.init.bind(ArticleTag));
