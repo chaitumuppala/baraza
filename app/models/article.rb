@@ -54,7 +54,7 @@ class Article < ActiveRecord::Base
 
   def as_indexed_json(options={})
     self.as_json(
-        only: [:id, :title, :content, :status],
+        only: [:id, :title, :content, :status, :date_published],
         include: {tags: {only: :name},
                   category: {only: :name}}
     )
@@ -75,7 +75,8 @@ class Article < ActiveRecord::Base
                     }
                 }
             ]
-        }
+        },
+        sort: {date_published: {order: "desc"}}
     }.to_json
     response = Article.__elasticsearch__.search query
     response.records.to_a
@@ -102,7 +103,8 @@ class Article < ActiveRecord::Base
                       }
                   }
               }
-          }
+          },
+          sort: {date_published: {order: "desc"}}
       }.to_json
       response = Article.__elasticsearch__.search query
       response.records.to_a

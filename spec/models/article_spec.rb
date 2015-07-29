@@ -65,16 +65,20 @@ describe Article do
       tag1 = create(:tag, name: "history")
       tag2 = create(:tag, name: "science")
       category = create(:category)
-      article = create(:article, category_id: category.id)
+      article = create(:article, category_id: category.id, status: Article::Status::PUBLISHED)
+      date = DateTime.now
+      article.update_attributes(date_published: date)
       article.tags << [tag1, tag2]
 
 
-      expect(article.as_indexed_json).to eq({"id"=>article.id,
-                                             "title"=>article.title,
-                                             "content"=>article.content,
-                                             "tags"=>[{"name"=>tag1.name}, {"name"=>tag2.name}],
-                                             "category"=>{"name"=>category.name},
-                                             "status"=>"draft"})
+      expect(article.as_indexed_json.keys).to eq(["id",
+                                                  "title",
+                                                  "content",
+                                                  "status",
+                                                  "date_published",
+                                                  "tags",
+                                                  "category"
+                                                 ])
     end
   end
 
@@ -149,6 +153,20 @@ describe Article do
 
       expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id])
     end
+
+    it "should sort results by date_published" do
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      article1 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article1.update_attributes(date_published: Date.today)
+      article2.update_attributes(date_published: 10.days.ago)
+      article3.update_attributes(date_published: Date.yesterday)
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id, article3.id, article2.id])
+    end
   end
 
   context "search_by_all", search: true do
@@ -168,6 +186,20 @@ describe Article do
       expect(Article.search_by_all("article2").collect(&:id)).to eq([article2.id])
 
       expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id, article2.id])
+    end
+
+    it "should sort results by date_published" do
+      category1 = create(:category, name: "history")
+      category2 = create(:category, name: "science")
+      article1 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article2 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article3 = create(:article, content: "article1", category_id: category2.id, status: Article::Status::PUBLISHED)
+      article1.update_attributes(date_published: Date.today)
+      article2.update_attributes(date_published: 10.days.ago)
+      article3.update_attributes(date_published: Date.yesterday)
+      Article.__elasticsearch__.refresh_index!
+
+      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id, article3.id, article2.id])
     end
   end
 
