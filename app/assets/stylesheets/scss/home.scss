@@ -25,29 +25,29 @@
   }
 
   .newsletter {
+    overflow: hidden;
     @extend .panel;
     padding: 0;
-    @extend .row;
     line-height: 117px;
     padding: 10px;
     #title {
-      font-size: 27px;
+      font-size: 1.5rem;
       white-space: nowrap;
     }
     #title, #text, #submit {
-      @extend .column;
+      float: left;
+      padding: 9px;
+    }
+    #title, #text {
+      width: 40%;
+    }
+    #submit {
+      width: 15%;
     }
     #text {
       input {
         display: inline-block;
       }
-    }
-    #title, #text {
-      @extend .medium-5;
-    }
-
-    #submit {
-      @extend .medium-2;
     }
   }
 

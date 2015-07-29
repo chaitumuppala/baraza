@@ -73,21 +73,16 @@ ul, li, ul li ul {
 }
 
 .header {
-  @extend .row;
   #logo {
-    @extend .column;
-    @extend .medium-6;
+    @extend .left;
     position: absolute;
-    left: -1%;
+    left: 0%;
     img {
-      height: 75%;
-      width: 68%;
+      width: 35%;
     }
   }
   #mission {
-    @extend .column;
     @extend .right;
-    @extend .medium-6;
     white-space: nowrap;
     line-height: 120px;
     color: #d45934;
@@ -117,6 +112,7 @@ ul, li, ul li ul {
 .icon-search {
   position: relative;
   left: -20%;
+  margin: 30px;
 }
 
 .select2-container-multi ul.select2-choices{
