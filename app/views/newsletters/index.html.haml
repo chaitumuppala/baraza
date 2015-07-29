@@ -24,4 +24,8 @@
 
   %br
 
-  = link_to 'New Newsletter', new_newsletter_path
+  - if permitted_to?(:new, Newsletter.new)
+    = link_to 'New Newsletter', new_newsletter_path
+  - else
+    %i
+      All newsletters needs to be published to create a new one

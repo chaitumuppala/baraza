@@ -5,6 +5,7 @@ class Newsletter < ActiveRecord::Base
   accepts_nested_attributes_for :articles
   accepts_nested_attributes_for :category_newsletters
   validates_presence_of :name
+  before_validation :has_no_draft?, on: :create
   after_create do
     categories << Category.all
   end
@@ -21,6 +22,10 @@ class Newsletter < ActiveRecord::Base
 
   def associated_articles_by_category
     group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }.reject { |category, articles| articles.empty? }
+  end
+
+  def has_no_draft?
+    Newsletter.where(status: Status::DRAFT).blank?
   end
 
   private

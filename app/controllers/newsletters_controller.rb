@@ -1,5 +1,6 @@
 class NewslettersController < ApplicationController
   before_action :set_newsletter, only: [:show, :edit, :update, :destroy, :preview]
+  before_action :new_newsletter
   filter_resource_access additional_collection: [:subscribe]
 
   SAVE = "Save"
@@ -17,7 +18,6 @@ class NewslettersController < ApplicationController
   end
 
   def new
-    @newsletter = Newsletter.new
   end
 
   def create
@@ -84,6 +84,10 @@ class NewslettersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_newsletter
     @newsletter = Newsletter.find(params[:id])
+  end
+
+  def new_newsletter
+    @newsletter = Newsletter.new
   end
 
   def new_newsletter_from_params

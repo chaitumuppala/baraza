@@ -25,6 +25,7 @@ describe Newsletter do
       CategoryNewsletter.create(category: category2, newsletter: newsletter, position_in_newsletter: 1)
       article1 = create(:article, title: "123", created_at: 1.month.ago.to_datetime, category_id: category1.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Date.today, category_id: category2.id, status: Article::Status::PUBLISHED)
+      newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
       article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
       expected_result = { category2 => [article2].to_set, category1 => [article1].to_set }
 
@@ -40,6 +41,7 @@ describe Newsletter do
       CategoryNewsletter.create(category: category2, newsletter: newsletter)
       article1 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: newsletter.id, category_id: category1.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Date.today, newsletter_id: newsletter.id, category_id: category2.id, status: Article::Status::PUBLISHED)
+      newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
       article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category2.id, status: Article::Status::PUBLISHED)
       result_hash = { category1 => [article1].to_set, category2 => [article2].to_set}
       expect(newsletter.eligible_articles_by_category).to eq(result_hash)
@@ -86,6 +88,7 @@ describe Newsletter do
       category2 = create(:category, name: "science")
       CategoryNewsletter.create(category: category1, newsletter: newsletter, position_in_newsletter: 2)
       CategoryNewsletter.create(category: category2, newsletter: newsletter, position_in_newsletter: 1)
+      newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
       article1 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: newsletter.id, category_id: category2.id, position_in_newsletter: 2, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Date.today, newsletter_id: newsletter.id, category_id: category2.id, position_in_newsletter: 1, status: Article::Status::PUBLISHED)
       article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
@@ -114,6 +117,18 @@ describe Newsletter do
       newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
       expect(newsletter.date_published.to_date).to eq(Date.today)
       expect(newsletter.date_published).to be_within(1.minute).of(Time.now)
+    end
+  end
+
+  context "validation" do
+    it "should allow only one newsletter with draft" do
+      n = create(:newsletter, status: Newsletter::Status::DRAFT)
+      n.update_attributes(status: Newsletter::Status::PUBLISHED)
+
+      create(:newsletter, status: Newsletter::Status::DRAFT)
+      newsletter3 = build(:newsletter, status: Newsletter::Status::DRAFT)
+
+      expect(newsletter3).not_to be_valid
     end
   end
 end

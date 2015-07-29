@@ -76,6 +76,25 @@ describe NewslettersController do
     end
   end
 
+  context "new" do
+    it "should new only if there are no draft newsletters" do
+      n = create(:newsletter, status: Newsletter::Status::DRAFT)
+      n.update_attributes(status: Newsletter::Status::PUBLISHED)
+
+      create(:newsletter, status: Newsletter::Status::DRAFT)
+
+      get :new
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "should new only if there are no draft newsletters" do
+      create(:newsletter, status: Newsletter::Status::PUBLISHED)
+
+      get :new
+      expect(response).to render_template("new")
+    end
+  end
+
   context "edit" do
     it "should allow to edit only if newsletter is in draft state" do
       newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
