@@ -71,3 +71,15 @@
         .render-content
           = yield
       .right-empty
+
+  #footer
+  %div{:style => "width:20%; margin:0 auto;font-family: Arial, Helvetica; font-size: 14px; color: #353535; text-align: center;"}
+    %b Find us at &nbsp;
+    %br
+    %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
+    %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
+    %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
+    %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
+    %br
+      %a{:href => "app/views/contact/contact.html.haml" } Contact Us  &nbsp;
+      %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"} About Us
