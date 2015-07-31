@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter { |c| Authorization.current_user = c.current_user }
 
   def permission_denied
-    flash.now[:alert] = "Sorry, you are not allowed to access that page.";
+    flash[:alert] = "Sorry, you are not allowed to access that page.";
     session[:user_return_to] = request.fullpath
     path = Authorization.current_user.role_symbols.include?(:guest) ? new_user_session_path : root_path
     redirect_to path

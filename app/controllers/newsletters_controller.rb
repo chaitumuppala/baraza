@@ -1,5 +1,5 @@
 class NewslettersController < ApplicationController
-  before_action :set_newsletter, only: [:show, :edit, :update, :destroy, :preview]
+  before_action :set_newsletter, only: [:show, :edit, :update, :destroy]
   before_action :new_newsletter
   filter_resource_access additional_collection: [:subscribe]
 
@@ -48,7 +48,7 @@ class NewslettersController < ApplicationController
     if @newsletter.update(newsletter_params)
       if params[:commit] == PUBLISH
         NewsletterMailer.send_mail(@newsletter).deliver_later
-        flash.now[:notice] = "Newsletter was successfully sent out to the subscribers"
+        flash[:notice] = "Newsletter was successfully sent out to the subscribers"
       end
       redirect_to newsletters_path
     else
@@ -67,15 +67,16 @@ class NewslettersController < ApplicationController
   end
 
   def preview
+    @newsletter = Newsletter.find(params[:id])
     render layout: false
   end
 
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
-      flash.now[:notice] = "Subscribed successfully"
+      flash[:notice] = "Subscribed successfully"
     else
-      flash.now[:alert] = "Email already subscribed"
+      flash[:alert] = "Email already subscribed"
     end
     redirect_to root_path
   end
