@@ -29,4 +29,4 @@ en:
               password:
                 invalid: "should include at least one of the following characters: one letter, one numeral and one special character."
               email:
-                taken: "already has a user associated with it. To retrieve password for the email id click on forgot password"
+                taken: "already has a user associated with it. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a>"

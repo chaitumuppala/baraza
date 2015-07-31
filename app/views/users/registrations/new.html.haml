@@ -13,8 +13,12 @@
       .custom
         %h5 Enter these details
         = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "no-double-click"}) do |f|
-          = devise_error_messages!
-          .error
+          #error_explanation
+            - if resource.errors.any?
+              %ul
+                - error_message_for_email(resource).each do |msg|
+                  %li= msg
+
           .name
             .field.first_name
               = f.label :first_name
