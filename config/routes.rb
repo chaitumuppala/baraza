@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
 
+  get '/contact_us', :to => redirect('/contact_us.html.haml')
+  get '/about_us', :to => redirect('/about_us.html.haml')
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
