@@ -29,15 +29,6 @@ Rails.application.routes.draw do
       post :subscribe
     end
   end
-
-  resource :contacts do
-    get '/contacts/new'
-  end
-
-  resource :abouts do
-    get '/about/new'
-  end
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

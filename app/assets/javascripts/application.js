@@ -8,7 +8,7 @@
 // compiled file.
 //
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// abouts supported directives.
+// about supported directives.
 //
 //= require jquery
 //= require jquery_ujs

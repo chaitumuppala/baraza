@@ -81,5 +81,5 @@
     %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
     %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
     %br
-      = link_to "Contact Us", contacts_path
-      = link_to "About Us", abouts_path
+      %a{:href => "app/views/contact/contact.html.haml" } Contact Us  &nbsp;
+      %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"} About Us
