@@ -29,21 +29,15 @@ Rails.application.routes.draw do
       post :subscribe
     end
   end
-
-  resource :contacts do
-    get '/contacts/new'
-  end
-
-  resource :abouts do
-    get '/about/new'
-  end
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   resources :tags, only: [:index]
   # You can have the root of your site routed with "root"
   root 'home#index'
+
+  get '/contact_us', :to => redirect('/contact_us.html.haml')
+  get '/about_us', :to => redirect('/about_us.html.haml')
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
