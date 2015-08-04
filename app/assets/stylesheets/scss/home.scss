@@ -65,13 +65,13 @@
   @extend .panel;
   padding: 10px 20px 0 20px;
   .title {
-    font-size: 36px;
+    font-size: 24px;
   }
   .article-info {
     font-weight: 300;
     .title {
       a {
-        font-size: 36px;
+        font-size: 24px;
         color: #d45934;
         font-weight: 400;
         word-wrap: break-word;
@@ -117,11 +117,15 @@
       color: white;
       padding: 10px 20px 0 20px;
       background: rgba(47, 47, 47, 0.7);
+      a {
+        color: #FFFFFF;
+        font-weight: bold;
+      }
       .article-info {
         font-weight: 300;
         .title {
           font-weight: 400;
-          font-size: 36px;
+          font-size: 24px;
           word-wrap: break-word;
         }
         .desc {
