@@ -82,6 +82,17 @@ RSpec.describe ArticlesController, type: :controller do
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
       patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
     end
+
+    context "preview" do
+      it "should render preview of article", sign_in: true do
+        article = create(:article, user_id: controller.current_user.id)
+        patch :update, id: article.id, article: {title: "new title", content: article.content}, commit: ArticlesController::PREVIEW
+
+        expect(assigns[:article].title).to eq("new title")
+        expect(assigns[:article].content).to eq(article.content)
+        expect(response).to render_template("preview")
+      end
+    end
   end
 
   describe "create" do
@@ -124,6 +135,15 @@ RSpec.describe ArticlesController, type: :controller do
       expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
       post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
+    end
+
+    context "preview" do
+      it "should render preview of article", sign_in: true do
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PREVIEW
+        expect(assigns[:article].title).to eq("new title")
+        expect(assigns[:article].content).to eq("content")
+        expect(response).to render_template("preview")
+      end
     end
   end
 
@@ -247,6 +267,16 @@ RSpec.describe ArticlesController, type: :controller do
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(response.code).to eq("302")
+    end
+
+    context "preview" do
+      it "should render preview of article", admin_sign_in: true do
+        article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+
+        patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PREVIEW
+        expect(assigns[:article].title).to eq("title by admin")
+        expect(response).to render_template("preview")
+      end
     end
   end
 

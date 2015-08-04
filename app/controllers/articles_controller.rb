@@ -2,11 +2,13 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve, :home_page_order_update]
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
+  before_action :display_preview, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = "Save as draft"
   SUBMIT_FOR_APPROVAL = "Submit for approval"
   PUBLISH = "Publish"
+  PREVIEW = "Preview"
 
   def show
   end
@@ -115,6 +117,13 @@ class ArticlesController < ApplicationController
   def for_publish_or_approval
     if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
       yield if block_given?
+    end
+  end
+
+  def display_preview
+    if params[:commit] == PREVIEW
+      @article = Article.new(article_params)
+      render 'articles/preview' and return
     end
   end
 end
