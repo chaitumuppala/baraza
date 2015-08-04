@@ -10,6 +10,6 @@
                 %li= msg
         = render "form_fields", f: f
         .actions
-          = f.submit ArticlesController::SAVE
-          = f.submit ArticlesController::PUBLISH
-          = f.submit ArticlesController::PREVIEW
+          = f.submit ArticlesController::SAVE, data: {target: ""}, class: "submitButton"
+          = f.submit ArticlesController::PUBLISH, data: {target: ""}, class: "submitButton"
+          = f.submit ArticlesController::PREVIEW, id: "preview", data: {target: "_blank"}, class: "submitButton"

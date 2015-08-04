@@ -5,6 +5,7 @@ $(function () {
       $("#category-select").select2();
       $("#summary").on("keyup", this.remainingCharCount);
       $(".articles form#article_form").on("submit", this.validateFile);
+      $(".articles .submitButton").on("click", this.openInNewTab);
     },
 
     initTags: function() {
@@ -127,6 +128,15 @@ $(function () {
       } else {
         $('#char-count').text((limit - len) + " characters remaining");
       }
+    },
+
+    openInNewTab: function(evt) {
+      evt.preventDefault();
+      var previewButton = $(evt.target);
+      var form = previewButton.parents('form');
+      form.attr('target', previewButton.data('target'));
+      form.submit();
+      return false;
     }
   };
   loadPageSpecificJs("articles", ['new', 'edit', 'create', 'update', 'approve_form', 'approve'], ArticleTag.init.bind(ArticleTag));
