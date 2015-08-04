@@ -4,6 +4,7 @@ class NewslettersController < ApplicationController
   filter_resource_access additional_collection: [:subscribe]
 
   SAVE = "Save"
+  PREVIEW = "Preview"
   PUBLISH = "Publish"
 
   # GET /newsletters

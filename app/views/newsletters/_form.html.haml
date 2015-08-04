@@ -31,4 +31,5 @@
                 = link_to article.title, article_path(article.id), class: "title"
     .actions
       = f.submit NewslettersController::SAVE
+      = f.submit NewslettersController::PREVIEW
       = f.submit NewslettersController::PUBLISH
