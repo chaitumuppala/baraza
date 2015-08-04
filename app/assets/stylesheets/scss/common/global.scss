@@ -27,6 +27,7 @@ time, mark, audio, video, input {
 }
 body{
   position: relative;
+  background: #EAEAEB;
 }
 
 .middle-content {
@@ -34,10 +35,37 @@ body{
   @extend .medium-10;
 }
 
-.main-content, .nav-bar, .logo-bar {
+.nav-bar, .logo-bar {
   clear: both;
   overflow: hidden;
   border-bottom: 1px solid $gainsboro;
+  background: #FFFFFF;
+}
+
+.wrapper {
+  min-height: 100%;
+  position: relative;
+}
+
+.main-content {
+  border-bottom: none;
+  overflow: auto;
+  padding-bottom: 150px;
+}
+
+.footer {
+  margin: 0 auto;
+  font-size: 14px;
+  color: #353535;
+  text-align: center;
+  padding: 10px;
+  background: #FFFFFF;
+  border-top: 1px solid #DDD;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
 }
 
 input[type=submit] {
@@ -103,11 +131,6 @@ ul, li, ul li ul {
   }
 }
 
-.main-content {
-  overflow: hidden;
-  background-color: #EBEBEA;
-  height: auto;
-}
 
 .icon-search {
   position: relative;

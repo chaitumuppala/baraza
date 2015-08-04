@@ -10,6 +10,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body{"data-action" => controller.action_name, "data-controller" => controller.controller_path}
+  .wrapper
     %ul#category-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       - Category.all.each do |category|
         %li
@@ -72,14 +73,13 @@
           = yield
       .right-empty
 
-  #footer
-  %div{:style => "width:20%; margin:0 auto;font-family: Arial, Helvetica; font-size: 14px; color: #353535; text-align: center;"}
-    %b Find us at &nbsp;
-    %br
-    %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
-    %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
-    %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
-    %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
-    %br
-      = link_to "Contact Us", contacts_path
-      = link_to "About Us", abouts_path
+    .footer
+      %b Find us at &nbsp;
+      %br
+      %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
+      %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
+      %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
+      %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
+      %br
+        = link_to "About Us", abouts_path
+        = link_to "Contact Us", contacts_path
