@@ -1,7 +1,36 @@
 %p
-  Hi #{@resource.full_name},
+  Dear #{@resource.full_name},
 %p
-  Welcome to Pan-African Baraza.
+  Thank you for signing up with the Pan-African Baraza, the platform for reclaiming the past, contesting the present and inventing the future.
 %p
   To activate your account, please follow the #{link_to 'link', confirmation_url(@resource, confirmation_token: @token)}.
-  Your Baraza User name is email address.
+  Your Baraza user name is #{@resource.email}.
+
+%p
+  You are invited to #{link_to 'explore', root_url} articles, reviews, audiovisual materials on the site. We welcome your comments and responses to these materials.
+%p
+  You or your organisation can submit content that you want the editors to consider publishing on the site by sending materials to editors@panafricanbaraza.org, or you can upload content directly.
+  Your contribution will be reviewed by the editors and we will get back to you as soon as we can whether or not we are able to publish it.
+
+%p
+  We have learning materials that you are free to use, and you can even join online courses on different aspects of the struggle for emancipation across the pan-African world.
+
+%p
+  One of the aims of Pan-African Baraza is to amplify the voices of those campaigning for social justice and emancipation across the pan-African world. We welcome you to participate in these campaigns.
+  And if you want us to feature campaigns in which you are involved, you can do so directly on the site or send your suggestions to editors@panafricanbaraza.org.
+%p
+  Pan-African Baraza welcomes you and your organisation to join the community of pan-African activists, organisations, social movements and engaged intellectuals committed to the cause of emancipation.
+  We will soon be setting up a facility for special interest groups to establish their own zone on the site where they can discuss, organise and share content with the Pan-African Baraza community.
+%p
+  You can learn more about Pan-African Baraza #{link_to "here", about_url}
+%p
+  Please don’t hesitate to get in touch with us if you have any questions or suggestions.
+
+%br
+  .div
+    A luta continua
+  %br
+  .div
+    The Editors, Pan-African Baraza
+  .div
+    editors@panafricanbaraza.org
