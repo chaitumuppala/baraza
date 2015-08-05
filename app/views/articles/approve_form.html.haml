@@ -10,9 +10,9 @@
                 %li= msg
         = render "form_fields", f: f
         .actions
+          = f.submit ArticlesController::PREVIEW, id: "preview", data: {target: "_blank"}
           = f.submit ArticlesController::SAVE, data: {target: ""}
           = f.submit ArticlesController::PUBLISH, data: {target: ""}
-          = f.submit ArticlesController::PREVIEW, id: "preview", data: {target: "_blank"}
           %span.cancel
             = link_to "Cancel", articles_path
 
