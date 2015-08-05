@@ -3,5 +3,3 @@
     .panel
       %h4 Editing article
       = render 'form'
-  - if permitted_to?(:show, @article)
-    = link_to 'Show', @article

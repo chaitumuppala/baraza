@@ -8,6 +8,7 @@
       -#.cover-image
         = image_tag @article.cover_image.url
       = @article.content.html_safe
+      %a{:href => "javascript:history.back()", class: "button"} Edit
     .tags
       TAGGED UNDER
       %div

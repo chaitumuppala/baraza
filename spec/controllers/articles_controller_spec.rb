@@ -85,10 +85,11 @@ RSpec.describe ArticlesController, type: :controller do
 
     context "preview" do
       it "should render preview of article", sign_in: true do
-        article = create(:article, user_id: controller.current_user.id)
+        article = create(:article, user_id: controller.current_user.id, title: "old title")
         patch :update, id: article.id, article: {title: "new title", content: article.content}, commit: ArticlesController::PREVIEW
 
         expect(assigns[:article].title).to eq("new title")
+        expect(article.reload.title).to eq("old title")
         expect(assigns[:article].content).to eq(article.content)
         expect(response).to render_template("preview")
       end

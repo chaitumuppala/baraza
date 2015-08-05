@@ -10,6 +10,8 @@
   = render "form_fields", f: f
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   .actions
-    = f.submit ArticlesController::SAVE, data: {target: ""}, class: "submitButton"
-    = f.submit (current_user.registered_user? ? ArticlesController::SUBMIT_FOR_APPROVAL : ArticlesController::PUBLISH), data: {target: ""}, class: "submitButton"
-    = f.submit ArticlesController::PREVIEW, class: "submitButton", data: {target: "_blank"}
+    = f.submit ArticlesController::SAVE, data: {target: ""}
+    = f.submit (current_user.registered_user? ? ArticlesController::SUBMIT_FOR_APPROVAL : ArticlesController::PUBLISH), data: {target: ""}
+    = f.submit ArticlesController::PREVIEW, data: {target: "_blank"}
+    %span.cancel
+    = link_to "Cancel", articles_path
