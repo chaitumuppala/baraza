@@ -67,7 +67,7 @@
                             = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
                           %br
                             %span
-                              = article.summary
+                              = truncate_summary(article.summary)
                             %br
                               %span
                                 %a{:href => article_path(article), :style => "color: #1595c0; text-decoration: none;"} Read more

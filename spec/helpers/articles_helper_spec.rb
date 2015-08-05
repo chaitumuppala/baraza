@@ -13,4 +13,11 @@ describe ArticlesHelper do
       expect(helper.cover_image_url_for(article)).to eq("http://s3_url/x.png")
     end
   end
+
+  context "truncate_summary" do
+    it "should reduce the text to 150 characters" do
+      article = double(:article, summary: ("*"*75)+" "+("$"*80))
+      expect(helper.truncate_summary(article.summary)).to eq(("*"*75)+" "+("$"*71)+"...")
+    end
+  end
 end

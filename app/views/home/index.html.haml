@@ -36,5 +36,5 @@
             %div{style: "font-size: 11px"}
               = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
             %div{style: "font-size: 14px"}
-              = article.summary
+              = truncate_summary(article.summary)
         %a.close-reveal-modal{"aria-label" => "Close"} ×

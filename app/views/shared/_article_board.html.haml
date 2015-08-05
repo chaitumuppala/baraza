@@ -9,7 +9,7 @@
         = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase} AGO"
       .summary
         = link_to (image_tag article.cover_image.url(:thumb)), article_path(article.id)
-        = article.summary
+        = truncate_summary(article.summary)
       .desc
         - tags = article.tags.collect do |tag|
           - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
