@@ -25,7 +25,7 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.save
         article_arrival_notification
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
+        format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new }
@@ -38,7 +38,7 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.update(article_params)
         article_arrival_notification
-        format.html { redirect_to @article, notice: 'Article was successfully updated.' }
+        format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :edit }
@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
         ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
         ArticleMailer.published_notification_to_editors(@article).deliver_later
       end
-      redirect_to @article, notice: 'Article was successfully updated.'
+      redirect_to articles_path, notice: 'Article was successfully updated.'
     else
       render :approve_form
     end

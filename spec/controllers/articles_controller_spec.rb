@@ -55,6 +55,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}
       expect(response.code).to eq("302")
+      expect(response).to redirect_to(articles_path)
     end
 
     it "should not allow update of others article" do
@@ -105,6 +106,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
+      expect(response).to redirect_to(articles_path)
     end
 
     it "should create, submit for approval and copy author_content to content", sign_in: true do
@@ -248,6 +250,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::PUBLISHED)
       expect(response.code).to eq("302")
+      expect(response).to redirect_to(articles_path)
     end
 
     it "should render approve_form on error", admin_sign_in: true do
