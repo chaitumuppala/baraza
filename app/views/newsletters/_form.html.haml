@@ -30,6 +30,6 @@
                 = image_tag(article.cover_image.url, alt: "")
                 = link_to article.title, article_path(article.id), class: "title"
     .actions
-      = f.submit NewslettersController::SAVE
-      = f.submit NewslettersController::PREVIEW
-      = f.submit NewslettersController::PUBLISH
+      = f.submit NewslettersController::PREVIEW, class: "submitButton", data: {target: ""}
+      = f.submit NewslettersController::SAVE, data: {target: ""}, class: "submitButton"
+      = f.submit NewslettersController::PUBLISH, data: {target: ""}, class: "submitButton"

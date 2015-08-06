@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :newsletters do
     member do
-      get :preview
+      get 'preview'
     end
     collection do
       post :subscribe

@@ -50,8 +50,13 @@ class NewslettersController < ApplicationController
       if params[:commit] == PUBLISH
         NewsletterMailer.send_mail(@newsletter).deliver_later
         flash[:notice] = "Magazine was successfully sent out to the subscribers"
+        redirect_to newsletters_path
+      elsif params[:commit] == SAVE
+        redirect_to newsletters_path
+      elsif params[:commit] == PREVIEW
+        render 'newsletters/preview', :layout => false
       end
-      redirect_to newsletters_path
+
     else
       render :edit
     end
@@ -65,11 +70,6 @@ class NewslettersController < ApplicationController
       format.html { redirect_to newsletters_url, notice: 'Magazine was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
-  def preview
-    @newsletter = Newsletter.find(params[:id])
-    render layout: false
   end
 
   def subscribe
@@ -101,5 +101,12 @@ class NewslettersController < ApplicationController
     params.require(:newsletter).permit(:name, :status, article_ids: [],
                                        category_newsletters_attributes: [:id, :newsletter_id, :category_id, :position_in_newsletter],
                                        articles_attributes: [:id, :position_in_newsletter])
+  end
+
+  def preview
+    if params[:commit] == PREVIEW
+      @newsletter = Newsletter.new(newsletter_params)
+      render 'newsletters/preview' and return
+    end
   end
 end
