@@ -64,7 +64,7 @@
                             = article.title
                         %br
                           %span
-                            = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
+                            = "#{article.user.full_name.upcase}, #{article.date_published.strftime("%d %b %Y")}"
                           %br
                             %span
                               = truncate_summary(article.summary)
