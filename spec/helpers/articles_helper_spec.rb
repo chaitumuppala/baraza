@@ -17,7 +17,7 @@ describe ArticlesHelper do
   context "truncate_summary" do
     it "should reduce the text to 150 characters" do
       article = double(:article, summary: ("*"*75)+" "+("$"*80))
-      expect(helper.truncate_summary(article.summary)).to eq(("*"*75)+" "+("$"*71)+"...")
+      expect(helper.truncate_summary(article.summary)).to eq(("*"*75)+" "+("$"*74)+"...")
     end
   end
 end

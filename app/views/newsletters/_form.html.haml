@@ -27,8 +27,11 @@
                 = fields_for "newsletter[articles_attributes][]", article, index: "" do |af|
                   = af.hidden_field :position_in_newsletter, class: "article_position"
                   = af.hidden_field :id
-                = image_tag(article.cover_image.url, alt: "")
+                .article-image
+                  = image_tag(article.cover_image.url, alt: "")
                 = link_to article.title, article_path(article.id), class: "title"
+                %div
+                  = truncate_summary(article.summary)
     .actions
       = f.submit NewslettersController::PREVIEW, class: "submitButton", data: {target: ""}
       = f.submit NewslettersController::SAVE, data: {target: ""}, class: "submitButton"

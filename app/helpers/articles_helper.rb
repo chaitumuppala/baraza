@@ -4,6 +4,6 @@ module ArticlesHelper
   end
 
   def truncate_summary(summary)
-    truncate(summary, length: 150)
+    truncate(summary, length: 153)
   end
 end

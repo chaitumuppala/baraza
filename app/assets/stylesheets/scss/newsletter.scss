@@ -2,10 +2,17 @@
   .article {
     margin: 10px;
     border: 1px solid #777;
+    clear: both;
+    overflow: hidden;
+    .article-image {
+      float: left;
+    }
     img {
       height: 98px;
+      width: 98px;
       padding: 5px;
       border: 1px solid #777;
+      margin: 5px 5px 0 5px;
     }
     .title {
       text-align: center;
