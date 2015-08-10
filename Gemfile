@@ -72,6 +72,7 @@ group :development, :test do
   gem 'spring'
   gem 'haml-rails'
   gem 'rspec-rails'
+  gem 'bullet'
 end
 
 group :test do

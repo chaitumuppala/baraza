@@ -17,11 +17,11 @@ class Newsletter < ActiveRecord::Base
   end
 
   def eligible_articles_by_category
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }.reject { |category, articles| articles.empty? }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }
   end
 
   def associated_articles_by_category
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }.reject { |category, articles| articles.empty? }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }
   end
 
   def has_no_draft?
@@ -32,7 +32,7 @@ class Newsletter < ActiveRecord::Base
   def group_articles_by_category
     categories.inject({}) do |article_hash, category|
       articles_for_category = yield(category) if block_given?
-      article_hash[category] = articles_for_category
+      article_hash[category] = articles_for_category if articles_for_category.present?
       article_hash
     end
   end
