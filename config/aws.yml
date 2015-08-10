@@ -14,6 +14,10 @@ demo:
   <<: *default
   cover_image_bucket: "cover_image_demo"
   ckeditor_image_bucket: "ckeditor_image_demo"
+staging:
+  <<: *default
+  cover_image_bucket: "cover-image-staging"
+  ckeditor_image_bucket: "ckeditor-image-staging"
 production:
   <<: *default
   cover_image_bucket: "cover_image_production"
