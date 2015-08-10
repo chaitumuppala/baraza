@@ -8,7 +8,7 @@ describe ArticleMailer do
       mailer = ArticleMailer.notification_to_creator(user, article)
 
       expect(mailer.to).to eq([user.email])
-      expect(mailer.subject).to eq("Your article is received")
+      expect(mailer.subject).to eq("Thank you for your submission")
     end
   end
 
@@ -21,7 +21,7 @@ describe ArticleMailer do
       mailer = ArticleMailer.notification_to_editors(article)
 
       expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
-      expect(mailer.subject).to eq("unite all and Patrick Jane")
+      expect(mailer.subject).to eq("Submission for review by Patrick Jane: unite all")
     end
   end
 
@@ -34,7 +34,7 @@ describe ArticleMailer do
       mailer = ArticleMailer.published_notification_to_editors(article)
 
       expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
-      expect(mailer.subject).to eq("unite all and Patrick Jane")
+      expect(mailer.subject).to eq("unite all has been published")
     end
   end
 
@@ -45,7 +45,7 @@ describe ArticleMailer do
       mailer = ArticleMailer.published_notification_to_creator(user, article)
 
       expect(mailer.to).to eq([user.email])
-      expect(mailer.subject).to eq("Your article is published")
+      expect(mailer.subject).to eq("Your article has been published")
     end
   end
 end
