@@ -42,6 +42,8 @@ describe NewslettersController do
                                     "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
 
       expect(newsletter.reload.articles).to eq([article1])
+      expect(flash[:notice]).to eq("Magazine is saved successfully")
+      expect(response).to redirect_to(edit_newsletter_path(newsletter))
     end
 
     it "should throw error if no article is selected" do

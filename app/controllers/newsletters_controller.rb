@@ -52,11 +52,11 @@ class NewslettersController < ApplicationController
         flash[:notice] = "Magazine was successfully sent out to the subscribers"
         redirect_to newsletters_path
       elsif params[:commit] == SAVE
-        redirect_to newsletters_path
+        flash[:notice] = "Magazine is saved successfully"
+        redirect_to edit_newsletter_path(@newsletter)
       elsif params[:commit] == PREVIEW
         render 'newsletters/preview', :layout => false
       end
-
     else
       render :edit
     end

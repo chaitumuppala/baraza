@@ -1,6 +1,8 @@
 .newsletter
   .panel
     %h4 Choose Articles
+    %div
+      Articles can be re-arranged by dragging them inside the category and categories can be re-arranged by dragging them within the newsletter.
     -#= link_to 'Preview', preview_newsletter_path(@newsletter), target: "_blank"
     = render 'form'
     = link_to 'Back', newsletters_path
