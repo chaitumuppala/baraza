@@ -60,8 +60,7 @@ gem 'capistrano-rails', '~> 1.1.0'
 gem 'capistrano-rvm'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-passenger'
-gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'dotenv-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
