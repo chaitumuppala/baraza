@@ -30,6 +30,10 @@ body{
   background: #EAEAEB;
 }
 
+table {
+  border: 1px solid #DDD;
+}
+
 .middle-content {
   @extend .column;
   @extend .medium-10;
