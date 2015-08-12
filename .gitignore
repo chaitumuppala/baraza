@@ -20,3 +20,6 @@ public/assets/*
 public/system/*
 public/ckeditor_assets/*
 mocks/*
+.env.staging
+.env.demo
+.emv.production
