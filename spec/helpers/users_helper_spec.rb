@@ -18,7 +18,7 @@ describe UsersHelper do
       user = User.new(email: "valid@example.com")
       user.valid?
 
-      expect(helper.error_message_for_email(user)).to eq(["Email has already been registered. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a> or <a href='/users/sign_in'> login here </a> "])
+      expect(helper.error_message_for_email(user)).to eq(["Email has already been used to register an account. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a> or <a href='/users/sign_in'> sign in here </a> "])
     end
   end
 end

@@ -29,4 +29,4 @@ en:
               password:
                 invalid: "should include at least one of the following characters: one letter, one numeral and one special character."
               email:
-                taken: "has already been registered. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a> or <a href='/users/sign_in'> login here </a> "
+                taken: "has already been used to register an account. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a> or <a href='/users/sign_in'> sign in here </a> "
