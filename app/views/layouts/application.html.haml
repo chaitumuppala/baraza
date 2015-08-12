@@ -74,12 +74,22 @@
       .right-empty
 
     .footer
-      %b Find us at &nbsp;
-      %br
-      %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
-      %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
-      %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
-      %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
-      %br
-        = link_to "About Us", about_path
-        = link_to "Contact Us", contact_path
+      %div{class: "left-empty"}
+      %div{class: "middle-content"}
+        %div{class: "column-1"}
+          %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
+            %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
+          %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}/
+          %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44", class: "margin-right"}/
+          = link_to "About", about_path
+          &nbsp;|&nbsp;
+          = link_to "Contact", contact_path
+        %div{class: "column-2"}
+          %div
+            %a{:rel => "license", :href => "http://creativecommons.org/licenses/by-nc-sa/4.0/"}
+              %img{:alt => "Creative Commons License", :src => image_url("https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"), style: "border-width: 0"}
+          %div{class: "small-text"}
+            This work is licensed under a
+            %a{:rel => "lecense", :href => "http://creativecommons.org/licenses/by-nc-sa/4.0/"}
+              Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+      %div{class: "right-empty"}
