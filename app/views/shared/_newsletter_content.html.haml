@@ -55,10 +55,10 @@
                 %tr
                   - article_pair.each do |article|
                     - if article == "empty"
-                      %td{:style => "width: 50%"}
+                      %td{:style => "width: 290px"}
                         &nbsp;
                     - else
-                      %td{:style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-right: 20px;"}
+                      %td{:style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-right: 20px; width: 290px"}
                         %span
                           %a{:href => article_path(article), :style => "color: #d6562f; font-size: 16px; font-weight: bold; text-decoration: none;", :target => "_blank"}
                             = article.title
@@ -72,11 +72,9 @@
                               %span
                                 %a{:href => article_path(article), :style => "color: #1595c0; text-decoration: none;"} Read more
                   / EMPTY SPACE BETWEEN ARTICLE ROWS
-              %tr
-                %td{:colspan => "5"} &nbsp;
 
-      %tr
-        %td{:colspan => "5", :style => "border-bottom: 1px solid #e1e1e1;"} &nbsp;
+        %tr
+          %td{:colspan => "5", :style => "border-bottom: 1px solid #e1e1e1;"}
 
       /
         *********************************************************************************************************
@@ -86,7 +84,7 @@
         %td{:colspan => "5", :height => "105", :style => "border-top: 1px solid #c4c4c4; font-family: Arial, Helvetica; font-size: 14px; color: #353535; text-align: center;"}
           %p
             %b Find us at
-          %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank"}
+          %a{:href => "https://twitter.com/AfricanBaraza", :target => "_blank", :style => "text-decoration: none; border: none;"}
             %img{:alt => "Follow us on Twitter", :height => "44", :src => image_url("twitter.png"), :width => "44"}/
           %a{:href => "https://www.facebook.com/PanAfricanBaraza", :target => "_blank"}
             %img{:alt => "Follow us on Facebook", :height => "44", :src => image_url("facebook.png"), :width => "44"}/
