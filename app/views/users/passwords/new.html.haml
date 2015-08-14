@@ -8,6 +8,6 @@
       .error
       .field
         = f.label :email
-        = f.email_field :email, autofocus: true
+        = f.email_field :email, autofocus: true ,:id => "email"
       .actions
-        = f.submit "Send me reset password instructions"
+        = f.submit "Send me reset password instructions" ,:id => "email"
