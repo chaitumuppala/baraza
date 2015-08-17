@@ -1,13 +1,13 @@
 default: &default
-  access_key_id: <%=ENV["AWS_ACCESS_KEY_ID"] %>
-  secret_access_key: <%=ENV["AWS_SECRET_ACCESS_KEY"] %>
+  access_key_id: ENV['AWS_ACCESS_KEY_ID']
+  secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
 development:
   <<: *default
   cover_image_bucket: "cover_image_development"
   ckeditor_image_bucket: "ckeditor_image_development"
 test:
-  access_key_id: "test"
-  secret_access_key: "test"
+  access_key_id: ENV['AWS_ACCESS_KEY_ID']
+  secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   cover_image_bucket: "cover_image_test"
   ckeditor_image_bucket: "ckeditor_image_test"
 demo:
@@ -15,8 +15,8 @@ demo:
   cover_image_bucket: "cover_image_demo"
   ckeditor_image_bucket: "ckeditor_image_demo"
 staging:
-  access_key_id: <%=ENV["AWS_ACCESS_KEY_ID"] %>
-  secret_access_key: <%=ENV["AWS_SECRET_ACCESS_KEY"] %>
+  access_key_id: ENV['AWS_ACCESS_KEY_ID']
+  secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   cover_image_bucket: "cover-image-staging"
   ckeditor_image_bucket: "ckeditor-image-staging"
 production:

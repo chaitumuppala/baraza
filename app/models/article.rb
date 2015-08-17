@@ -113,7 +113,8 @@ class Article < ActiveRecord::Base
 
   def s3_credentials
     s3_hash = YAML.load_file('./config/aws.yml')[Rails.env].with_indifferent_access
-    s3_hash.slice(:access_key_id, :secret_access_key).merge!({bucket: s3_hash[:cover_image_bucket]})
+    s3_key_hash = s3_hash.slice(:access_key_id, :secret_access_key)
+    s3_key_hash.each {|k, v| s3_key_hash[k]=eval(v)}.merge!({bucket: s3_hash[:cover_image_bucket]})
   end
 
   private
