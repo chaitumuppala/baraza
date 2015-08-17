@@ -69,3 +69,26 @@
     font-style: italic;
   }
 }
+
+.choose-article {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.top-story-board {
+  figure {
+    figcaption {
+      .choose-article {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+#chooseArticlesModal {
+  #articles-list {
+    &:hover {
+      background: #efefef;
+    }
+  }
+}

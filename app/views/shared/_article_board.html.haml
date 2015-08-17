@@ -15,8 +15,8 @@
           - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
         = tags.join(", ").html_safe
 
-  - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))
-    %a.choose-article{href: "#", "data-reveal-id" => "chooseArticlesModal", data: {order: order}} Change article
+        - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))
+          %a.choose-article{href: "#", "data-reveal-id" => "chooseArticlesModal", data: {order: order}} Change article
 
     = form_tag("", method: :patch, id: "article-order-#{order}", class: "hide") do
       = hidden_field_tag "article[id]", "", class: "article-id"
