@@ -12,6 +12,9 @@
   .actions
     = f.submit ArticlesController::PREVIEW, data: {target: "_blank"}
     = f.submit ArticlesController::SAVE, data: {target: ""}
-    = f.submit (current_user.registered_user? ? ArticlesController::SUBMIT_FOR_APPROVAL : ArticlesController::PUBLISH), data: {target: "", confirm: "Are you sure you want to publish this article?"}
+  - if(current_user.registered_user?)
+    = f.submit ArticlesController::SUBMIT_FOR_APPROVAL, data: {target: ""}
+  - else
+    = f.submit  ArticlesController::PUBLISH, data: {target: "", confirm: "Are you sure you want to publish this article?"}
     %span.cancel
     = link_to "Cancel", articles_path
