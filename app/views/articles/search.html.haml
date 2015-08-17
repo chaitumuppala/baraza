@@ -1,10 +1,13 @@
 .search-results
-  - if @articles.present?
-    %h4
-      Search results for
-      %span.search-param
-        = params[:q]
+  - if (params[:search] == "category") || (params[:search] == "tags")
     = render "shared/article_list"
-  - else
-    %h4
-      No results found
+  - if params[:search] == "all"
+    - if @articles.present?
+      %h4
+        Search results for
+        %span.search-param
+          = params[:q]
+      = render "shared/article_list"
+    - else
+      %h4
+        No results found
