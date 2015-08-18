@@ -1,7 +1,8 @@
 $(function () {
   var ArticleComment = {
     init: function () {
-      var disqus_shortname = 'barazademo';
+      var shortname_div = $("#disqus_shortname_for_comments");
+      var disqus_shortname = shortname_div.data('sname');
       /* * * DON'T EDIT BELOW THIS LINE * * */
       (function () {
         var dsq = document.createElement('script');
