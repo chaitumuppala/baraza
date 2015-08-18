@@ -37,6 +37,15 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 # set :keep_releases, 5
 
 namespace :run_task do
+  desc 'Take backup of database before deploy and store it in s3'
+  task :database_backup do
+    on roles(:web) do
+      execute "sh /home/deploy/db_backup/backup.sh"
+      system("\\say backup complete !!!")
+    end
+  end
+
+
   desc 'Runs rake db:migrate, db:admin, restarts delayed_job'
   task :set_up_environment do
     on roles(:web) do
@@ -69,6 +78,7 @@ namespace :run_task do
   end
 end
 
-after "deploy", "run_task:set_up_environment"
+after "deploy", "run_task:database_backup"
+after "run_task:database_backup", "run_task:set_up_environment"
 after "run_task:set_up_environment", "run_task:restart_nginx"
 after "run_task:restart_nginx", 'run_task:say'
