@@ -9,6 +9,7 @@
 
   = render "form_fields", f: f
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
+  %p
   .actions
     = f.submit ArticlesController::PREVIEW, data: {target: "_blank"}
     = f.submit ArticlesController::SAVE, data: {target: ""}

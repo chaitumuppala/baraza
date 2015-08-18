@@ -33,6 +33,6 @@
                 %div
                   = truncate_summary(article.summary)
     .actions
-      = f.submit NewslettersController::PREVIEW, class: "submitButton", data: {target: ""}
+      = f.submit NewslettersController::PREVIEW,:id => "preview", class: "submitButton", data: {target: ""}
       = f.submit NewslettersController::SAVE, data: {target: ""}, class: "submitButton"
       = f.submit NewslettersController::PUBLISH, data: {target: ""}, class: "submitButton"

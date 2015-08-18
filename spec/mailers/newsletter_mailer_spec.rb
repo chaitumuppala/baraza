@@ -8,7 +8,7 @@ describe NewsletterMailer do
       s2 = Subscriber.create(email: "e2@e.com")
       mailer = NewsletterMailer.send_mail(newsletter)
 
-      expect(mailer.to).to match_array(["e1@e.com", "e2@e.com"])
+      expect(mailer.bcc).to match_array(["e1@e.com", "e2@e.com"])
       expect(mailer.subject).to eq("Baraza newsletter")
     end
   end
