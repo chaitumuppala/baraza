@@ -73,15 +73,12 @@
 .choose-article {
   font-size: 14px;
   font-weight: 400;
+  margin-bottom: 20px;
 }
 
 .top-story-board {
-  figure {
-    figcaption {
-      .choose-article {
-        text-decoration: underline;
-      }
-    }
+  .choose-article {
+    text-decoration: underline;
   }
 }
 
