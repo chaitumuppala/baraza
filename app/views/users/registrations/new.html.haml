@@ -17,7 +17,7 @@
             - if resource.errors.any?
               %ul
                 - error_message_for_email(resource).each do |msg|
-                  %li= msg
+                  %li{:id=> "errorMessage"}= msg
 
           .name
             .field.first_name
