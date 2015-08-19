@@ -1,7 +1,7 @@
 = form_for @article, html: {id: 'article_form'} do |f|
   #error_explanation
   - if @article.errors.any?
-    - @article.errors.delete(:cover_image)
+    - @article.errors.delete(:"cover_image.cover_photo")
     #error_explanation
       %ul
         - @article.errors.full_messages.each do |msg|
