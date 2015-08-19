@@ -7,11 +7,13 @@
   .field#tags_field
     = label_tag "Tags"
     = f.text_field :tag_list, id: "tags"
-  .field
-    = f.label :cover_image
-    - if f.object.cover_image
-      = image_tag @article.cover_image.url
-    = f.file_field :cover_image, id: "file_upload"
+  = f.fields_for :cover_image do |cif|
+    .field
+      = cif.label :cover_photo, "Cover Image"
+      - if cif.object && cif.object.cover_photo
+        = image_tag @article.cover_image_url(:medium)
+      = cif.file_field :cover_photo, id: "file_upload"
+
   .field
     = f.label :summary,data: { hint: "Maximum 500 words" }
     = f.text_area :summary, id: "summary"

@@ -1,8 +1,8 @@
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :user
-  # has_one :cover_image
-  # accepts_nested_attributes_for :cover_image
+  has_one :cover_image, -> { where(preview_image: false) }
+  accepts_nested_attributes_for :cover_image
   has_many :article_tags
   has_many :tags, through: :article_tags
   belongs_to :category
@@ -33,10 +33,6 @@ class Article < ActiveRecord::Base
     DRAFT = "draft"
     SUBMITTED_FOR_APPROVAL = "submitted for approval"
     PUBLISHED = "published"
-  end
-
-  def cover_image
-    CoverImage.last.cover_photo
   end
 
   def index_current_document_values
@@ -110,6 +106,11 @@ class Article < ActiveRecord::Base
       response = Article.__elasticsearch__.search query
       response.records.to_a
     end
+  end
+
+  def cover_image_url(style=:original)
+    ci = cover_image.blank? ? build_cover_image : cover_image
+    ci.cover_photo.url(style)
   end
 
   private

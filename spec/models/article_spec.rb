@@ -255,4 +255,60 @@ describe Article do
       expect(article.date_published).to be_within(1.minute).of(Time.now)
     end
   end
+
+  context "cover_image" do
+    it "should return the cover_image that was not used for preview" do
+      article = create(:article)
+      cover1 = create(:cover_image, preview_image: true, article: article)
+      cover2 = create(:cover_image, preview_image: false, article: article)
+      cover3 = create(:cover_image, preview_image: false)
+      cover4 = create(:cover_image, preview_image: true, article: article)
+
+      expect(article.cover_image).to eq(cover2)
+    end
+  end
+
+  context "cover_image_url" do
+    before do
+      allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
+    end
+
+    it "should return url of cover_photo of cover_image" do
+      article = create(:article)
+      cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+
+      expect(article.cover_image_url.split("/")).to include(/test.png*/)
+      expect(article.cover_image_url.split("/")).to include("original")
+      expect([article.cover_image_url]).to include(/^http:\/\/s3.amazonaws.com\/cover_image_test\/cover_images\/cover_photos/)
+    end
+
+    it "should return thumb url if required" do
+      article = create(:article)
+      cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+
+      article_cover_image_url = article.cover_image_url(:thumb)
+      expect(article_cover_image_url.split("/")).to include(/test.png*/)
+      expect(article_cover_image_url.split("/")).to include("thumb")
+      expect([article_cover_image_url]).to include(/^http:\/\/s3.amazonaws.com\/cover_image_test\/cover_images\/cover_photos/)
+    end
+
+    it "should return medium url if required" do
+      article = create(:article)
+      cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+
+      article_cover_image_url = article.cover_image_url(:medium)
+      expect(article_cover_image_url.split("/")).to include(/test.png*/)
+      expect(article_cover_image_url.split("/")).to include("medium")
+      expect([article_cover_image_url]).to include(/^http:\/\/s3.amazonaws.com\/cover_image_test\/cover_images\/cover_photos/)
+    end
+
+    it "should return default url if no cover_image is present" do
+      article = create(:article)
+      article_cover_image_url = article.cover_image_url(:medium)
+      expect(article_cover_image_url).to eq("z_medium.png")
+    end
+  end
 end

@@ -15,9 +15,11 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
+    @article.build_cover_image
   end
 
   def edit
+    @article.build_cover_image if @article.cover_image.blank?
   end
 
   def create
@@ -65,6 +67,7 @@ class ArticlesController < ApplicationController
   end
 
   def approve_form
+    @article.build_cover_image if @article.cover_image.blank?
   end
 
   def approve
@@ -97,7 +100,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :cover_image, :status, :author_content, :summary, :home_page_order, :category_id)
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo] )
   end
 
   def merge_status_to_params
@@ -122,7 +125,12 @@ class ArticlesController < ApplicationController
 
   def display_preview
     if params[:commit] == PREVIEW
+      preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes]
       @article = Article.new(article_params)
+      if preview_cover_image_attributes
+        ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
+        @article.cover_image = ci
+      end
       render 'articles/preview' and return
     end
   end

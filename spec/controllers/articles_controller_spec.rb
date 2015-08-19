@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'rack/test'
 
 RSpec.describe ArticlesController, type: :controller do
   let(:valid_session) { {} }
@@ -94,6 +95,23 @@ RSpec.describe ArticlesController, type: :controller do
         expect(assigns[:article].content).to eq(article.content)
         expect(response).to render_template("preview")
       end
+
+
+      it "should create cover_image for article", sign_in: true do
+        allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
+        cover1 = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+
+        article = create(:article, user_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover1).attributes)
+
+        cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
+        patch :update, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {cover_photo: cover}}, commit: ArticlesController::PREVIEW
+
+        changed_article = assigns[:article]
+        expect(changed_article.title).to eq("new title")
+        expect(changed_article.cover_image.cover_photo.url.split("/").count).to eq(11)
+        expect(changed_article.cover_image.cover_photo.url.split("/")).to include(/test_preview.png*/)
+        expect(article.reload.cover_image.cover_photo.url.split("/")).to include(/test.png*/)
+      end
     end
   end
 
@@ -148,10 +166,22 @@ RSpec.describe ArticlesController, type: :controller do
         expect(response).to render_template("preview")
       end
     end
+
+    context "cover_image" do
+      it "should create cover_image as preview for article", sign_in: true do
+        allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
+        cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary", cover_image_attributes: {cover_photo: cover}}, commit: ArticlesController::PREVIEW
+
+        article = assigns[:article]
+        expect(article.cover_image).not_to be_nil
+        expect(CoverImage.last.cover_photo.url.split("/")).to include(/test_preview.png*/)
+      end
+    end
   end
 
   context "search" do
-    xit "should search articles based on the tags", search: true do
+    it "should search articles based on the tags", search: true do
       tag1 = create(:tag, name: "science")
       tag2 = create(:tag, name: "history")
       tag3 = create(:tag, name: "politics")
@@ -165,7 +195,6 @@ RSpec.describe ArticlesController, type: :controller do
 
       expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
-      expect(assigns[:articles].map(&:cover_image)).not_to be_empty
     end
   
     it "should search articles based on the category", search: true do

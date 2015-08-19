@@ -20,8 +20,8 @@
         = @article.title
         - if @article.status == Article::Status::PUBLISHED
           = social_share_button_tag(@article.title)
-      -#.cover-image
-        = image_tag @article.cover_image.url
+      .cover-image
+        = image_tag @article.cover_image_url(:medium)
       %br
       %p
         = @article.summary
