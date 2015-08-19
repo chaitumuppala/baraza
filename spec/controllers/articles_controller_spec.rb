@@ -151,7 +151,7 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context "search" do
-    it "should search articles based on the tags", search: true do
+    xit "should search articles based on the tags", search: true do
       tag1 = create(:tag, name: "science")
       tag2 = create(:tag, name: "history")
       tag3 = create(:tag, name: "politics")

@@ -1,15 +1,12 @@
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :user
+  # has_one :cover_image
+  # accepts_nested_attributes_for :cover_image
   has_many :article_tags
   has_many :tags, through: :article_tags
   belongs_to :category
   attr_accessor :tag_list
-  has_attached_file :cover_image, styles: { medium: "758x350!", thumb: "77x77!" }, default_url: "z_:style.png",
-                    storage: :s3,
-                    s3_credentials: Proc.new{|a| a.instance.s3_credentials}
-  validates_attachment_content_type :cover_image, content_type:  ['image/jpeg', 'image/png', 'image/jpg']
-  validates_attachment_size :cover_image, in: 0..2.megabytes
   validates_presence_of :title, :content, :category, :summary
   validates :home_page_order, uniqueness: true, allow_blank: true
   index_name    "articles_#{Rails.env}"
@@ -36,6 +33,10 @@ class Article < ActiveRecord::Base
     DRAFT = "draft"
     SUBMITTED_FOR_APPROVAL = "submitted for approval"
     PUBLISHED = "published"
+  end
+
+  def cover_image
+    CoverImage.last.cover_photo
   end
 
   def index_current_document_values
@@ -109,12 +110,6 @@ class Article < ActiveRecord::Base
       response = Article.__elasticsearch__.search query
       response.records.to_a
     end
-  end
-
-  def s3_credentials
-    s3_hash = YAML.load_file('./config/aws.yml')[Rails.env].with_indifferent_access
-    s3_key_hash = s3_hash.slice(:access_key_id, :secret_access_key)
-    s3_key_hash.each {|k, v| s3_key_hash[k]=eval(v)}.merge!({bucket: s3_hash[:cover_image_bucket]})
   end
 
   private

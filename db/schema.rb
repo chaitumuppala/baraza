@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728104024) do
+ActiveRecord::Schema.define(version: 20150819060412) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -39,24 +39,20 @@ ActiveRecord::Schema.define(version: 20150728104024) do
   add_index "article_tags", ["tag_id"], name: "index_article_tags_on_tag_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",                    limit: 255
-    t.text     "content",                  limit: 65535
-    t.integer  "user_id",                  limit: 4
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
-    t.boolean  "top_story",                limit: 1
-    t.string   "cover_image_file_name",    limit: 255
-    t.string   "cover_image_content_type", limit: 255
-    t.integer  "cover_image_file_size",    limit: 4
-    t.datetime "cover_image_updated_at"
-    t.integer  "newsletter_id",            limit: 4
-    t.integer  "position_in_newsletter",   limit: 4
-    t.string   "status",                   limit: 255,   default: "draft"
-    t.text     "author_content",           limit: 65535
-    t.text     "summary",                  limit: 65535
-    t.integer  "home_page_order",          limit: 4
+    t.string   "title",                  limit: 255
+    t.text     "content",                limit: 65535
+    t.integer  "user_id",                limit: 4
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.boolean  "top_story",              limit: 1
+    t.integer  "newsletter_id",          limit: 4
+    t.integer  "position_in_newsletter", limit: 4
+    t.string   "status",                 limit: 255,   default: "draft"
+    t.text     "author_content",         limit: 65535
+    t.text     "summary",                limit: 65535
+    t.integer  "home_page_order",        limit: 4
     t.datetime "date_published"
-    t.integer  "category_id",              limit: 4
+    t.integer  "category_id",            limit: 4
   end
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
@@ -92,6 +88,16 @@ ActiveRecord::Schema.define(version: 20150728104024) do
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
   add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
+
+  create_table "cover_images", force: :cascade do |t|
+    t.string   "cover_photo_file_name",    limit: 255
+    t.string   "cover_photo_content_type", limit: 255
+    t.integer  "cover_photo_file_size",    limit: 4
+    t.datetime "cover_photo_updated_at"
+    t.integer  "article_id",               limit: 4
+  end
+
+  add_index "cover_images", ["article_id"], name: "index_cover_images_on_article_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -165,4 +171,5 @@ ActiveRecord::Schema.define(version: 20150728104024) do
   add_foreign_key "articles", "users"
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
+  add_foreign_key "cover_images", "articles"
 end
