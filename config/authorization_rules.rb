@@ -29,7 +29,13 @@ authorization do
 
   role :editor do
     includes :registered_user
-
+    has_permission_on :newsletters, to: :new do
+      if_attribute :has_no_draft? => is { true }
+    end
+    has_permission_on :newsletters, to: [:create, :update, :show, :destroy, :index, :preview]
+    has_permission_on :newsletters, to: :edit do
+      if_attribute :status => is {Newsletter::Status::DRAFT}
+    end
     has_permission_on :articles, to: [:approve_form, :approve] do
       if_attribute status: is {Article::Status::SUBMITTED_FOR_APPROVAL}
     end
@@ -44,12 +50,5 @@ authorization do
   role :administrator do
     includes :editor
     has_permission_on :users, to: [:edit, :update, :destroy, :index]
-    has_permission_on :newsletters, to: :new do
-      if_attribute :has_no_draft? => is { true }
-    end
-    has_permission_on :newsletters, to: [:create, :update, :show, :destroy, :index, :preview]
-    has_permission_on :newsletters, to: :edit do
-      if_attribute :status => is {Newsletter::Status::DRAFT}
-    end
   end
 end

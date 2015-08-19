@@ -11,12 +11,6 @@ describe PasswordsController do
 
       expect(response).to render_template("users/mailer/reset_password_instructions")
     end
-
-    it "should not send reset password for social login users" do
-      post :create, user: {email: create(:user, uid: "uid", provider: "google_oauth2").email}
-
-      expect(response).to render_template("users/passwords/new")
-    end
   end
 
   context "edit" do
