@@ -11,11 +11,11 @@
   = f.hidden_field(:user_id, value: @article.user_id || current_user.id)
   %p
   .actions
-    = f.submit ArticlesController::PREVIEW, data: {target: "_blank"}
+    = f.submit ArticlesController::PREVIEW ,:id => "preview", data: {target: "_blank"}
     = f.submit ArticlesController::SAVE, data: {target: ""}
     - if(current_user.registered_user?)
-      = f.submit ArticlesController::SUBMIT_FOR_APPROVAL, data: {target: ""}
+      = f.submit ArticlesController::SUBMIT_FOR_APPROVAL,:id => "approval", data: {target: ""}
     - else
-      = f.submit  ArticlesController::PUBLISH, data: {target: "", confirm: "Are you sure you want to publish this article?"}
+      = f.submit  ArticlesController::PUBLISH,:id => "publish", data: {target: "", confirm: "Are you sure you want to publish this article?"}
     %span.cancel
     = link_to "Cancel", articles_path
