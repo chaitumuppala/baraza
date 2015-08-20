@@ -100,7 +100,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo] )
+    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo, :id] )
   end
 
   def merge_status_to_params
@@ -125,8 +125,8 @@ class ArticlesController < ApplicationController
 
   def display_preview
     if params[:commit] == PREVIEW
-      preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes]
-      @article = Article.new(article_params)
+      preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
+      @article = Article.new(article_params.except(:cover_image_attributes))
       if preview_cover_image_attributes
         ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
         @article.cover_image = ci

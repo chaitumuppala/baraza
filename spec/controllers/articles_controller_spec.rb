@@ -104,7 +104,7 @@ RSpec.describe ArticlesController, type: :controller do
         article = create(:article, user_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover1).attributes)
 
         cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
-        patch :update, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {cover_photo: cover}}, commit: ArticlesController::PREVIEW
+        patch :update, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {cover_photo: cover, id: article.cover_image.id}}, commit: ArticlesController::PREVIEW
 
         changed_article = assigns[:article]
         expect(changed_article.title).to eq("new title")
@@ -280,6 +280,17 @@ RSpec.describe ArticlesController, type: :controller do
       expect(article.status).to eq(Article::Status::PUBLISHED)
       expect(response.code).to eq("302")
       expect(response).to redirect_to(articles_path)
+    end
+
+    it "should create cover_image for article", admin_sign_in: true do
+      allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
+      cover = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+      article = create(:article, user_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover).attributes, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+
+      patch :approve, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {id: article.cover_image.id}}, commit: ArticlesController::PUBLISH
+
+      changed_article = article.reload
+      expect(changed_article.reload.cover_image.cover_photo.url.split("/")).to include(/test.png*/)
     end
 
     it "should render approve_form on error", admin_sign_in: true do
