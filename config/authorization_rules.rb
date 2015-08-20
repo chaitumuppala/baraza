@@ -17,11 +17,11 @@ authorization do
     has_permission_on :articles, to: [:new, :create, :index ]
 
     has_permission_on :articles, to: [:edit, :update] do
-      if_attribute :user_id => is { user.id }, status: is {Article::Status::DRAFT}
+      if_attribute :creator_id => is { user.id }, status: is {Article::Status::DRAFT}
     end
 
     has_permission_on :articles, to: [ :show ] do
-      if_attribute :user_id => is { user.id }
+      if_attribute :creator_id => is { user.id }
     end
 
     has_permission_on :tags, to: [:index ]

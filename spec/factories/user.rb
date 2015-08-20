@@ -21,4 +21,6 @@ FactoryGirl.define do
   factory :editor, parent: :user, class: 'Editor'  do
     type Editor.name
   end
+
+  factory :creator, parent: :user
 end

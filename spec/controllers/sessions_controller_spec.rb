@@ -23,10 +23,10 @@ describe SessionsController do
 
     it 'should redirect to article_show after sign_in for article show links' do
       password = "password1!"
-      user = create(:user, password: password)
-      article = create(:article, user: user)
+      creator = create(:creator, password: password)
+      article = create(:article, creator: creator)
       session[:user_return_to] = article_url(article)
-      post :create, {:user => {email: user.email, password: password}}
+      post :create, {:user => {email: creator.email, password: password}}
       expect(response).to redirect_to article_url(article)
       expect(session[:user_return_to]).to be_nil
     end

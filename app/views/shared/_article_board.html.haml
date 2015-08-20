@@ -6,7 +6,8 @@
       .title
         = link_to article.title, article_path(article.id)
       .desc
-        = "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase} AGO"
+        -#= TODO: send mail to author
+        -#= "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase} AGO"
       .summary
         = link_to (image_tag article.cover_image_url(:thumb)), article_path(article.id)
         = truncate_summary(article.summary)

@@ -64,7 +64,8 @@
                             = article.title
                         %br
                           %span
-                            = "#{article.user.full_name.upcase}, #{article.date_published.strftime("%d %b %Y")}"
+                            -#= TODO: send mail to author
+                            -#= "#{article.user.full_name.upcase}, #{article.date_published.strftime("%d %b %Y")}"
                           %br
                             %span
                               = truncate_summary(article.summary)

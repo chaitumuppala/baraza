@@ -3,13 +3,15 @@
   %br
   .div
     - if @article.status == Article::Status::PUBLISHED
-      = "An article is published in the baraza website by #{@article.user.full_name}"
+      -#= TODO: send mail to author
+      -#= "An article is published in the baraza website by #{@article.user.full_name}"
       %br
       .div
         Link to the article
         = article_url(@article)
     - else
-      = "An article is submitted for approval in the baraza website by #{@article.user.full_name}"
+      -#= TODO: send mail to author
+      -#= "An article is submitted for approval in the baraza website by #{@article.user.full_name}"
       %br
       .div
         Link to the article

@@ -43,7 +43,8 @@
         - @articles_submitted.each do |article|
           %tr
             %td= link_to article.title, article_path(article)
-            %td= article.user.full_name
+            -#= TODO: send mail to author
+            -#%td= article.user.full_name
             %td= article.status
             - if permitted_to?(:approve_form, article)
               %td= link_to 'Edit', approve_form_article_path(article)

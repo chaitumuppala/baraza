@@ -74,7 +74,8 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       if params[:commit] == PUBLISH
         @article.update_attributes(status: Article::Status::PUBLISHED)
-        ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
+        # TODO: send mail to author
+        # ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
         ArticleMailer.published_notification_to_editors(@article).deliver_later
       end
       redirect_to articles_path, notice: 'Article was successfully updated.'
@@ -100,7 +101,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :user_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo, :id] )
+    params.require(:article).permit(:title, :content, :creator_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo, :id] )
   end
 
   def merge_status_to_params

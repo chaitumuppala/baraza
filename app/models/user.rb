@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   alias_attribute :role, :type
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
   before_create ->{ self.type = type.present? ? type : RegisteredUser.name }
-  has_many :articles
+  has_many :articles, foreign_key: :creator_id
 
   module Roles
     extend ListValues

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819084305) do
+ActiveRecord::Schema.define(version: 20150820134110) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20150819084305) do
   create_table "articles", force: :cascade do |t|
     t.string   "title",                  limit: 255
     t.text     "content",                limit: 65535
-    t.integer  "user_id",                limit: 4
+    t.integer  "creator_id",             limit: 4
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
     t.boolean  "top_story",              limit: 1
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20150819084305) do
   end
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
-  add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
+  add_index "articles", ["creator_id"], name: "index_articles_on_creator_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 20150819084305) do
   add_foreign_key "article_tags", "articles"
   add_foreign_key "article_tags", "tags"
   add_foreign_key "articles", "categories"
-  add_foreign_key "articles", "users"
+  add_foreign_key "articles", "users", column: "creator_id"
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
   add_foreign_key "cover_images", "articles"

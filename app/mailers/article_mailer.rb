@@ -7,7 +7,8 @@
 
   def notification_to_editors(article)
     @article = article
-    mail(to: Editor.pluck(:email) + Administrator.pluck(:email), subject: "Submission for review by #{@article.user.full_name}: #{@article.title}")
+    # TODO: send mail to author
+    mail(to: Editor.pluck(:email) + Administrator.pluck(:email), subject: "Submission for review by author: #{@article.title}")
   end
 
   def published_notification_to_creator(recipient, article)

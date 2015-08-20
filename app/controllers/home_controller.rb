@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   filter_resource_access
 
   def index
-    @published_articles = Article.includes(:user, :tags, :category).where(status: Article::Status::PUBLISHED).order("date_published desc")
+    @published_articles = Article.includes(:creator, :tags, :category).where(status: Article::Status::PUBLISHED).order("date_published desc")
     articles_with_order = @published_articles.order(:home_page_order).select{ |article| article.home_page_order.present? }.group_by(&:home_page_order)
     articles_without_home_page_order = @published_articles.select{|article| article.home_page_order.blank?}
     articles_without_home_page_order_index = 0

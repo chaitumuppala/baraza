@@ -1,6 +1,6 @@
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
-  belongs_to :user
+  belongs_to :creator, class_name: User
   has_one :cover_image, -> { where(preview_image: false) }
   accepts_nested_attributes_for :cover_image
   has_many :article_tags

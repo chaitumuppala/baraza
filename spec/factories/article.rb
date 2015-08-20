@@ -5,6 +5,6 @@ FactoryGirl.define do
     summary "$"*50
     category
     status Article::Status::DRAFT
-    user
+    creator
   end
 end
