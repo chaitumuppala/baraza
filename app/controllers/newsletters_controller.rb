@@ -25,7 +25,7 @@ class NewslettersController < ApplicationController
     @newsletter = Newsletter.new(newsletter_params)
     respond_to do |format|
       if @newsletter.save
-        format.html { redirect_to edit_newsletter_path(@newsletter), notice: 'Magazine was successfully created.' }
+        format.html { redirect_to edit_newsletter_path(@newsletter), notice: 'eMagazine was successfully created.' }
         format.json { render :show, status: :created, location: @newsletter }
       else
         format.html { render :new }
@@ -49,10 +49,10 @@ class NewslettersController < ApplicationController
     if @newsletter.update(newsletter_params)
       if params[:commit] == PUBLISH
         NewsletterMailer.send_mail(@newsletter).deliver_later
-        flash[:notice] = "Magazine was successfully sent out to the subscribers"
+        flash[:notice] = "eMagazine was successfully sent out to the subscribers"
         redirect_to newsletters_path
       elsif params[:commit] == SAVE
-        flash[:notice] = "Magazine is saved successfully"
+        flash[:notice] = "eMagazine is saved successfully"
         redirect_to edit_newsletter_path(@newsletter)
       elsif params[:commit] == PREVIEW
         render 'newsletters/preview', :layout => false
@@ -67,7 +67,7 @@ class NewslettersController < ApplicationController
   def destroy
     @newsletter.destroy
     respond_to do |format|
-      format.html { redirect_to newsletters_url, notice: 'Magazine was successfully destroyed.' }
+      format.html { redirect_to newsletters_url, notice: 'eMagazine was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

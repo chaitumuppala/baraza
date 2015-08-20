@@ -19,7 +19,7 @@ describe NewslettersController do
                        "articles_attributes"=>[{"position_in_newsletter"=>"1", "id"=>article1.id}]},
                        "commit"=>NewslettersController::PUBLISH, "id"=>newsletter.id
 
-      expect(flash[:notice]).to eq("Magazine was successfully sent out to the subscribers")
+      expect(flash[:notice]).to eq("eMagazine was successfully sent out to the subscribers")
       expect(response).to redirect_to(newsletters_path)
       expect(CategoryNewsletter.where(newsletter: newsletter, category: category).first.position_in_newsletter).to eq(100)
       expect(newsletter.reload.status).to eq(Newsletter::Status::PUBLISHED)
@@ -42,7 +42,7 @@ describe NewslettersController do
                                     "commit"=>NewslettersController::SAVE, "id"=>newsletter.id
 
       expect(newsletter.reload.articles).to eq([article1])
-      expect(flash[:notice]).to eq("Magazine is saved successfully")
+      expect(flash[:notice]).to eq("eMagazine is saved successfully")
       expect(response).to redirect_to(edit_newsletter_path(newsletter))
     end
 
