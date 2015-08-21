@@ -54,7 +54,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article, creator_id: controller.current_user.id)
       expect(ArticleMailer).not_to receive(:notification_to_creator)
       expect(ArticleMailer).not_to receive(:notification_to_editors)
-      patch :update, id: article.id, article: {title: "new title"}
+      patch :update, id: article.id, article: {title: "new title"}, owner_id: "User:#{@user.id}"
       expect(response.code).to eq("302")
       expect(response).to redirect_to(articles_path)
     end
@@ -63,13 +63,13 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article, creator_id: create(:user).id)
       expect(ArticleMailer).not_to receive(:notification_to_creator)
       expect(ArticleMailer).not_to receive(:notification_to_editors)
-      patch :update, id: article.id, article: {title: "new title"}
+      patch :update, id: article.id, article: {title: "new title"}, owner_id: "User:#{@user.id}"
       expect(response).to redirect_to(root_path)
     end
 
     it "should update and set status as submitted_for_approval" do
       article = create(:article, creator_id: controller.current_user.id)
-      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
 
       expect(article.reload.title).to eq("new title")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
@@ -82,13 +82,13 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:notification_to_creator).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
-      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
     end
 
     context "preview" do
       it "should render preview of article", sign_in: true do
         article = create(:article, creator_id: controller.current_user.id, title: "old title")
-        patch :update, id: article.id, article: {title: "new title", content: article.content}, commit: ArticlesController::PREVIEW
+        patch :update, id: article.id, article: {title: "new title", content: article.content}, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
 
         expect(assigns[:article].title).to eq("new title")
         expect(article.reload.title).to eq("old title")
@@ -104,7 +104,8 @@ RSpec.describe ArticlesController, type: :controller do
         article = create(:article, creator_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover1).attributes)
 
         cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
-        patch :update, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {cover_photo: cover, id: article.cover_image.id}}, commit: ArticlesController::PREVIEW
+        patch :update, id: article.id, article: {title: "new title", content: article.content,
+                                                 cover_image_attributes: {cover_photo: cover, id: article.cover_image.id}}, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
 
         changed_article = assigns[:article]
         expect(changed_article.title).to eq("new title")
@@ -120,15 +121,17 @@ RSpec.describe ArticlesController, type: :controller do
       @category = create(:category)
     end
     it "should allow creation of article", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}
+      author = create(:author, full_name: "srk")
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, owner_id: "Author:#{author.id}"
       article = Article.last
       expect(article.id).not_to be_nil
       expect(article.title).to eq("new title")
+      expect(article.owners.collect(&:id)).to eq([author.id])
       expect(response).to redirect_to(articles_path)
     end
 
     it "should create, submit for approval and copy author_content to content", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
       article = Article.last
       expect(article.title).to eq("new title")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
@@ -136,15 +139,17 @@ RSpec.describe ArticlesController, type: :controller do
     end
 
     it "should create, publish if current user is editor" do
-      sign_in(create(:editor))
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
+      editor = create(:editor)
+      sign_in(editor)
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
 
     it "should create, publish if current user is admin" do
-      sign_in(create(:administrator))
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
+      admin = create(:administrator)
+      sign_in(admin)
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{admin.id}"
       article = Article.last
       expect(article.status).to eq(Article::Status::PUBLISHED)
     end
@@ -155,12 +160,12 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_later: "")
       expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH
+      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
     end
 
     context "preview" do
       it "should render preview of article", sign_in: true do
-        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PREVIEW
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
         expect(assigns[:article].title).to eq("new title")
         expect(assigns[:article].content).to eq("content")
         expect(response).to render_template("preview")
@@ -171,7 +176,8 @@ RSpec.describe ArticlesController, type: :controller do
       it "should create cover_image as preview for article", sign_in: true do
         allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
         cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
-        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary", cover_image_attributes: {cover_photo: cover}}, commit: ArticlesController::PREVIEW
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary",
+                                cover_image_attributes: {cover_photo: cover}}, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
 
         article = assigns[:article]
         expect(article.cover_image).not_to be_nil
@@ -223,7 +229,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       get :index
 
-      expect(assigns[:articles]).to match_array([article1, article3])
+      expect(assigns[:proxy_articles]).to match_array([article1, article3])
     end
 
     it "should list current user articles and all articles submitted for approval if editor" do
@@ -237,7 +243,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       get :index
 
-      expect(assigns[:articles]).to match_array([article1, article5])
+      expect(assigns[:proxy_articles]).to match_array([article1, article5])
       expect(assigns[:articles_submitted]).to match_array([article2])
     end
 
@@ -252,7 +258,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       get :index
 
-      expect(assigns[:articles]).to match_array([article1, article5])
+      expect(assigns[:proxy_articles]).to match_array([article1, article5])
       expect(assigns[:articles_submitted]).to match_array([article2])
     end
   end
@@ -274,7 +280,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(ArticleMailer).to receive(:published_notification_to_creator).with(User.find(article.creator_id), article).and_return(mailer)
       expect(ArticleMailer).to receive(:published_notification_to_editors).with(article).and_return(mailer)
 
-      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PUBLISH
+      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
 
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::PUBLISHED)
@@ -287,7 +293,7 @@ RSpec.describe ArticlesController, type: :controller do
       cover = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
       article = create(:article, creator_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover).attributes, status: Article::Status::SUBMITTED_FOR_APPROVAL)
 
-      patch :approve, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {id: article.cover_image.id}}, commit: ArticlesController::PUBLISH
+      patch :approve, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {id: article.cover_image.id}}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
 
       changed_article = article.reload
       expect(changed_article.reload.cover_image.cover_photo.url.split("/")).to include(/test.png*/)
@@ -297,7 +303,7 @@ RSpec.describe ArticlesController, type: :controller do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(ArticleMailer).not_to receive(:published_notification_to_creator)
 
-      patch :approve, id: article.id, article: {title: ""}, commit: ArticlesController::PUBLISH
+      patch :approve, id: article.id, article: {title: ""}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
 
       expect(article.reload.status).not_to eq(Article::Status::PUBLISHED)
       expect(response).to render_template("approve_form")
@@ -306,7 +312,7 @@ RSpec.describe ArticlesController, type: :controller do
     it "should save as draft and not publish", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(ArticleMailer).not_to receive(:published_notification_to_creator)
-      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::SAVE
+      patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::SAVE, owner_id: "User:#{@admin.id}"
 
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)

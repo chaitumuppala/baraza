@@ -23,6 +23,32 @@
 
   = link_to 'New article', new_article_path
 
+- if @proxy_articles
+  .panel
+    %h4 Articles created for others
+
+    %table{id: "proxy-articles"}
+      %thead
+        %tr
+          %th
+            TITLE
+          %th
+            AUTHOR
+          %th
+            STATUS
+          %th
+            Actions
+
+      %tbody
+        - @proxy_articles.each do |article|
+          %tr
+            %td= link_to article.title, article_path(article)
+            -#= TODO: send mail to author
+            -#%td= article.user.full_name
+            %td= article.status
+            - if permitted_to?(:edit, article)
+              %td= link_to 'Edit', edit_article_path(article)
+
 - if @articles_submitted
   .panel
     %h4 Submitted Articles

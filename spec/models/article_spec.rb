@@ -311,4 +311,19 @@ describe Article do
       expect(article_cover_image_url).to eq("z_medium.png")
     end
   end
+
+  context "owners" do
+    it "should return both system_users and users" do
+      user1 = create(:user)
+      user2 = create(:user)
+      author = create(:author)
+      article = create(:article)
+      ArticleOwner.create(article: article, owner: user1)
+      ArticleOwner.create(article: article, owner: user2)
+      ArticleOwner.create(article: article, owner: author)
+      ArticleOwner.create(article: create(:article), owner: author)
+
+      expect(article.owners.collect(&:id)).to match_array([user1.id, user2.id, author.id])
+    end
+  end
 end

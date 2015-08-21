@@ -108,4 +108,36 @@ describe User do
       expect(build(:user, first_name: "first", last_name: "last").full_name).to eq("first last")
     end
   end
+
+  context "articles" do
+    it "should return articles of owner" do
+      user1 = create(:user)
+      user2 = create(:user)
+      author = create(:author)
+      article1 = create(:article)
+      article2 = create(:article)
+      article3 = create(:article)
+      ArticleOwner.create(article: article1, owner: user1)
+      ArticleOwner.create(article: article2, owner: user1)
+      ArticleOwner.create(article: article1, owner: user2)
+      ArticleOwner.create(article: article3, owner: user2)
+      ArticleOwner.create(article: article1, owner: author)
+
+      expect(user1.articles.collect(&:id)).to match_array([article1.id, article2.id])
+      expect(user2.articles.collect(&:id)).to match_array([article1.id, article3.id])
+      expect(article1.users.collect(&:id)).to match_array([user1.id, user2.id])
+      expect(article1.system_users.collect(&:id)).to match_array([author.id])
+    end
+  end
+
+  context "proxy_articles" do
+    it "should return list of articles created on behalf of others" do
+      user = create(:user)
+      article1 = create(:article, creator_id: user.id)
+      article2 = create(:article, creator_id: nil)
+      article3 = create(:article, creator_id: create(:user).id)
+
+      expect(user.proxy_articles.collect(&:id)).to eq([article1.id])
+    end
+  end
 end

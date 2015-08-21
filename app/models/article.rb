@@ -1,6 +1,9 @@
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
   belongs_to :creator, class_name: User
+  has_many :article_owners
+  has_many :system_users, through: :article_owners, source: :owner, source_type: Author.name
+  has_many :users, through: :article_owners, source: :owner, source_type: User.name
   has_one :cover_image, -> { where(preview_image: false) }
   accepts_nested_attributes_for :cover_image
   has_many :article_tags
@@ -33,6 +36,10 @@ class Article < ActiveRecord::Base
     DRAFT = "draft"
     SUBMITTED_FOR_APPROVAL = "submitted for approval"
     PUBLISHED = "published"
+  end
+
+  def owners
+    system_users + users
   end
 
   def index_current_document_values

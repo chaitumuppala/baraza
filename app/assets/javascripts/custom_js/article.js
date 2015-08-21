@@ -5,6 +5,7 @@ $(function () {
       $("#category-select").select2();
       $("#summary").on("keyup", this.remainingCharCount);
       $(".articles form#article_form").on("submit", this.validateFile);
+      $("#owner-select").select2();
     },
 
     initTags: function() {

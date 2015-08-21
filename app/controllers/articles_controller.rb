@@ -3,6 +3,7 @@ class ArticlesController < ApplicationController
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
   before_action :display_preview, only: [:create, :update, :approve]
+  after_action :assign_owner, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = "Save as draft"
@@ -63,6 +64,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = current_user.articles
+    @proxy_articles = current_user.proxy_articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL) unless current_user.registered_user?
   end
 
@@ -101,7 +103,8 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :content, :creator_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, cover_image_attributes: [:cover_photo, :id] )
+    params.require(:article).permit(:title, :content, :creator_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, :owner_id,
+                                    cover_image_attributes: [:cover_photo, :id] )
   end
 
   def merge_status_to_params
@@ -134,6 +137,11 @@ class ArticlesController < ApplicationController
       end
       render 'articles/preview' and return
     end
+  end
+
+  def assign_owner
+    owner_type, owner_id = params[:owner_id].split(":")
+    @article.article_owners = [ ArticleOwner.new(owner_id: owner_id, owner_type: owner_type) ]
   end
 end
 

@@ -1,23 +1,28 @@
 .field
   = f.label :title, data: { hint: "Maximum 12 words" }
   = f.text_field :title
-  .field#category_field
-    = f.label "Category", class: "star_it"
-    = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")
-  .field#tags_field
-    = label_tag "Tags"
-    = f.text_field :tag_list, id: "tags"
-  = f.fields_for :cover_image do |cif|
-    .field
-      = cif.label :cover_photo, "Cover Image"
-      - if cif.object && cif.object.cover_photo
-        = image_tag @article.cover_image_url(:medium)
-      = cif.file_field :cover_photo, id: "file_upload"
+.field
+  = label_tag :author
+  - owners = @article.owners
+  - selected_value = owners.present? ? "#{owners.first.is_a?(Author) ? "Author" : "User"}:#{owners.first.id}" : "User:#{current_user.id}"
+  = select_tag :owner_id, options_for_select((Author.all.collect { |owner| [owner.full_name, "Author:#{owner.id}"]} << [current_user.full_name, "User:#{current_user.id}"]), selected_value), id: "owner-select"
+.field#category_field
+  = f.label "Category", class: "star_it"
+  = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")
+.field#tags_field
+  = label_tag "Tags"
+  = f.text_field :tag_list, id: "tags"
+= f.fields_for :cover_image do |cif|
+  .field
+    = cif.label :cover_photo, "Cover Image"
+    - if cif.object && cif.object.cover_photo
+      = image_tag @article.cover_image_url(:medium)
+    = cif.file_field :cover_photo, id: "file_upload"
 
-  .field
-    = f.label :summary,data: { hint: "Maximum 500 words" }
-    = f.text_area :summary, id: "summary"
-    %span#char-count
-  .field
-    = f.label :content
-    = f.cktext_area :content
+.field
+  = f.label :summary,data: { hint: "Maximum 500 words" }
+  = f.text_area :summary, id: "summary"
+  %span#char-count
+.field
+  = f.label :content
+  = f.cktext_area :content
