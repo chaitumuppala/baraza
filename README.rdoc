@@ -34,3 +34,4 @@ Go details
         Credentials
             username:baraza
             password:passwordbaraza
+            password:passwordbaraza
