@@ -64,7 +64,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = current_user.articles
-    @proxy_articles = current_user.proxy_articles
+    @proxy_articles = current_user.proxy_articles - @articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL) unless current_user.registered_user?
   end
 

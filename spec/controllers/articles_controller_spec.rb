@@ -226,10 +226,12 @@ RSpec.describe ArticlesController, type: :controller do
       article1 = create(:article, creator_id: registered_user.id)
       article2 = create(:article, creator_id: create(:user).id)
       article3 = create(:article, creator_id: registered_user.id)
+      ArticleOwner.create(article: article1, owner: registered_user)
 
       get :index
 
-      expect(assigns[:proxy_articles]).to match_array([article1, article3])
+      expect(assigns[:articles]).to match_array([article1])
+      expect(assigns[:proxy_articles]).to match_array([article3])
     end
 
     it "should list current user articles and all articles submitted for approval if editor" do
