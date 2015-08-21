@@ -21,6 +21,8 @@
         = hidden_field_tag :search, "all"
     %ul#user-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       %li
+        = link_to "AUTHORS", authors_path
+      %li
         = link_to "ARTICLES", articles_path
       %li
         = link_to "LOGOUT", destroy_user_session_path, :method => :get

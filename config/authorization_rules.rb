@@ -45,6 +45,8 @@ authorization do
     end
 
     has_permission_on :articles, to: [ :home_page_order_update ]
+
+    has_permission_on :authors, to: [ :new, :create, :edit, :update, :show, :destroy, :index ]
   end
 
   role :administrator do
