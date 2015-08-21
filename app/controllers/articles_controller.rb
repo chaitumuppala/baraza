@@ -76,8 +76,7 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       if params[:commit] == PUBLISH
         @article.update_attributes(status: Article::Status::PUBLISHED)
-        # TODO: send mail to author
-        # ArticleMailer.published_notification_to_creator(@article.user, @article).deliver_later
+        ArticleMailer.published_notification_to_owner(@article.owners.first, @article).deliver_later
         ArticleMailer.published_notification_to_editors(@article).deliver_later
       end
       redirect_to articles_path, notice: 'Article was successfully updated.'
@@ -116,7 +115,7 @@ class ArticlesController < ApplicationController
 
   def article_arrival_notification
     for_publish_or_approval do
-      ArticleMailer.notification_to_creator(current_user, @article).deliver_later
+      ArticleMailer.notification_to_owner(current_user, @article).deliver_later
       ArticleMailer.notification_to_editors(@article).deliver_later
     end
   end

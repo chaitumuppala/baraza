@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :article do |article|
+  factory :article do
     title "unite all"
     content "*"*50
     summary "$"*50

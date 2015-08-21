@@ -5,7 +5,7 @@ describe ArticleMailer do
     it "should send mail to creator" do
       creator = create(:creator)
       article = create(:article)
-      mailer = ArticleMailer.notification_to_creator(creator, article)
+      mailer = ArticleMailer.notification_to_owner(creator, article)
 
       expect(mailer.to).to eq([creator.email])
       expect(mailer.subject).to eq("Thank you for your submission")
@@ -13,11 +13,12 @@ describe ArticleMailer do
   end
 
   context "notification_to_editors" do
-    xit "should send mail to editors and administrator" do
+    it "should send mail to editors and administrator" do
       editor1 = create(:editor)
       editor2 = create(:editor)
       admin1 = create(:administrator)
       article = create(:article)
+      article.users << create(:user)
       mailer = ArticleMailer.notification_to_editors(article)
 
       expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
@@ -26,7 +27,7 @@ describe ArticleMailer do
   end
 
   context "published_notification_to_editors" do
-    xit "should send mail to editors and administrator" do
+    it "should send mail to editors and administrator" do
       editor1 = create(:editor)
       editor2 = create(:editor)
       admin1 = create(:administrator)
@@ -42,7 +43,7 @@ describe ArticleMailer do
     it "should send mail to creator" do
       creator = create(:creator)
       article = create(:article)
-      mailer = ArticleMailer.published_notification_to_creator(creator, article)
+      mailer = ArticleMailer.published_notification_to_owner(creator, article)
 
       expect(mailer.to).to eq([creator.email])
       expect(mailer.subject).to eq("Your article has been published")

@@ -52,7 +52,7 @@ RSpec.describe ArticlesController, type: :controller do
   describe "update", sign_in: true do
     it "should allow update of own article" do
       article = create(:article, creator_id: controller.current_user.id)
-      expect(ArticleMailer).not_to receive(:notification_to_creator)
+      expect(ArticleMailer).not_to receive(:notification_to_owner)
       expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}, owner_id: "User:#{@user.id}"
       expect(response.code).to eq("302")
@@ -61,7 +61,7 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should not allow update of others article" do
       article = create(:article, creator_id: create(:user).id)
-      expect(ArticleMailer).not_to receive(:notification_to_creator)
+      expect(ArticleMailer).not_to receive(:notification_to_owner)
       expect(ArticleMailer).not_to receive(:notification_to_editors)
       patch :update, id: article.id, article: {title: "new title"}, owner_id: "User:#{@user.id}"
       expect(response).to redirect_to(root_path)
@@ -80,7 +80,7 @@ RSpec.describe ArticlesController, type: :controller do
       sign_in(editor)
       article = create(:article, creator_id: controller.current_user.id)
       mailer = double("mailer", deliver_later: "")
-      expect(ArticleMailer).to receive(:notification_to_creator).with(controller.current_user, article).and_return(mailer)
+      expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
       patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
     end
@@ -158,7 +158,7 @@ RSpec.describe ArticlesController, type: :controller do
       editor = create(:editor)
       sign_in(editor)
       mailer = double("mailer", deliver_later: "")
-      expect(ArticleMailer).to receive(:notification_to_creator).and_return(mailer)
+      expect(ArticleMailer).to receive(:notification_to_owner).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
       post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
     end
@@ -276,10 +276,11 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context "approve" do
-    xit "should allow update of own article", admin_sign_in: true do
+    it "should allow update of own article", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article_owner = ArticleOwner.create(article: article, owner: @admin)
       mailer = double("mailer", deliver_later: "")
-      expect(ArticleMailer).to receive(:published_notification_to_creator).with(User.find(article.creator_id), article).and_return(mailer)
+      expect(ArticleMailer).to receive(:published_notification_to_owner).with(User.find(article_owner.owner_id), article).and_return(mailer)
       expect(ArticleMailer).to receive(:published_notification_to_editors).with(article).and_return(mailer)
 
       patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
@@ -290,10 +291,11 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response).to redirect_to(articles_path)
     end
 
-    xit "should create cover_image for article", admin_sign_in: true do
+    it "should create cover_image for article", admin_sign_in: true do
       allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
       cover = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
       article = create(:article, creator_id: controller.current_user.id, title: "old title", cover_image_attributes: CoverImage.new(cover_photo: cover).attributes, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article.users << @admin
 
       patch :approve, id: article.id, article: {title: "new title", content: article.content, cover_image_attributes: {id: article.cover_image.id}}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
 
@@ -303,7 +305,7 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should render approve_form on error", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      expect(ArticleMailer).not_to receive(:published_notification_to_creator)
+      expect(ArticleMailer).not_to receive(:published_notification_to_owner)
 
       patch :approve, id: article.id, article: {title: ""}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
 
@@ -313,7 +315,7 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should save as draft and not publish", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      expect(ArticleMailer).not_to receive(:published_notification_to_creator)
+      expect(ArticleMailer).not_to receive(:published_notification_to_owner)
       patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::SAVE, owner_id: "User:#{@admin.id}"
 
       expect(article.reload.title).to eq("title by admin")
