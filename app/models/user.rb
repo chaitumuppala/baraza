@@ -41,11 +41,6 @@ class User < ActiveRecord::Base
     super && !has_a_provider?
   end
 
-  def update_email(new_email)
-    return update_attributes(email: new_email) if new_email.present? && User.where(email: new_email).blank?
-    false
-  end
-
   def user_role_is
     ActiveSupport::StringInquirer.new(role.underscore)
   end
