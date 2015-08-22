@@ -32,6 +32,7 @@ describe ArticleMailer do
       editor2 = create(:editor)
       admin1 = create(:administrator)
       article = create(:article)
+      article.system_users << create(:author)
       mailer = ArticleMailer.published_notification_to_editors(article)
 
       expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])

@@ -120,6 +120,10 @@ class Article < ActiveRecord::Base
     ci.cover_photo.url(style)
   end
 
+  def principal_author
+    owners.first
+  end
+
   private
   def set_date_published
     self.date_published = DateTime.now

@@ -326,4 +326,14 @@ describe Article do
       expect(article.owners.collect(&:id)).to match_array([user1.id, user2.id, author.id])
     end
   end
+
+  context "principal_author" do
+    it "should return the owner" do
+      user = create(:user)
+      article = create(:article)
+      ArticleOwner.create(article: article, owner: user)
+
+      expect(article.principal_author.id).to eq(user.id)
+    end
+  end
 end

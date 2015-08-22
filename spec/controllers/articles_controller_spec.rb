@@ -83,6 +83,7 @@ RSpec.describe ArticlesController, type: :controller do
       editor = create(:editor)
       sign_in(editor)
       article = create(:article, creator_id: controller.current_user.id)
+      article.users << editor
       mailer = double("mailer", deliver_now: "")
       expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)

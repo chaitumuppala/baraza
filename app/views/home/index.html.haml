@@ -34,8 +34,7 @@
             %div
               = link_to article.title, "#", class: "article", data: {article_id: article.id}
             %div{style: "font-size: 11px"}
-              -#= TODO: send mail to author
-              -#= "#{article.user.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
+              = "#{article.principal_author.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase}"
             %div{style: "font-size: 14px"}
               = truncate_summary(article.summary)
         %a.close-reveal-modal{"aria-label" => "Close"} ×
