@@ -48,7 +48,7 @@ class NewslettersController < ApplicationController
     ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
     if @newsletter.update(newsletter_params)
       if params[:commit] == PUBLISH
-        NewsletterMailer.send_mail(@newsletter).deliver_later
+        NewsletterMailer.send_mail(@newsletter).deliver_now
         flash[:notice] = "eMagazine was successfully sent out to the subscribers"
         redirect_to newsletters_path
       elsif params[:commit] == SAVE

@@ -60,7 +60,7 @@ describe UsersController do
       user = create(:user)
       mailer = double("mailer")
       expect(TypeChangeNotifier).to receive(:change_type_to_editor_mail).with(user.email, user.full_name, User::Roles::EDITOR).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
+      expect(mailer).to receive(:deliver_now)
       patch :update, registered_user: { type: User::Roles::EDITOR }, id: user.id
 
       expect(Editor.find(user.id)).to be_present
@@ -72,7 +72,7 @@ describe UsersController do
       editor = create(:editor)
       mailer = double("mailer")
       expect(TypeChangeNotifier).to receive(:change_type_to_administrator_mail).with(editor.email, editor.full_name, User::Roles::ADMINISTRATOR).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
+      expect(mailer).to receive(:deliver_now)
       patch :update, editor: { type: User::Roles::ADMINISTRATOR }, id: editor.id
 
       expect(User.find(editor.id).type).to eq(User::Roles::ADMINISTRATOR)
@@ -84,7 +84,7 @@ describe UsersController do
       administrator = create(:administrator)
       mailer = double("mailer")
       expect(TypeChangeNotifier).to receive(:change_type_to_registered_user_mail).with(administrator.email, administrator.full_name, User::Roles::REGISTERED_USER).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
+      expect(mailer).to receive(:deliver_now)
       patch :update, administrator: { type: User::Roles::REGISTERED_USER }, id: administrator.id
 
       expect(User.find(administrator.id).type).to eq(User::Roles::REGISTERED_USER)

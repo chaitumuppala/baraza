@@ -11,7 +11,7 @@ describe NewslettersController do
       category = create(:category)
       article1 = create(:article)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
-      mailer = double("mailer", deliver_later: "")
+      mailer = double("mailer", deliver_now: "")
       expect(NewsletterMailer).to receive(:send_mail).with(newsletter).and_return(mailer)
       patch :update, "newsletter"=>{
                        "category_newsletters_attributes"=>[{"position_in_newsletter"=>"100", "category_id"=>category.id, "newsletter_id"=>newsletter.id, "id" => cn.id}

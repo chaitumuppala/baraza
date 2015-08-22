@@ -69,6 +69,10 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should update and set status as submitted_for_approval" do
       article = create(:article, creator_id: controller.current_user.id)
+      article.users << @user
+      mailer = double("mailer", deliver_now: "")
+      expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
+      expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
       patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
 
       expect(article.reload.title).to eq("new title")
@@ -79,7 +83,7 @@ RSpec.describe ArticlesController, type: :controller do
       editor = create(:editor)
       sign_in(editor)
       article = create(:article, creator_id: controller.current_user.id)
-      mailer = double("mailer", deliver_later: "")
+      mailer = double("mailer", deliver_now: "")
       expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
       patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
@@ -130,37 +134,42 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response).to redirect_to(articles_path)
     end
 
-    it "should create, submit for approval and copy author_content to content", sign_in: true do
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
-      article = Article.last
-      expect(article.title).to eq("new title")
-      expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
-      expect(article.author_content).to eq("content")
-    end
+    context "send_mail" do
+      before do
+        mailer = double("mailer", deliver_now: "")
+        expect(ArticleMailer).to receive(:notification_to_owner).and_return(mailer)
+        expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
+      end
 
-    it "should create, publish if current user is editor" do
-      editor = create(:editor)
-      sign_in(editor)
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
-      article = Article.last
-      expect(article.status).to eq(Article::Status::PUBLISHED)
-    end
+      it "should create, submit for approval and copy author_content to content", sign_in: true do
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
+        article = Article.last
+        expect(article.title).to eq("new title")
+        expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
+        expect(article.author_content).to eq("content")
+      end
 
-    it "should create, publish if current user is admin" do
-      admin = create(:administrator)
-      sign_in(admin)
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{admin.id}"
-      article = Article.last
-      expect(article.status).to eq(Article::Status::PUBLISHED)
-    end
+      it "should create, publish if current user is editor" do
+        editor = create(:editor)
+        sign_in(editor)
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
+        article = Article.last
+        expect(article.status).to eq(Article::Status::PUBLISHED)
+      end
 
-    it "should send notification on submitting if publishing or submitting_for_approval" do
-      editor = create(:editor)
-      sign_in(editor)
-      mailer = double("mailer", deliver_later: "")
-      expect(ArticleMailer).to receive(:notification_to_owner).and_return(mailer)
-      expect(ArticleMailer).to receive(:notification_to_editors).and_return(mailer)
-      post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
+      it "should create, publish if current user is admin" do
+        admin = create(:administrator)
+        sign_in(admin)
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{admin.id}"
+        article = Article.last
+        expect(article.status).to eq(Article::Status::PUBLISHED)
+      end
+
+      it "should send notification on submitting if publishing or submitting_for_approval" do
+        editor = create(:editor)
+        sign_in(editor)
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
+      end
     end
 
     context "preview" do
@@ -279,7 +288,7 @@ RSpec.describe ArticlesController, type: :controller do
     it "should allow update of own article", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       article_owner = ArticleOwner.create(article: article, owner: @admin)
-      mailer = double("mailer", deliver_later: "")
+      mailer = double("mailer", deliver_now: "")
       expect(ArticleMailer).to receive(:published_notification_to_owner).with(User.find(article_owner.owner_id), article).and_return(mailer)
       expect(ArticleMailer).to receive(:published_notification_to_editors).with(article).and_return(mailer)
 

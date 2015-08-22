@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     user_params = params.require(type).permit(:first_name, :last_name, :type, :email)
     respond_to do |format|
       if @user.update(user_params)
-        TypeChangeNotifier.send("change_type_to_#{user_params[:type].underscore}_mail", @user.email, @user.full_name, @user.type).deliver_later
+        TypeChangeNotifier.send("change_type_to_#{user_params[:type].underscore}_mail", @user.email, @user.full_name, @user.type).deliver_now
         format.html { redirect_to users_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
