@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :edit, :update, :destroy]
-
+  filter_resource_access additional_collection: [:search]
   # GET /authors
   # GET /authors.json
   def index
@@ -29,10 +29,10 @@ class AuthorsController < ApplicationController
     respond_to do |format|
       if @author.save
         format.html { redirect_to authors_path, notice: 'Author was successfully created.' }
-        format.json { render :show, status: :created, location: @author }
+        format.json { render json: true }
       else
         format.html { render :new }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
+        format.json { render json: @author.errors.full_messages.to_sentence, status: :unprocessable_entity }
       end
     end
   end
@@ -68,7 +68,7 @@ class AuthorsController < ApplicationController
     end
 
     def new_author_from_params
-      @author = params[:author] ? author.new(author_params) : author.new
+      @author = params[:author] ? Author.new(author_params) : Author.new
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def author_params

@@ -1,7 +1,7 @@
 .field
   = f.label :title, data: { hint: "Maximum 12 words" }
   = f.text_field :title
-.field
+.field#author_field
   - if current_user.is_a?(RegisteredUser)
     = hidden_field_tag :owner_id, "User:#{current_user.id}"
   - else
@@ -9,6 +9,7 @@
     - owners = @article.owners
     - selected_value = owners.present? ? "#{owners.first.is_a?(Author) ? "Author" : "User"}:#{owners.first.id}" : "User:#{current_user.id}"
     = select_tag :owner_id, options_for_select((Author.all.collect { |owner| [owner.full_name, "Author:#{owner.id}"]} << [current_user.full_name, "User:#{current_user.id}"]), selected_value), id: "owner-select"
+    %a{href: "#", "data-reveal-id" => "createAuthorModal"} + Add author
 .field#category_field
   = f.label "Category", class: "star_it"
   = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")

@@ -19,3 +19,15 @@
       = f.submit  ArticlesController::PUBLISH,:id => "publish", data: {target: "", confirm: "Are you sure you want to publish this article?"}
     %span.cancel
     = link_to "Cancel", articles_path
+
+%div#createAuthorModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Create authors", "data-reveal" => "", :role => "dialog"}
+  .success_flash.hide
+    Author added successfully
+  %h4
+    Add author
+  %p
+    - @author = Author.new
+    = form_for @author, remote: true, format: :json, html: {id: 'author_form'} do |f|
+      .display_error
+      = render "authors/form_fields", f: f
+  %a.close-reveal-modal{"aria-label" => "Close"} ×
