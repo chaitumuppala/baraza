@@ -2,7 +2,6 @@
   .left
   .panel{style: "overflow: hidden"}
     = form_for(@user, url: change_email_user_path(@user), html: { method: :patch, class: "right" }) do |f|
-      = @user.errors[:email]
       - if @user.errors[:email].present?
         #error_explanation
           %ul

@@ -5,7 +5,7 @@
   - if current_user.is_a?(RegisteredUser)
     = hidden_field_tag :owner_id, "User:#{current_user.id}"
   - else
-    = label_tag :author
+    = label_tag :author, "Author", class: "star_it"
     - owners = @article.owners
     - selected_value = owners.present? ? "#{owners.first.is_a?(Author) ? "Author" : "User"}:#{owners.first.id}" : "User:#{current_user.id}"
     = select_tag :owner_id, options_for_select((Author.all.collect { |owner| [owner.full_name, "Author:#{owner.id}"]} << [current_user.full_name, "User:#{current_user.id}"]), selected_value), id: "owner-select"
