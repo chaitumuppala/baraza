@@ -2,7 +2,7 @@ $(function () {
   var ArticleHomePageOrder = {
     init: function () {
       var order, articleId, articleForm;
-      $('a.choose-article').on('click', function(e) {
+      $('.choose-article a').on('click', function(e) {
         e.preventDefault();
         order = $(e.target).data("order");
       });
