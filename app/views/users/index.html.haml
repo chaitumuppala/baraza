@@ -1,7 +1,7 @@
 .panel
   %h4 Listing users
 
-  %table
+  %table{id: "users"}
     %thead
       %tr
         %th
@@ -13,7 +13,7 @@
         %th
           Actions
 
-    %tbody
+    %tbody{id: "userList"}
       - @users.each do |user|
         %tr
           %td= user.full_name

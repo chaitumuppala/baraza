@@ -6,7 +6,7 @@
           %li= msg
   .field
     = f.label :type
-    = f.select :type, User::Roles.values
+    = f.select :type, User::Roles.values ,:id => "roles"
 
   .actions
-    = f.submit 'Save'
+    = f.submit 'Save',:id => "btnSave"
