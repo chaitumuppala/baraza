@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
   before_action :display_preview, only: [:create, :update, :approve]
-  after_action :assign_owner, only: [:create, :update, :approve]
+  after_action :assign_owner, only: [:create]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = "Save as draft"
@@ -86,7 +86,7 @@ class ArticlesController < ApplicationController
   end
 
   def home_page_order_update
-    order_params = { home_page_order: article_params[:home_page_order] }
+    order_params = {home_page_order: article_params[:home_page_order]}
     Article.where(order_params).update_all(home_page_order: nil)
     @article.update_attributes(order_params)
     redirect_to root_path(configure_home: true)
@@ -103,7 +103,7 @@ class ArticlesController < ApplicationController
 
   def article_params
     params.require(:article).permit(:title, :content, :creator_id, :tag_list, :top_story, :status, :author_content, :summary, :home_page_order, :category_id, :owner_id,
-                                    cover_image_attributes: [:cover_photo, :id] )
+                                    cover_image_attributes: [:cover_photo, :id])
   end
 
   def merge_status_to_params

@@ -59,6 +59,15 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response).to redirect_to(articles_path)
     end
 
+    it "should not create a new owner" do
+      article = create(:article, creator_id: controller.current_user.id)
+
+      patch :update, id: article.id, article: {title: "new title"}, owner_id: "User:#{@user.id}"
+
+      expect(response.code).to eq("302")
+      expect(response).to redirect_to(articles_path)
+    end
+
     it "should not allow update of others article" do
       article = create(:article, creator_id: create(:user).id)
       expect(ArticleMailer).not_to receive(:notification_to_owner)
