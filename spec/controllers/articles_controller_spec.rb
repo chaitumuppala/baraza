@@ -96,7 +96,7 @@ RSpec.describe ArticlesController, type: :controller do
       mailer = double("mailer", deliver_now: "")
       expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
-      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{editor.id}"
     end
 
     context "preview" do

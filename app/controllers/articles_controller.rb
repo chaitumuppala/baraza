@@ -3,7 +3,6 @@ class ArticlesController < ApplicationController
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
   before_action :display_preview, only: [:create, :update, :approve]
-  after_action :assign_owner, only: [:create]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = "Save as draft"
@@ -27,6 +26,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params)
     respond_to do |format|
       if @article.save
+        assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
@@ -40,6 +40,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
@@ -76,6 +77,7 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       if params[:commit] == PUBLISH
         @article.update_attributes(status: Article::Status::PUBLISHED)
+        assign_owner
         ArticleMailer.published_notification_to_owner(@article.principal_author, @article).deliver_now
         ArticleMailer.published_notification_to_editors(@article).deliver_now
       end
