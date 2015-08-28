@@ -75,9 +75,9 @@ class ArticlesController < ApplicationController
 
   def approve
     if @article.update(article_params)
+      assign_owner
       if params[:commit] == PUBLISH
         @article.update_attributes(status: Article::Status::PUBLISHED)
-        assign_owner
         ArticleMailer.published_notification_to_owner(@article.principal_author, @article).deliver_now
         ArticleMailer.published_notification_to_editors(@article).deliver_now
       end

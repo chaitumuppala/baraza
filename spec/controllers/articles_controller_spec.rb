@@ -334,11 +334,13 @@ RSpec.describe ArticlesController, type: :controller do
 
     it "should save as draft and not publish", admin_sign_in: true do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      article.system_users << create(:author)
       expect(ArticleMailer).not_to receive(:published_notification_to_owner)
       patch :approve, id: article.id, article: {title: "title by admin"}, commit: ArticlesController::SAVE, owner_id: "User:#{@admin.id}"
 
       expect(article.reload.title).to eq("title by admin")
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
+      expect(article.principal_author.id).to eq(@admin.id)
       expect(response.code).to eq("302")
     end
 
