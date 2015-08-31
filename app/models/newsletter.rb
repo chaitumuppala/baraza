@@ -17,12 +17,11 @@ class Newsletter < ActiveRecord::Base
   end
 
   def eligible_articles_by_category
-    # TODO: Vijay: Use arel instead of hardcoding the plain sql - other places as well
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where(newsletter_id: [id, nil]).to_set }
   end
 
   def associated_articles_by_category
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ?", id).to_set }
+    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where(newsletter_id: id).to_set }
   end
 
   def has_no_draft?
