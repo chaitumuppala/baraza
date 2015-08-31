@@ -112,6 +112,7 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (0.12.0)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     dotenv (2.0.2)
     dotenv-rails (2.0.2)
       dotenv (= 2.0.2)
@@ -279,6 +280,11 @@ GEM
     sexp_processor (4.5.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     social-share-button (0.1.8)
       coffee-rails
       sass-rails
@@ -366,6 +372,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   select2-rails
   shoulda-matchers
+  simplecov
   social-share-button
   spring
   sqlite3
