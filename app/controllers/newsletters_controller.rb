@@ -62,16 +62,6 @@ class NewslettersController < ApplicationController
     end
   end
 
-  # DELETE /newsletters/1
-  # DELETE /newsletters/1.json
-  def destroy
-    @newsletter.destroy
-    respond_to do |format|
-      format.html { redirect_to newsletters_url, notice: 'eMagazine was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
