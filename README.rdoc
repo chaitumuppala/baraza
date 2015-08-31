@@ -1,3 +1,5 @@
+TODO: Vijay: Use markdown for better readme
+
 Machine Setup
 
 * Install rvm using the command -> `curl -sSL https://get.rvm.io | bash`
@@ -5,13 +7,13 @@ Machine Setup
 * Install bundler -> `gem install bundler`
 * `cd PATH_TO_PROJECT` (PATH_TO_PROJECT is the path of the project)
 * Install all gems `bundle install`
-* create tables -> `rake db:migrate`
 * brew install mysql
 * mysql.server start
 * mysql -uroot
 * CREATE USER 'baraza'@'localhost' IDENTIFIED BY 'baraza';
 * GRANT ALL PRIVILEGES ON * . * TO 'baraza'@'localhost';
 * mysql -ubaraza -p
+* create tables -> `rake db:drop db:create db:migrate`
 
 elasticsearch
 * brew install elasticsearch

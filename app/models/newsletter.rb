@@ -6,6 +6,7 @@ class Newsletter < ActiveRecord::Base
   accepts_nested_attributes_for :category_newsletters
   validates_presence_of :name
   before_validation :has_no_draft?, on: :create
+  # TODO: Vijay: Is it better to do this as a before_save on create hook?
   after_create do
     categories << Category.all
   end
@@ -17,6 +18,7 @@ class Newsletter < ActiveRecord::Base
   end
 
   def eligible_articles_by_category
+    # TODO: Vijay: Use arel instead of hardcoding the plain sql - other places as well
     group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where("newsletter_id = ? or newsletter_id IS NULL", id).to_set }
   end
 
@@ -38,6 +40,7 @@ class Newsletter < ActiveRecord::Base
   end
 
   def set_date_published
+    # TODO: Vijay: Use Time.current instead of DateTime.now / Time.zone.now - all other occurrences as well
     self.date_published = DateTime.now
   end
 end
