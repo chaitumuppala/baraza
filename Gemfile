@@ -1,9 +1,5 @@
 source 'https://rubygems.org'
 
-# TODO: Vijay: Why not upgrade to the latest version of all the gems?
-# TODO: Vijay: Its always a good idea to explicitly specify the versions of all gems so that all contributors are on the same versions
-# TODO: Vijay: Why not specify the ruby version in the Gemfile - so as to act as a safety mechanism?
-
 ruby '2.2.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

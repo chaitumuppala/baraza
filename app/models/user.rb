@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   validates :password, format: { with: /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
-  validates_presence_of :first_name, :last_name
+  validates :first_name, :last_name, presence: true
   alias_attribute :role, :type
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
   before_create ->{ self.type = type.present? ? type : RegisteredUser.name }

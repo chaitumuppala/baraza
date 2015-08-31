@@ -10,7 +10,7 @@ class Article < ActiveRecord::Base
   has_many :tags, through: :article_tags
   belongs_to :category
   attr_accessor :tag_list
-  validates_presence_of :title, :content, :category, :summary
+  validates :title, :content, :category, :summary, presence: true
   validates :home_page_order, uniqueness: true, allow_blank: true
   index_name    "articles_#{Rails.env}"
   settings do
