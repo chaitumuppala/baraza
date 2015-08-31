@@ -330,37 +330,37 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails (~> 1.1.0)
   capistrano-rvm
-  ckeditor
+  ckeditor (~> 4.1.2)
   country_select!
   daemons
-  declarative_authorization
-  delayed_job_active_record
-  devise
-  devise-i18n
-  dotenv-rails
-  elasticsearch-model
-  elasticsearch-rails
+  declarative_authorization (~> 0.5.7)
+  delayed_job_active_record (~> 4.0.3)
+  devise (~> 3.4.1)
+  devise-i18n (~> 0.12.0)
+  dotenv-rails (~> 2.0.2)
+  elasticsearch-model (~> 0.1.7)
+  elasticsearch-rails (~> 0.1.7)
   execjs
   factory_girl_rails
   foundation-rails (= 5.4.5)
-  haml
+  haml (~> 4.0.6)
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
-  loadjs
-  meta-tags
-  mysql2
-  omniauth
-  omniauth-facebook
-  omniauth-google-oauth2
+  loadjs (~> 0.0.6)
+  meta-tags (~> 2.0.0)
+  mysql2 (~> 0.3.18)
+  omniauth (~> 1.2.2)
+  omniauth-facebook (~> 2.0.1)
+  omniauth-google-oauth2 (~> 0.2.6)
   paperclip (~> 4.2)
   rails (= 4.2.1)
   rspec-rails
   sass-rails (~> 5.0)
-  select2-rails
+  select2-rails (~> 3.5.9)
   shoulda-matchers
   simplecov
-  social-share-button
+  social-share-button (~> 0.1.8)
   spring
   star_it
   therubyracer
