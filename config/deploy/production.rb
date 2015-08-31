@@ -7,6 +7,14 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
+server '78.47.156.19',
+       user: 'deploy',
+       roles: %w{web},
+       ssh_options: {
+           keys: File.join(ENV["HOME"], '.ssh', 'p_deploy_user_key.cer'),
+           forward_agent: false,
+           auth_methods: %w{publickey}
+       }
 
 
 # role-based syntax
