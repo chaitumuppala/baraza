@@ -126,6 +126,6 @@ class Article < ActiveRecord::Base
 
   private
   def set_date_published
-    self.date_published = DateTime.now
+    self.date_published = Time.current
   end
 end
