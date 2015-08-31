@@ -23,15 +23,3 @@ elasticsearch
 
 imagemagick - for ckeditor image uploads
 * brew install imagemagick
-
-
-Go details
-* ssh root@188.166.100.105 - if you ssh for the first time, it will require password:panafricabaraza
-* service go-agent start
-* service go-server start
-* if the web doesn't automatically fire up, you can browse
-    http://188.166.100.105:8153
-        Credentials
-            username:baraza
-            password:passwordbaraza
-            password:passwordbaraza
