@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820141912) do
+ActiveRecord::Schema.define(version: 20150820143141) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 20150820141912) do
   add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+
+  create_table "article_owners", force: :cascade do |t|
+    t.integer  "article_id", limit: 4
+    t.integer  "owner_id",   limit: 4
+    t.string   "owner_type", limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "article_owners", ["article_id"], name: "index_article_owners_on_article_id", using: :btree
 
   create_table "article_tags", force: :cascade do |t|
     t.integer  "article_id", limit: 4
@@ -184,6 +194,7 @@ ActiveRecord::Schema.define(version: 20150820141912) do
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "article_owners", "articles"
   add_foreign_key "article_tags", "articles"
   add_foreign_key "article_tags", "tags"
   add_foreign_key "articles", "categories"
