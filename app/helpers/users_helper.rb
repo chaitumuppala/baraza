@@ -1,4 +1,5 @@
 module UsersHelper
+  # TODO: Vijay: Since this is a validation, this should be at the model - probably in an 'after_validation' hook
   def error_message_for_email(user)
     error_hash = user.errors.messages
     error_hash = error_hash.slice(:email) if error_hash[:email] && error_hash[:email].find {|m| /has already been used to register an account/ =~ m}
