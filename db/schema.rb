@@ -24,18 +24,18 @@ ActiveRecord::Schema.define(version: 20150820143141) do
   add_index "article_owners", ["article_id"], name: "index_article_owners_on_article_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",                  limit: 255
-    t.text     "content",                limit: 65535
+    t.string   "title",                  limit: 255,                     null: false
+    t.text     "content",                limit: 65535,                   null: false
     t.integer  "creator_id",             limit: 4
     t.boolean  "top_story"
     t.integer  "newsletter_id",          limit: 4
     t.integer  "position_in_newsletter", limit: 4
     t.string   "status",                 limit: 255,   default: "draft"
     t.text     "author_content",         limit: 65535
-    t.text     "summary",                limit: 65535
+    t.text     "summary",                limit: 65535,                   null: false
     t.integer  "home_page_order",        limit: 4
     t.datetime "date_published"
-    t.integer  "category_id",            limit: 4
+    t.integer  "category_id",            limit: 4,                       null: false
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
   end
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 20150820143141) do
   add_index "articles_tags", ["tag_id"], name: "index_articles_tags_on_tag_id", using: :btree
 
   create_table "authors", force: :cascade do |t|
-    t.string   "full_name",  limit: 255
-    t.string   "email",      limit: 255
+    t.string   "full_name",  limit: 255, null: false
+    t.string   "email",      limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 20150820143141) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "newsletters", force: :cascade do |t|
-    t.string   "name",           limit: 255
+    t.string   "name",           limit: 255,                   null: false
     t.string   "status",         limit: 255, default: "draft"
     t.datetime "date_published"
     t.datetime "created_at",                                   null: false
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20150820143141) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name",       limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -154,8 +154,8 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.datetime "confirmation_sent_at"
     t.string   "uid",                    limit: 255
     t.string   "provider",               limit: 255
-    t.string   "first_name",             limit: 255
-    t.string   "last_name",              limit: 255
+    t.string   "first_name",             limit: 255,              null: false
+    t.string   "last_name",              limit: 255,              null: false
     t.integer  "year_of_birth",          limit: 4
     t.string   "country",                limit: 255
     t.string   "gender",                 limit: 255
