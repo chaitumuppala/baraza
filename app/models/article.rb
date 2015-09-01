@@ -6,8 +6,6 @@
 #  title                  :string(255)
 #  content                :text(65535)
 #  creator_id             :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
 #  top_story              :boolean
 #  newsletter_id          :integer
 #  position_in_newsletter :integer
@@ -17,6 +15,8 @@
 #  home_page_order        :integer
 #  date_published         :datetime
 #  category_id            :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 # Indexes
 #
