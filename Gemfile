@@ -43,6 +43,7 @@ gem 'daemons', '~> 1.2.3'
 gem 'paperclip', '~> 4.2'
 gem 'aws-sdk', '~> 1.6'
 gem 'meta-tags', '~> 2.0.0'
+gem 'dotenv-rails', '~> 2.0.2'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -83,7 +84,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'dotenv-rails', '~> 2.0.2'
   gem 'spring', '~> 1.3.6'
   gem 'quiet_assets', '~> 1.1.0'
   gem 'byebug', '~> 6.0.2'
