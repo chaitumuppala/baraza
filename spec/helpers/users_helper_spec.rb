@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UsersHelper do
+RSpec.describe UsersHelper do
   context 'error_message_for_email' do
     it 'should only user errors' do
       user = User.new

@@ -6,7 +6,6 @@ require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
-require 'devise'
 require 'declarative_authorization/maintenance'
 require 'paperclip/matchers'
 
@@ -36,7 +35,6 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join('spec', 'fixtures')
-  config.include Devise::TestHelpers, :type => :controller
   config.include Paperclip::Shoulda::Matchers
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -45,22 +43,27 @@ RSpec.configure do |config|
 
   config.before(:each, sign_in: true) do
     @user = create(:user)
-    sign_in @user
-    end
+    test_user_sign_in @user
+  end
 
   config.before(:each, editor_sign_in: true) do
     @editor = create(:editor)
-    sign_in @editor
+    test_user_sign_in @editor
   end
 
   config.before(:each, admin_sign_in: true) do
     @admin = create(:administrator)
-    sign_in @admin
+    test_user_sign_in @admin
   end
 
   config.before(:each, search: true) do
     Article.__elasticsearch__.create_index! force: true
     Delayed::Worker.delay_jobs = false
+  end
+
+  def test_user_sign_in(user)
+    user.confirm!
+    sign_in user
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests

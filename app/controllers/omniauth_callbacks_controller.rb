@@ -7,6 +7,8 @@ class OmniauthCallbacksController < ApplicationController
         if user.nil?
           user = User.create(uid: auth.uid, provider: auth.provider, first_name: auth.info.first_name, last_name: auth.info.last_name, password: User::PASSWORD_SUBSTRING + SecureRandom.hex[0..5])
           user.skip_confirmation!
+        else
+          user.confirm!
         end
         sign_in_and_redirect user
       end

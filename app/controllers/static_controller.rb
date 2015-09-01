@@ -1,6 +1,7 @@
 class StaticController < ApplicationController
   def about
-    end
+  end
+
   def contact
   end
 end

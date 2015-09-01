@@ -1,38 +1,39 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy, :approve_form, :approve, :home_page_order_update]
+
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
+  before_action :new_article_from_params, only: [:create]
   before_action :display_preview, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 
-  SAVE = "Save as draft"
-  SUBMIT_FOR_APPROVAL = "Submit for approval"
-  PUBLISH = "Publish"
-  PREVIEW = "Preview"
+  SAVE = "Save as draft".freeze
+  SUBMIT_FOR_APPROVAL = "Submit for approval".freeze
+  PUBLISH = "Publish".freeze
+  PREVIEW = "Preview".freeze
 
   def show
   end
 
   def new
-    @article = Article.new
-    @article.build_cover_image
+    @article.build_cover_image if @article.cover_image.blank?    # TODO: Vijay: Can this not be done when initializing the object itself?
   end
 
   def edit
-    @article.build_cover_image if @article.cover_image.blank?
+    @article.build_cover_image if @article.cover_image.blank?   # TODO: Vijay: Can this not be done when initializing the object itself?
   end
 
   def create
-    @article = Article.new(article_params)
     respond_to do |format|
       if @article.save
+        # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
         assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors.full_messages.to_sentence, status: :unprocessable_entity }
       end
     end
   end
@@ -40,13 +41,14 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
         assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :edit }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors.full_messages.to_sentence, status: :unprocessable_entity }
       end
     end
   end
@@ -60,7 +62,7 @@ class ArticlesController < ApplicationController
   end
 
   def search
-    @articles = Article.send("search_by_#{params[:search]}", params[:q])
+    @articles = Article.public_send("search_by_#{params[:search]}", params[:q])
   end
 
   def index
@@ -70,7 +72,7 @@ class ArticlesController < ApplicationController
   end
 
   def approve_form
-    @article.build_cover_image if @article.cover_image.blank?
+    @article.build_cover_image if @article.cover_image.blank?   # TODO: Vijay: Can this not be done when initializing the object itself?
   end
 
   def approve
@@ -88,6 +90,7 @@ class ArticlesController < ApplicationController
   end
 
   def home_page_order_update
+    # TODO: Vijay: Use Hash.slice for easier readability
     order_params = {home_page_order: article_params[:home_page_order]}
     Article.where(order_params).update_all(home_page_order: nil)
     @article.update_attributes(order_params)
@@ -98,6 +101,11 @@ class ArticlesController < ApplicationController
   def set_article
     @article = Article.find(params[:id])
   end
+
+  # TODO: Vijay: Is this method needed?
+  # def new_article
+  #   @article = Article.new(article_params)
+  # end
 
   def new_article_from_params
     @article = params[:article] ? Article.new(article_params) : Article.new
@@ -111,6 +119,7 @@ class ArticlesController < ApplicationController
   def merge_status_to_params
     for_publish_or_approval do
       status = current_user.registered_user? ? Article::Status::SUBMITTED_FOR_APPROVAL : Article::Status::PUBLISHED
+      # TODO: Vijay: Try to use symbols for params hash in all places (Verify first that this will work)
       params["article"].merge!(status: status, author_content: params["article"]["content"])
     end
   end
@@ -124,7 +133,7 @@ class ArticlesController < ApplicationController
 
   def for_publish_or_approval
     if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
-      yield if block_given?
+      yield
     end
   end
 
@@ -133,6 +142,7 @@ class ArticlesController < ApplicationController
       preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
       @article = Article.new(article_params.except(:cover_image_attributes))
       if preview_cover_image_attributes
+        # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed?
         ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
         @article.cover_image = ci
       end
@@ -141,8 +151,7 @@ class ArticlesController < ApplicationController
   end
 
   def assign_owner
-    owner_type, owner_id = params[:owner_id].split(":")
+    owner_type, owner_id = params[:owner_id].split(':'.freeze)
     @article.article_owners = [ ArticleOwner.new(owner_id: owner_id, owner_type: owner_type) ]
   end
 end
-

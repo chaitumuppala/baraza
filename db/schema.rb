@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20150831161519) do
     t.integer  "creator_id",             limit: 4
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
-    t.boolean  "top_story",              limit: 1
+    t.boolean  "top_story"
     t.integer  "newsletter_id",          limit: 4
     t.integer  "position_in_newsletter", limit: 4
     t.string   "status",                 limit: 255,   default: "draft"
@@ -97,21 +97,10 @@ ActiveRecord::Schema.define(version: 20150831161519) do
     t.integer  "cover_photo_file_size",    limit: 4
     t.datetime "cover_photo_updated_at"
     t.integer  "article_id",               limit: 4
-    t.boolean  "preview_image",            limit: 1,   default: false
+    t.boolean  "preview_image",                        default: false
   end
 
   add_index "cover_images", ["article_id"], name: "index_cover_images_on_article_id", using: :btree
-
-  create_table "create_article_owners", force: :cascade do |t|
-    t.integer  "article_id", limit: 4
-    t.integer  "owner_id",   limit: 4
-    t.string   "owner_type", limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "create_article_owners", ["article_id"], name: "index_create_article_owners_on_article_id", using: :btree
-  add_index "create_article_owners", ["owner_id"], name: "index_create_article_owners_on_owner_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -186,5 +175,4 @@ ActiveRecord::Schema.define(version: 20150831161519) do
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
   add_foreign_key "cover_images", "articles"
-  add_foreign_key "create_article_owners", "articles"
 end

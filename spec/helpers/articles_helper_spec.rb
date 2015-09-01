@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ArticlesHelper do
+RSpec.describe ArticlesHelper do
   context 'cover_image_url_for' do
     it 'should set the cover_image default image url if no image is provided' do
       article = create(:article)

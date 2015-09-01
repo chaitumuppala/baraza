@@ -1,6 +1,23 @@
+# == Schema Information
+#
+# Table name: cover_images
+#
+#  id                       :integer          not null, primary key
+#  cover_photo_file_name    :string(255)
+#  cover_photo_content_type :string(255)
+#  cover_photo_file_size    :integer
+#  cover_photo_updated_at   :datetime
+#  article_id               :integer
+#  preview_image            :boolean          default(FALSE)
+#
+# Indexes
+#
+#  index_cover_images_on_article_id  (article_id)
+#
+
 require 'rails_helper'
 
-describe CoverImage do
+RSpec.describe CoverImage, type: :model do
   context "validation" do
     it { should have_attached_file(:cover_photo) }
     it { should validate_attachment_content_type(:cover_photo).

@@ -1,6 +1,32 @@
+# == Schema Information
+#
+# Table name: articles
+#
+#  id                     :integer          not null, primary key
+#  title                  :string(255)
+#  content                :text(65535)
+#  creator_id             :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  top_story              :boolean
+#  newsletter_id          :integer
+#  position_in_newsletter :integer
+#  status                 :string(255)      default("draft")
+#  author_content         :text(65535)
+#  summary                :text(65535)
+#  home_page_order        :integer
+#  date_published         :datetime
+#  category_id            :integer
+#
+# Indexes
+#
+#  index_articles_on_category_id  (category_id)
+#  index_articles_on_creator_id   (creator_id)
+#
+
 require 'rails_helper'
 
-describe Article do
+RSpec.describe Article, type: :model do
   context "tag_list" do
     it "should list the tags as comma separated string" do
       tag1 = create(:tag, name: "history")
@@ -66,7 +92,7 @@ describe Article do
       tag2 = create(:tag, name: "science")
       category = create(:category)
       article = create(:article, category_id: category.id, status: Article::Status::PUBLISHED)
-      date = DateTime.now
+      date = Time.current
       article.update_attributes(date_published: date)
       article.tags << [tag1, tag2]
 
@@ -125,7 +151,7 @@ describe Article do
         expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([])
       end
     end
-    
+
     context "category" do
       it "should update document on adding category through category_id", search: true do
         category1 = create(:category, name: "history")
@@ -245,14 +271,14 @@ describe Article do
   context "after_save" do
     it "should set date_published on create and publishing article" do
       article = create(:article, status: Article::Status::PUBLISHED)
-      expect(article.date_published.to_date).to eq(Date.today)
+      expect(article.date_published.to_date).to eq(Time.current.to_date)
     end
 
     it "should set date_published on update and publishing article" do
       article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       article.update_attributes(status: Article::Status::PUBLISHED)
-      expect(article.date_published.to_date).to eq(Date.today)
-      expect(article.date_published).to be_within(1.minute).of(Time.now)
+      expect(article.date_published.to_date).to eq(Time.current.to_date)
+      expect(article.date_published).to be_within(1.minute).of(Time.current)
     end
   end
 

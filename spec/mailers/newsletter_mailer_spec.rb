@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe NewsletterMailer do
+RSpec.describe NewsletterMailer, type: :mailer do
   context "send_mail" do
     it "should send mail to subscribers" do
       newsletter = create(:newsletter)

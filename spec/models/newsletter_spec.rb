@@ -1,6 +1,18 @@
+# == Schema Information
+#
+# Table name: newsletters
+#
+#  id             :integer          not null, primary key
+#  name           :string(255)
+#  status         :string(255)      default("draft")
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  date_published :datetime
+#
+
 require 'rails_helper'
 
-describe Newsletter do
+RSpec.describe Newsletter, type: :model do
   context "eligible_articles" do
     it "should include categories in order of position_in_newsletter with nil values last" do
       newsletter = create(:newsletter)
@@ -115,8 +127,8 @@ describe Newsletter do
     it "should set date_published on update and publishing newsletter" do
       newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
       newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
-      expect(newsletter.date_published.to_date).to eq(Date.today)
-      expect(newsletter.date_published).to be_within(1.minute).of(Time.now)
+      expect(newsletter.date_published.to_date).to eq(Time.current.to_date)
+      expect(newsletter.date_published).to be_within(1.minute).of(Time.current)
     end
   end
 

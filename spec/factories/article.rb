@@ -1,10 +1,8 @@
 FactoryGirl.define do
   factory :article do
-    title "unite all"
-    content "*"*50
-    summary "$"*50
-    category
-    status Article::Status::DRAFT
-    creator
+    title { Faker::Name.title }
+    content { Faker::Lorem.paragraph }
+    summary { Faker::Lorem.sentence }
+    association :category
   end
 end

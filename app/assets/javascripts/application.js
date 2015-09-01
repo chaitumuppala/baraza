@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require lib/jquery-ui.min
-//= require lib/lodash.min.js
+//= require jquery-ui
+//= require lodash
 //= require select2
 //= require foundation
 //= require loadjs

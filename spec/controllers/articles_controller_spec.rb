@@ -38,12 +38,11 @@ RSpec.describe ArticlesController, type: :controller do
     end
 
     context "editor/admin" do
-      it "should not allow edit after publishing" do
-        editor = create(:editor)
-        sign_in editor
-
+      it "should not allow edit after publishing", editor_sign_in: true do
         article = create(:article, creator_id: controller.current_user.id, status: Article::Status::PUBLISHED)
+
         get :edit, id: article.id
+
         expect(response).to redirect_to(root_path)
       end
     end
@@ -88,15 +87,13 @@ RSpec.describe ArticlesController, type: :controller do
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
     end
 
-    it "should send notification on submitting if publishing or submitting_for_approval" do
-      editor = create(:editor)
-      sign_in(editor)
+    it "should send notification on submitting if publishing or submitting_for_approval", editor_sign_in: true do
       article = create(:article, creator_id: controller.current_user.id)
-      article.users << editor
+      article.users << @editor
       mailer = double("mailer", deliver_now: "")
       expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
-      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{editor.id}"
+      patch :update, id: article.id, article: {title: "new title"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@editor.id}"
     end
 
     context "preview" do
@@ -153,38 +150,38 @@ RSpec.describe ArticlesController, type: :controller do
 
       it "should create, submit for approval and copy author_content to content", sign_in: true do
         post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
+
         article = Article.last
         expect(article.title).to eq("new title")
         expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
         expect(article.author_content).to eq("content")
       end
 
-      it "should create, publish if current user is editor" do
-        editor = create(:editor)
-        sign_in(editor)
-        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
+      it "should create, publish if current user is editor", editor_sign_in: true do
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@editor.id}"
+
         article = Article.last
         expect(article.status).to eq(Article::Status::PUBLISHED)
       end
 
-      it "should create, publish if current user is admin" do
-        admin = create(:administrator)
-        sign_in(admin)
-        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{admin.id}"
+      it "should create, publish if current user is admin", admin_sign_in: true do
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@admin.id}"
+
         article = Article.last
         expect(article.status).to eq(Article::Status::PUBLISHED)
       end
 
-      it "should send notification on submitting if publishing or submitting_for_approval" do
-        editor = create(:editor)
-        sign_in(editor)
-        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{editor.id}"
+      it "should send notification on submitting if publishing or submitting_for_approval", editor_sign_in: true do
+        post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@editor.id}"
+
+        # TODO: Vijay: Where is the assertion or expectation?
       end
     end
 
     context "preview" do
       it "should render preview of article", sign_in: true do
         post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
+
         expect(assigns[:article].title).to eq("new title")
         expect(assigns[:article].content).to eq("content")
         expect(response).to render_template("preview")
@@ -221,7 +218,7 @@ RSpec.describe ArticlesController, type: :controller do
       expect(assigns[:articles].class).to eq(Array)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
     end
-  
+
     it "should search articles based on the category", search: true do
       category1 = create(:category, name: "science")
       category2 = create(:category, name: "history")
@@ -239,13 +236,11 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context "index" do
-    it "should list current user articles if registered_user" do
-      registered_user = create(:user)
-      sign_in registered_user
-      article1 = create(:article, creator_id: registered_user.id)
+    it "should list current user articles if registered_user", sign_in: true do
+      article1 = create(:article, creator_id: @user.id)
       article2 = create(:article, creator_id: create(:user).id)
-      article3 = create(:article, creator_id: registered_user.id)
-      ArticleOwner.create(article: article1, owner: registered_user)
+      article3 = create(:article, creator_id: @user.id)
+      ArticleOwner.create(article: article1, owner: @user)
 
       get :index
 
@@ -253,14 +248,12 @@ RSpec.describe ArticlesController, type: :controller do
       expect(assigns[:proxy_articles]).to match_array([article3])
     end
 
-    it "should list current user articles and all articles submitted for approval if editor" do
-      editor = create(:editor)
-      sign_in editor
-      article1 = create(:article, creator_id: editor.id)
+    it "should list current user articles and all articles submitted for approval if editor", editor_sign_in: true do
+      article1 = create(:article, creator_id: @editor.id)
       article2 = create(:article, creator_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       article3 = create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
       article4 = create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
-      article5 = create(:article, creator_id: editor.id)
+      article5 = create(:article, creator_id: @editor.id)
 
       get :index
 
@@ -268,14 +261,12 @@ RSpec.describe ArticlesController, type: :controller do
       expect(assigns[:articles_submitted]).to match_array([article2])
     end
 
-    it "should list current user articles and all articles submitted for approval if administrator" do
-      administrator = create(:administrator)
-      sign_in administrator
-      article1 = create(:article, creator_id: administrator.id)
+    it "should list current user articles and all articles submitted for approval if administrator", admin_sign_in: true do
+      article1 = create(:article, creator_id: @admin.id)
       article2 = create(:article, creator_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
       article3 = create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
       article4 = create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
-      article5 = create(:article, creator_id: administrator.id)
+      article5 = create(:article, creator_id: @admin.id)
 
       get :index
 

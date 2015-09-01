@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe OmniauthCallbacksController do
+RSpec.describe OmniauthCallbacksController, type: :controller do
   ["facebook", "google_oauth2"].each do |provider|
     context provider do
       it "should create first time user and sign_in the user" do

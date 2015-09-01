@@ -1,11 +1,8 @@
 require 'rails_helper'
 
-describe NewslettersController do
-  before do
-    sign_in(create(:administrator))
-  end
+RSpec.describe NewslettersController, type: :controller do
   context "update" do
-    it "should update and approve the newsletter if params[:commit] is PUBLISH" do
+    it "should update and approve the newsletter if params[:commit] is PUBLISH", admin_sign_in: true do
       create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
@@ -25,7 +22,7 @@ describe NewslettersController do
       expect(newsletter.reload.status).to eq(Newsletter::Status::PUBLISHED)
     end
 
-    it "should remove article params which dont have ids in article_ids" do
+    it "should remove article params which dont have ids in article_ids", admin_sign_in: true do
       create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
@@ -46,7 +43,7 @@ describe NewslettersController do
       expect(response).to redirect_to(edit_newsletter_path(newsletter))
     end
 
-    it "should throw error if no article is selected" do
+    it "should throw error if no article is selected", admin_sign_in: true do
       create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
@@ -63,7 +60,7 @@ describe NewslettersController do
       expect(response).to render_template("edit")
     end
 
-    it "should throw error if no subscribers" do
+    it "should throw error if no subscribers", admin_sign_in: true do
       newsletter = create(:newsletter)
       category = create(:category)
       cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
@@ -79,7 +76,8 @@ describe NewslettersController do
   end
 
   context "new" do
-    it "should new only if there are no draft newsletters" do
+    it "should new only if there are no draft newsletters", admin_sign_in: true do
+      Newsletter.where(status: Newsletter::Status::DRAFT).destroy_all
       n = create(:newsletter, status: Newsletter::Status::DRAFT)
       n.update_attributes(status: Newsletter::Status::PUBLISHED)
 
@@ -89,7 +87,7 @@ describe NewslettersController do
       expect(response).to redirect_to(root_path)
     end
 
-    it "should new only if there are no draft newsletters" do
+    it "should new only if there are no draft newsletters", admin_sign_in: true do
       create(:newsletter, status: Newsletter::Status::PUBLISHED)
 
       get :new
@@ -98,14 +96,14 @@ describe NewslettersController do
   end
 
   context "edit" do
-    it "should allow to edit only if newsletter is in draft state" do
+    it "should allow to edit only if newsletter is in draft state", admin_sign_in: true do
       newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
       get :edit, id: newsletter.id
 
       expect(response).to render_template("edit")
     end
 
-    it "should not allow to edit if newsletter is in published state" do
+    it "should not allow to edit if newsletter is in published state", admin_sign_in: true do
       newsletter = create(:newsletter, status: Newsletter::Status::PUBLISHED)
       get :edit, id: newsletter.id
 
@@ -114,14 +112,14 @@ describe NewslettersController do
   end
 
   context "create" do
-    it "should create and redirect to edit_newsletter path" do
+    it "should create and redirect to edit_newsletter path", admin_sign_in: true do
       post :create, newsletter: {name: "june"}
 
       newsletter = Newsletter.last
       expect(response).to redirect_to(edit_newsletter_path(newsletter))
     end
 
-    it "should render new if error" do
+    it "should render new if error", admin_sign_in: true do
       post :create, newsletter: {name: ""}
 
       expect(response).to render_template("new")
@@ -129,21 +127,26 @@ describe NewslettersController do
   end
 
   context "subscribe" do
-    it "should subscribe to newsletter" do
-      email = "email@email.com"
-      post :subscribe, email: email
+    it "should subscribe to newsletter", admin_sign_in: true do
+      email = Faker::Internet.email
+
+      expect do
+        post :subscribe, email: email
+      end.to change{Subscriber.count}.by(1)
 
       expect(Subscriber.last.email).to eq(email)
       expect(flash[:notice]).to eq("Subscribed successfully")
       expect(response).to redirect_to(root_path)
     end
 
-    it "should throw error if already subscribed to newsletter" do
-      email = "email@email.com"
+    it "should throw error if already subscribed to newsletter", admin_sign_in: true do
+      email = Faker::Internet.email
       Subscriber.create(email: email)
-      post :subscribe, email: email
 
-      expect(Subscriber.count).to eq(1)
+      expect do
+        post :subscribe, email: email
+      end.to_not change{Subscriber.count}
+
       expect(flash[:alert]).to eq("Email already subscribed")
       expect(response).to redirect_to(root_path)
     end

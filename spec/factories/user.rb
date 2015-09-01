@@ -7,19 +7,18 @@ FactoryGirl.define do
 
   factory :user do |user|
     email
-    password "Password1!"
-    first_name "Patrick"
-    last_name "Jane"
-    type RegisteredUser.name
-    confirmed_at Time.now
+    password { "Password1!" }
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    type { RegisteredUser.name }
   end
 
-  factory :administrator, parent: :user, class: 'Administrator'  do
-    type Administrator.name
+  factory :administrator, parent: :user, class: Administrator.name  do
+    type { Administrator.name }
   end
 
-  factory :editor, parent: :user, class: 'Editor'  do
-    type Editor.name
+  factory :editor, parent: :user, class: Editor.name  do
+    type { Editor.name }
   end
 
   factory :creator, parent: :user

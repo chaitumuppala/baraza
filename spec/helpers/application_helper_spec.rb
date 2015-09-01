@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApplicationHelper do
+RSpec.describe ApplicationHelper do
   context 'strip_html_content' do
     it 'should strip html tags, carriage return, line space, images, links' do
       content = "<p class=\'body\' style=\'outline: 0px; margin-top: 0px; color: rgb(59, 58, 57); font-family: Georgia, 'Times New Roman', Times, serif; font-size: 14px; line-height: 18px;\'>

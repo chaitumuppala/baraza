@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PasswordsController do
+RSpec.describe PasswordsController, type: :controller do
   before do
     @request.env["devise.mapping"] = Devise.mappings[:user]
   end

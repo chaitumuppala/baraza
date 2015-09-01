@@ -1,4 +1,4 @@
-  class ArticleMailer < ApplicationMailer
+class ArticleMailer < ApplicationMailer
   def notification_to_owner(recipient, article)
     @user = recipient
     @article = article

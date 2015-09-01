@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :newsletter do |newsletter|
-    name "Month of June"
-    status Newsletter::Status::DRAFT
+    name { Faker::Team.name }
   end
 end

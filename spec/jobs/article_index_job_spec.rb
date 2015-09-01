@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe ArticleIndexJob do
+RSpec.describe ArticleIndexJob do
   context "perform" do
     it "should index the article" do
       article = create(:article, id: 100)

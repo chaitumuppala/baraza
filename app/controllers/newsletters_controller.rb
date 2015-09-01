@@ -1,6 +1,7 @@
 class NewslettersController < ApplicationController
   before_action :set_newsletter, only: [:show, :edit, :update, :destroy]
-  before_action :new_newsletter
+  before_action :new_newsletter_from_params, only: [:create]
+
   filter_resource_access additional_collection: [:subscribe]
 
   SAVE = "Save"
@@ -22,14 +23,13 @@ class NewslettersController < ApplicationController
   end
 
   def create
-    @newsletter = Newsletter.new(newsletter_params)
     respond_to do |format|
       if @newsletter.save
         format.html { redirect_to edit_newsletter_path(@newsletter), notice: 'eMagazine was successfully created.' }
         format.json { render :show, status: :created, location: @newsletter }
       else
         format.html { render :new }
-        format.json { render json: @newsletter.errors, status: :unprocessable_entity }
+        format.json { render json: @newsletter.errors.full_messages.to_sentence, status: :unprocessable_entity }
       end
     end
   end
@@ -41,6 +41,7 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1
   # PATCH/PUT /newsletters/1.json
   def update
+    # TODO: Vijay: Use symbol instead of string as key
     ns_params = params["newsletter"]
     flash.now[:alert] = "There are no subscribers" and render :edit and return if Subscriber.all.empty?
     flash.now[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
@@ -48,11 +49,12 @@ class NewslettersController < ApplicationController
     ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
     if @newsletter.update(newsletter_params)
       if params[:commit] == PUBLISH
+        # TODO: Vijay: Move to an after_save hook on model
         NewsletterMailer.send_mail(@newsletter).deliver_now
-        flash[:notice] = "eMagazine was successfully sent out to the subscribers"
+        flash[:notice] = "eMagazine was successfully sent out to the subscribers".freeze
         redirect_to newsletters_path
       elsif params[:commit] == SAVE
-        flash[:notice] = "eMagazine is saved successfully"
+        flash[:notice] = "eMagazine is saved successfully".freeze
         redirect_to edit_newsletter_path(@newsletter)
       elsif params[:commit] == PREVIEW
         render 'newsletters/preview', :layout => false
@@ -65,9 +67,9 @@ class NewslettersController < ApplicationController
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
-      flash[:notice] = "Subscribed successfully"
+      flash[:notice] = "Subscribed successfully".freeze
     else
-      flash[:alert] = "Email already subscribed"
+      flash[:alert] = "Email already subscribed".freeze
     end
     redirect_to root_path
   end
@@ -78,9 +80,10 @@ class NewslettersController < ApplicationController
     @newsletter = Newsletter.find(params[:id])
   end
 
-  def new_newsletter
-    @newsletter = Newsletter.new
-  end
+  # TODO: Vijay: Is this method needed?
+  # def new_newsletter
+  #   @newsletter = Newsletter.new(newsletter_params)
+  # end
 
   def new_newsletter_from_params
     @newsletter = params[:newsletter] ? Newsletter.new(newsletter_params) : Newsletter.new
@@ -95,7 +98,7 @@ class NewslettersController < ApplicationController
 
   def preview
     if params[:commit] == PREVIEW
-      @newsletter = Newsletter.new(newsletter_params)
+      new_newsletter_from_params
       render 'newsletters/preview' and return
     end
   end
