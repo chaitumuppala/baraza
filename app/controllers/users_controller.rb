@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         # TODO: Vijay: Move this to a after_save hook on the model
-        TypeChangeNotifier.public_send("change_type_to_#{user_params[:type].underscore}_mail", @user.email, @user.full_name, @user.type).deliver_now
+        TypeChangeNotifier.public_send("change_type_to_#{user_params[:type].underscore}_mail", @user.email, @user.full_name).deliver_now
         format.html { redirect_to users_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else

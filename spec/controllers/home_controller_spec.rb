@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
-  xit "should set blocks without home_page_order with recently published articles " do
+  it "should set blocks without home_page_order with recently published articles " do
     article1 = create(:article, home_page_order: 5, status: Article::Status::PUBLISHED)
     article2 = create(:article, home_page_order: 1, status: Article::Status::PUBLISHED)
     article3 = create(:article, home_page_order: 2, status: Article::Status::PUBLISHED)

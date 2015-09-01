@@ -25,3 +25,4 @@ mocks/*
 /.env.production
 /coverage
 /spec/examples.txt
+.generators

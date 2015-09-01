@@ -2,8 +2,6 @@ class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :edit, :update, :destroy]
   before_action :new_author_from_params, only: [:create]
 
-  filter_resource_access additional_collection: [:search]
-
   # GET /authors
   # GET /authors.json
   def index
@@ -51,26 +49,11 @@ class AuthorsController < ApplicationController
     end
   end
 
-  # DELETE /authors/1
-  # DELETE /authors/1.json
-  def destroy
-    @author.destroy
-    respond_to do |format|
-      format.html { redirect_to authors_url, notice: 'Author was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_author
       @author = Author.find(params[:id])
     end
-
-    # TODO: Vijay: Is this method needed?
-    # def new_author
-    #   @author = Author.new(author_params)
-    # end
 
     def new_author_from_params
       @author = params[:author] ? Author.new(author_params) : Author.new

@@ -13,6 +13,10 @@
 require 'rails_helper'
 
 RSpec.describe Newsletter, type: :model do
+  before do
+    Newsletter.update_all(status: Newsletter::Status::PUBLISHED)
+  end
+
   context "eligible_articles" do
     it "should include categories in order of position_in_newsletter with nil values last" do
       newsletter = create(:newsletter)
@@ -87,7 +91,7 @@ RSpec.describe Newsletter, type: :model do
     it "should associate all categories to the newsletter" do
       category1 = create(:category, name: "history")
       category2 = create(:category, name: "science")
-      newsletter = create(:newsletter)
+      newsletter = create(:newsletter, status: Newsletter::Status::DRAFT)
 
       expect(newsletter.categories).to eq([category1, category2])
     end

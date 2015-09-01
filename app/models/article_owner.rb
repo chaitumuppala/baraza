@@ -14,7 +14,7 @@
 #  index_article_owners_on_article_id  (article_id)
 #
 
-# TODO: Vijay: Is this join table model really required as a first-class model?
+# TODO: Vijay: Is this join table model really required as a first-class model? - yes bcoz its a polymorphic join model and has a type column that needs to be set
 class ArticleOwner < ActiveRecord::Base
   belongs_to :article
   belongs_to :owner, polymorphic: true

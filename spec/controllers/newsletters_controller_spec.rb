@@ -104,6 +104,7 @@ RSpec.describe NewslettersController, type: :controller do
     end
 
     it "should not allow to edit if newsletter is in published state", admin_sign_in: true do
+      Newsletter.update_all(status: Newsletter::Status::PUBLISHED)
       newsletter = create(:newsletter, status: Newsletter::Status::PUBLISHED)
       get :edit, id: newsletter.id
 

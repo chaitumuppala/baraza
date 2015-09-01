@@ -64,7 +64,7 @@ RSpec.describe UsersController, type: :controller do
       test_user_sign_in admin
       user = create(:user)
       mailer = double("mailer")
-      expect(TypeChangeNotifier).to receive(:change_type_to_editor_mail).with(user.email, user.full_name, User::Roles::EDITOR).and_return(mailer)
+      expect(TypeChangeNotifier).to receive(:change_type_to_editor_mail).with(user.email, user.full_name).and_return(mailer)
       expect(mailer).to receive(:deliver_now)
 
       patch :update, registered_user: { type: User::Roles::EDITOR }, id: user.id
@@ -77,7 +77,7 @@ RSpec.describe UsersController, type: :controller do
       test_user_sign_in admin
       editor = create(:editor)
       mailer = double("mailer")
-      expect(TypeChangeNotifier).to receive(:change_type_to_administrator_mail).with(editor.email, editor.full_name, User::Roles::ADMINISTRATOR).and_return(mailer)
+      expect(TypeChangeNotifier).to receive(:change_type_to_administrator_mail).with(editor.email, editor.full_name).and_return(mailer)
       expect(mailer).to receive(:deliver_now)
 
       patch :update, editor: { type: User::Roles::ADMINISTRATOR }, id: editor.id
@@ -90,7 +90,7 @@ RSpec.describe UsersController, type: :controller do
       test_user_sign_in admin
       administrator = create(:administrator)
       mailer = double("mailer")
-      expect(TypeChangeNotifier).to receive(:change_type_to_registered_user_mail).with(administrator.email, administrator.full_name, User::Roles::REGISTERED_USER).and_return(mailer)
+      expect(TypeChangeNotifier).to receive(:change_type_to_registered_user_mail).with(administrator.email, administrator.full_name).and_return(mailer)
       expect(mailer).to receive(:deliver_now)
 
       patch :update, administrator: { type: User::Roles::REGISTERED_USER }, id: administrator.id

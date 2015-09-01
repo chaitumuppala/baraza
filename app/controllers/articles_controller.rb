@@ -102,11 +102,6 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
 
-  # TODO: Vijay: Is this method needed?
-  # def new_article
-  #   @article = Article.new(article_params)
-  # end
-
   def new_article_from_params
     @article = params[:article] ? Article.new(article_params) : Article.new
   end
