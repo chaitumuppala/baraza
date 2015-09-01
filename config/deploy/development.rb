@@ -2,6 +2,7 @@
 # ======================
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
+set :bundle_without, nil
 
 server '127.0.0.1',
        user: 'deploy',
