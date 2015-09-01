@@ -1,5 +1,5 @@
-files: ["**/*.js"] # No need to put app/assets/ or vendor/assets here
-exclude_paths: ["javascripts/**/*.min.js", "javascripts/ckeditor/**"]
+files: ["javascripts/custom_js/**/*.js", "javascripts/common.js"] # No need to put app/assets/ or vendor/assets here
+exclude_paths: []
 options:
   boss:       true
   browser:    true
