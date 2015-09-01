@@ -12,15 +12,24 @@ RSpec.describe ArticlesController, type: :controller do
     it "assigns a new article for a signed_in user", sign_in: true do
       get :new, {}, valid_session
       expect(assigns(:article)).to be_a_new(Article)
+      expect(assigns(:article).cover_image).not_to be_nil
     end
   end
-  [:show, :edit].each do |action|
-    describe "#{action}", sign_in: true do
-      it "should allow only the creator to #{action}" do
-        article = create(:article, creator_id: controller.current_user.id)
-        get action, id: article.id
-        expect(response.code).to eq("200")
-      end
+
+  describe "show", sign_in: true do
+    it "should allow only the creator to show" do
+      article = create(:article, creator_id: controller.current_user.id)
+      get :show, id: article.id
+      expect(response.code).to eq("200")
+    end
+  end
+
+  describe "edit" do
+    it "should allow only the creator to edit", sign_in: true do
+      article = create(:article, creator_id: controller.current_user.id)
+      get :edit, id: article.id
+      expect(response.code).to eq("200")
+      expect(assigns(:article).cover_image).not_to be_nil
     end
 
     it "should not allow others to edit" do
@@ -47,6 +56,7 @@ RSpec.describe ArticlesController, type: :controller do
       end
     end
   end
+
 
   describe "update", sign_in: true do
     it "should allow update of own article" do
@@ -281,6 +291,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       expect(response).to render_template("approve_form")
       expect(assigns(:article)).to eq(article)
+      expect(assigns(:article).cover_image).not_to be_nil
     end
   end
 

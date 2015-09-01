@@ -41,8 +41,7 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1
   # PATCH/PUT /newsletters/1.json
   def update
-    # TODO: Vijay: Use symbol instead of string as key
-    ns_params = params["newsletter"]
+    ns_params = params[:newsletter]
     flash.now[:alert] = "There are no subscribers" and render :edit and return if Subscriber.all.empty?
     flash.now[:alert] = "Select at least one article" and render :edit and return if ns_params["article_ids"].blank?
     ns_params["articles_attributes"] = ns_params["articles_attributes"].select { |art_attr| ns_params["article_ids"].include?(art_attr["id"]) }
@@ -79,11 +78,6 @@ class NewslettersController < ApplicationController
   def set_newsletter
     @newsletter = Newsletter.find(params[:id])
   end
-
-  # TODO: Vijay: Is this method needed?
-  # def new_newsletter
-  #   @newsletter = Newsletter.new(newsletter_params)
-  # end
 
   def new_newsletter_from_params
     @newsletter = params[:newsletter] ? Newsletter.new(newsletter_params) : Newsletter.new

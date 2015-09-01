@@ -16,17 +16,18 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article.build_cover_image if @article.cover_image.blank?    # TODO: Vijay: Can this not be done when initializing the object itself?
+    @article.build_cover_image if @article.cover_image.blank?    # TODO: Vijay: Can this not be done when initializing the object itself? - the authorization framework initialises at certain places. So cannot be controlled
   end
 
   def edit
-    @article.build_cover_image if @article.cover_image.blank?   # TODO: Vijay: Can this not be done when initializing the object itself?
+    @article.build_cover_image if @article.cover_image.blank?
   end
 
   def create
     respond_to do |format|
       if @article.save
         # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
+        # This actually creates a different model. It is not dirtying the article.
         assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
@@ -41,7 +42,6 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
         assign_owner
         article_arrival_notification
         format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
@@ -72,7 +72,7 @@ class ArticlesController < ApplicationController
   end
 
   def approve_form
-    @article.build_cover_image if @article.cover_image.blank?   # TODO: Vijay: Can this not be done when initializing the object itself?
+    @article.build_cover_image if @article.cover_image.blank?
   end
 
   def approve
@@ -90,8 +90,7 @@ class ArticlesController < ApplicationController
   end
 
   def home_page_order_update
-    # TODO: Vijay: Use Hash.slice for easier readability
-    order_params = {home_page_order: article_params[:home_page_order]}
+    order_params = article_params.slice(:home_page_order)
     Article.where(order_params).update_all(home_page_order: nil)
     @article.update_attributes(order_params)
     redirect_to root_path(configure_home: true)
@@ -111,11 +110,14 @@ class ArticlesController < ApplicationController
                                     cover_image_attributes: [:cover_photo, :id])
   end
 
+  def build_cover_image
+    @article.build_cover_image if @article.cover_image.blank?
+  end
+
   def merge_status_to_params
     for_publish_or_approval do
       status = current_user.registered_user? ? Article::Status::SUBMITTED_FOR_APPROVAL : Article::Status::PUBLISHED
-      # TODO: Vijay: Try to use symbols for params hash in all places (Verify first that this will work)
-      params["article"].merge!(status: status, author_content: params["article"]["content"])
+      params[:article].merge!(status: status, author_content: params[:article][:content])
     end
   end
 
@@ -137,7 +139,7 @@ class ArticlesController < ApplicationController
       preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
       @article = Article.new(article_params.except(:cover_image_attributes))
       if preview_cover_image_attributes
-        # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed?
+        # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed? - since we wanted to resize and view the image. this happens only on save. We planned to have a rake task that clears out the orphan records
         ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
         @article.cover_image = ci
       end
