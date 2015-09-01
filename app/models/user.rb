@@ -34,6 +34,7 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
+# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable

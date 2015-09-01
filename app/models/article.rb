@@ -24,6 +24,7 @@
 #  index_articles_on_creator_id   (creator_id)
 #
 
+# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Article < ActiveRecord::Base
   include Elasticsearch::Model
 

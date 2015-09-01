@@ -20,6 +20,7 @@
 #  idx_ckeditor_assetable_type  (assetable_type,type,assetable_id)
 #
 
+# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Ckeditor::Asset < ActiveRecord::Base
   include Ckeditor::Orm::ActiveRecord::AssetBase
   include Ckeditor::Backend::Paperclip

@@ -15,6 +15,7 @@
 #  index_cover_images_on_article_id  (article_id)
 #
 
+# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class CoverImage < ActiveRecord::Base
   belongs_to :article
   has_attached_file :cover_photo, styles: { medium: "758x350!".freeze, thumb: "77x77!".freeze }, default_url: "z_:style.png".freeze,

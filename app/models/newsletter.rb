@@ -10,6 +10,7 @@
 #  date_published :datetime
 #
 
+# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Newsletter < ActiveRecord::Base
   has_many :articles
   has_many :category_newsletters
@@ -18,7 +19,7 @@ class Newsletter < ActiveRecord::Base
   accepts_nested_attributes_for :articles
   accepts_nested_attributes_for :category_newsletters
 
-  validates_presence_of :name
+  validates :name, presence: true
   before_validation :has_no_draft?, on: :create
 
   after_create do
