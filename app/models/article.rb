@@ -32,8 +32,8 @@ class Article < ActiveRecord::Base
   has_many :system_users, through: :article_owners, source: :owner, source_type: Author.name
   has_many :users, through: :article_owners, source: :owner, source_type: User.name
   has_one :cover_image, -> { where(preview_image: false) }
-  has_many :article_tags
-  has_many :tags, through: :article_tags
+  # has_many :article_tags
+  has_and_belongs_to_many :tags
   belongs_to :category
 
   accepts_nested_attributes_for :cover_image

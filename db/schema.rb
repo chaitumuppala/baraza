@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150831161519) do
+ActiveRecord::Schema.define(version: 20150901071153) do
 
   create_table "article_owners", force: :cascade do |t|
     t.integer  "article_id", limit: 4
@@ -22,16 +22,6 @@ ActiveRecord::Schema.define(version: 20150831161519) do
   end
 
   add_index "article_owners", ["article_id"], name: "index_article_owners_on_article_id", using: :btree
-
-  create_table "article_tags", force: :cascade do |t|
-    t.integer  "article_id", limit: 4
-    t.integer  "tag_id",     limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
-  add_index "article_tags", ["article_id"], name: "index_article_tags_on_article_id", using: :btree
-  add_index "article_tags", ["tag_id"], name: "index_article_tags_on_tag_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
     t.string   "title",                  limit: 255
@@ -52,6 +42,16 @@ ActiveRecord::Schema.define(version: 20150831161519) do
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
   add_index "articles", ["creator_id"], name: "index_articles_on_creator_id", using: :btree
+
+  create_table "articles_tags", force: :cascade do |t|
+    t.integer  "article_id", limit: 4
+    t.integer  "tag_id",     limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "articles_tags", ["article_id"], name: "index_articles_tags_on_article_id", using: :btree
+  add_index "articles_tags", ["tag_id"], name: "index_articles_tags_on_tag_id", using: :btree
 
   create_table "authors", force: :cascade do |t|
     t.string   "full_name",  limit: 255
@@ -101,6 +101,17 @@ ActiveRecord::Schema.define(version: 20150831161519) do
   end
 
   add_index "cover_images", ["article_id"], name: "index_cover_images_on_article_id", using: :btree
+
+  create_table "create_article_owners", force: :cascade do |t|
+    t.integer  "article_id", limit: 4
+    t.integer  "owner_id",   limit: 4
+    t.string   "owner_type", limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "create_article_owners", ["article_id"], name: "index_create_article_owners_on_article_id", using: :btree
+  add_index "create_article_owners", ["owner_id"], name: "index_create_article_owners_on_owner_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -169,10 +180,11 @@ ActiveRecord::Schema.define(version: 20150831161519) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "article_owners", "articles"
-  add_foreign_key "article_tags", "articles"
-  add_foreign_key "article_tags", "tags"
   add_foreign_key "articles", "categories"
+  add_foreign_key "articles_tags", "articles"
+  add_foreign_key "articles_tags", "tags"
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
   add_foreign_key "cover_images", "articles"
+  add_foreign_key "create_article_owners", "articles"
 end

@@ -173,8 +173,7 @@ RSpec.describe ArticlesController, type: :controller do
 
       it "should send notification on submitting if publishing or submitting_for_approval", editor_sign_in: true do
         post :create, article: {title: "new title", content: "content", category_id: @category.id, summary: "summary"}, commit: ArticlesController::PUBLISH, owner_id: "User:#{@editor.id}"
-
-        # TODO: Vijay: Where is the assertion or expectation?
+        # TODO: Vijay: Where is the assertion or expectation? - the before block does the expectations - this is to test if the user is editor
       end
     end
 

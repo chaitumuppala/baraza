@@ -32,13 +32,11 @@ class Newsletter < ActiveRecord::Base
   end
 
   def eligible_articles_by_category
-    # TODO: Vijay: Remvoe duplication between this method and the next
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where(newsletter_id: [id, nil]).to_set }
+    group_articles_by_category { |category_articles| category_articles.where(status: Article::Status::PUBLISHED).where(newsletter_id: [id, nil]).to_set }
   end
 
   def associated_articles_by_category
-    # TODO: Vijay: Remvoe duplication between this method and the previous
-    group_articles_by_category { |category| category.articles.where(status: Article::Status::PUBLISHED).where(newsletter_id: id).to_set }
+    group_articles_by_category { |category_articles| category_articles.where(newsletter_id: id).to_set }
   end
 
   def has_no_draft?
@@ -48,7 +46,7 @@ class Newsletter < ActiveRecord::Base
   private
   def group_articles_by_category
     categories.inject({}) do |article_hash, category|
-      articles_for_category = yield(category)
+      articles_for_category = yield(category.articles.where(status: Article::Status::PUBLISHED))
       article_hash[category] = articles_for_category if articles_for_category.present?
       article_hash
     end
