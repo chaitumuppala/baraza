@@ -44,7 +44,7 @@ class Article < ActiveRecord::Base
   validates :title, :content, :category, :summary, presence: true
   validates :home_page_order, uniqueness: { case_sensitive: false }, allow_blank: true
 
-  index_name    "articles_#{Rails.env}"
+  index_name "articles_#{Rails.env}"
   settings do
     mapping do
       indexes :title, analyzer: 'snowball'.freeze
@@ -59,15 +59,15 @@ class Article < ActiveRecord::Base
     end
   end
 
-  before_save :set_date_published, if: -> {status_changed? && status == Article::Status::PUBLISHED}
+  before_save :set_date_published, if: -> { status_changed? && status == Article::Status::PUBLISHED }
   after_save do
     Delayed::Job.enqueue(ArticleIndexJob.new(id))
   end
 
   module Status
-    DRAFT = "draft".freeze
-    SUBMITTED_FOR_APPROVAL = "submitted for approval".freeze
-    PUBLISHED = "published".freeze
+    DRAFT = 'draft'.freeze
+    SUBMITTED_FOR_APPROVAL = 'submitted for approval'.freeze
+    PUBLISHED = 'published'.freeze
   end
 
   def owners
@@ -88,31 +88,31 @@ class Article < ActiveRecord::Base
     tags << tag_names_array.collect { |name| Tag.find_or_initialize_by(name: name) }
   end
 
-  def as_indexed_json(options={})
-    self.as_json(
-        only: [:id, :title, :content, :status, :date_published],
-        include: {tags: {only: :name},
-                  category: {only: :name}}
+  def as_indexed_json(_options = {})
+    as_json(
+      only:    [:id, :title, :content, :status, :date_published],
+      include: { tags:     { only: :name },
+                 category: { only: :name } }
     )
   end
 
   def self.search_by_all(search_text)
     query = {
-        query: {
-            match: {
-                _all: search_text
+      query:  {
+        match: {
+          _all: search_text
+        }
+      },
+      filter: {
+        and: [
+          {
+            term: {
+              status: Article::Status::PUBLISHED
             }
-        },
-        filter: {
-            and: [
-                {
-                    term: {
-                        status: Article::Status::PUBLISHED
-                    }
-                }
-            ]
-        },
-        sort: {date_published: {order: :desc}}
+          }
+        ]
+      },
+      sort:   { date_published: { order: :desc } }
     }.to_json
     response = Article.__elasticsearch__.search query
     response.records.to_a
@@ -121,33 +121,33 @@ class Article < ActiveRecord::Base
   [:tags, :category].each do |criteria|
     define_singleton_method "search_by_#{criteria}" do |search_text|
       query = {
-          query: {
-              filtered: {
-                  query: {
-                      match_all: {}
+        query: {
+          filtered: {
+            query:  {
+              match_all: {}
+            },
+            filter: {
+              bool: {
+                must: [
+                  {
+                    term: { :"#{criteria}.name" => search_text }
                   },
-                  filter: {
-                      bool: {
-                          must: [
-                              {
-                                  term: {:"#{criteria}.name" => search_text}
-                              },
-                              {
-                                  term: {status: Article::Status::PUBLISHED}
-                              }
-                          ]
-                      }
+                  {
+                    term: { status: Article::Status::PUBLISHED }
                   }
+                ]
               }
-          },
-          sort: {date_published: {order: :desc}}
+            }
+          }
+        },
+        sort:  { date_published: { order: :desc } }
       }.to_json
       response = Article.__elasticsearch__.search query
       response.records.to_a
     end
   end
 
-  def cover_image_url(style=:original)
+  def cover_image_url(style = :original)
     ci = cover_image.blank? ? build_cover_image : cover_image
     ci.cover_photo.url(style)
   end
@@ -157,6 +157,7 @@ class Article < ActiveRecord::Base
   end
 
   private
+
   def set_date_published
     self.date_published = Time.current
   end

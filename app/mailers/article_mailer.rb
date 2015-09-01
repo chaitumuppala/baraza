@@ -2,7 +2,7 @@ class ArticleMailer < ApplicationMailer
   def notification_to_owner(recipient, article)
     @user = recipient
     @article = article
-    mail(to: recipient.email, subject: "Thank you for your submission")
+    mail(to: recipient.email, subject: 'Thank you for your submission')
   end
 
   def notification_to_editors(article)
@@ -13,7 +13,7 @@ class ArticleMailer < ApplicationMailer
   def published_notification_to_owner(recipient, article)
     @user = recipient
     @article = article
-    mail(to: recipient.email, subject: "Your article has been published")
+    mail(to: recipient.email, subject: 'Your article has been published')
   end
 
   def published_notification_to_editors(article)

@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :ensure_email_present
   before_action :application_meta_tag
-  before_filter { |c| Authorization.current_user = c.current_user }
+  before_action { |c| Authorization.current_user = c.current_user }
 
   def permission_denied
-    flash[:alert] = "Sorry, you are not allowed to access that page.".freeze;
+    flash[:alert] = 'Sorry, you are not allowed to access that page.'.freeze
     session[:user_return_to] = request.fullpath
     path = Authorization.current_user.role_symbols.include?(:guest) ? new_user_session_path : root_path
     redirect_to path
@@ -18,11 +18,12 @@ class ApplicationController < ActionController::Base
   end
 
   def application_meta_tag
-    set_meta_tags site: "Baraza".freeze,
-                  title: "Baraza".freeze
+    set_meta_tags site:  'Baraza'.freeze,
+                  title: 'Baraza'.freeze
   end
 
   protected
+
   def after_sign_in_path_for(resource)
     return_path = session[:user_return_to]
     session[:user_return_to] = nil
@@ -34,8 +35,9 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
   def article_show_url(url)
     url_info = Rails.application.routes.recognize_path(url)
-    url_info[:controller] == "articles".freeze && url_info[:action] == "show".freeze
+    url_info[:controller] == 'articles'.freeze && url_info[:action] == 'show'.freeze
   end
 end

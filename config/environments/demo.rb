@@ -80,12 +80,12 @@ Rails.application.configure do
   # SMTP settings for gmail
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :address              => "smtp.gmail.com",
-      :port                 => 587,
-      :user_name            => ENV["EMAIL"],
-      :password             => ENV["PASSWORD"],
-      :authentication       => "plain",
-      :enable_starttls_auto => true
+    address: 'smtp.gmail.com',
+    port: 587,
+    user_name: ENV['EMAIL'],
+    password: ENV['PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
   }
   config.action_mailer.default_url_options = { host: 'baraza-demo.mine.bz', port: 80 }
 end

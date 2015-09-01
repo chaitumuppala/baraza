@@ -25,11 +25,11 @@ class Newsletter < ActiveRecord::Base
   after_create do
     categories << Category.all
   end
-  before_update :set_date_published, if: -> {status_changed? && status == Newsletter::Status::PUBLISHED}
+  before_update :set_date_published, if: -> { status_changed? && status == Newsletter::Status::PUBLISHED }
 
   module Status
-    DRAFT = "draft".freeze
-    PUBLISHED = "published".freeze
+    DRAFT = 'draft'.freeze
+    PUBLISHED = 'published'.freeze
   end
 
   def eligible_articles_by_category
@@ -45,6 +45,7 @@ class Newsletter < ActiveRecord::Base
   end
 
   private
+
   def group_articles_by_category
     categories.inject({}) do |article_hash, category|
       articles_for_category = yield(category.articles.where(status: Article::Status::PUBLISHED))

@@ -1,0 +1,92 @@
+AllCops:
+  Include:
+    - 'Capfile'
+    - 'Gemfile'
+    - 'Rakefile'
+    - '**/config.ru'
+    - 'app/**/*'
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'spec/**/*'
+  Exclude:
+    - '**/*.coffee'
+    - '**/*.css'
+    - '**/*.eot'
+    - '**/*.gif'
+    - '**/*.html'
+    - '**/*.html.erb'
+    - '**/*.ico'
+    - '**/*.jpeg'
+    - '**/*.jpg'
+    - '**/*.js'
+    - '**/*.json'
+    - '**/*.md'
+    - '**/*.png'
+    - '**/*.rdoc'
+    - '**/*.scss'
+    - '**/*.sql'
+    - '**/*.sqlite3'
+    - '**/*.svg'
+    - '**/*.txt'
+    - '**/*.ttf'
+    - '**/*.yml'
+    - 'app/assets/**/*'
+    - 'coverage/**/*'
+    - 'db/schema.rb'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'tmp/**/*'
+  RunRailsCops: true
+Lint/HandleExceptions:
+  Exclude:
+    - 'bin/rails'
+    - 'bin/rake'
+    - 'bin/rspec'
+    - 'db/seeds.rb'
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/articles_controller.rb'
+    - 'app/controllers/authors_controller.rb'
+    - 'app/controllers/home_controller.rb'
+    - 'app/controllers/newsletters_controller.rb'
+    - 'app/controllers/passwords_controller.rb'
+    - 'app/controllers/users_controller.rb'
+Metrics/CyclomaticComplexity:
+  Exclude:
+Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/articles_controller.rb'
+    - 'app/controllers/home_controller.rb'
+    - 'app/controllers/newsletters_controller.rb'
+    - 'app/controllers/omniauth_callbacks_controller.rb'
+    - 'app/controllers/users_controller.rb'
+    - 'app/models/article.rb'
+Rails/FindEach:
+  Enabled: false
+Style/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+Style/Documentation:
+  Enabled: false
+Style/RegexpLiteral:
+  Enabled: false
+Style/RescueModifier:
+  Exclude:
+    - 'db/seeds.rb'
+Style/CollectionMethods:
+  # Mapping from undesired method to desired_method
+  # e.g. to use `detect` over `find`:
+  #
+  # CollectionMethods:
+  #   PreferredMethods:
+  #     find: detect
+  PreferredMethods:
+    map: 'collect'
+    map!: 'collect!'
+    reduce: 'inject'
+    detect: 'find'
+    select: 'find_all'

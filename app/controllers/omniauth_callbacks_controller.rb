@@ -1,6 +1,6 @@
 class OmniauthCallbacksController < ApplicationController
   def self.define_provider_callback(provider)
-    class_eval %Q{
+    class_eval %{
       def #{provider}
         auth = request.env["omniauth.auth"]
         user = User.find_by(uid: auth.uid, provider: auth.provider)

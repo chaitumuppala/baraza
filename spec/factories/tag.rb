@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :tag do |tag|
+  factory :tag do |_tag|
     name { Faker::Name.name }
   end
 end

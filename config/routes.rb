@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
-  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks", registrations: 'registrations',
-                    sessions: "sessions", passwords: "passwords"}
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations',
+                                    sessions: 'sessions', passwords: 'passwords' }
 
   resources :articles do
     member do
@@ -39,8 +39,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
 
-  get '/contact' ,to:'static#contact'
-  get '/about' ,to:'static#about'
+  get '/contact', to: 'static#contact'
+  get '/about', to: 'static#about'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

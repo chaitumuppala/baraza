@@ -7,20 +7,20 @@ class ArticlesController < ApplicationController
   before_action :display_preview, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 
-  SAVE = "Save as draft".freeze
-  SUBMIT_FOR_APPROVAL = "Submit for approval".freeze
-  PUBLISH = "Publish".freeze
-  PREVIEW = "Preview".freeze
+  SAVE = 'Save as draft'.freeze
+  SUBMIT_FOR_APPROVAL = 'Submit for approval'.freeze
+  PUBLISH = 'Publish'.freeze
+  PREVIEW = 'Preview'.freeze
 
   def show
   end
 
   def new
-    @article.build_cover_image if @article.cover_image.blank?    # TODO: Vijay: Can this not be done when initializing the object itself? - the authorization framework initialises at certain places. So cannot be controlled
+    build_cover_image
   end
 
   def edit
-    @article.build_cover_image if @article.cover_image.blank?
+    build_cover_image
   end
 
   def create
@@ -72,7 +72,7 @@ class ArticlesController < ApplicationController
   end
 
   def approve_form
-    @article.build_cover_image if @article.cover_image.blank?
+    build_cover_image
   end
 
   def approve
@@ -97,6 +97,7 @@ class ArticlesController < ApplicationController
   end
 
   private
+
   def set_article
     @article = Article.find(params[:id])
   end
@@ -129,9 +130,7 @@ class ArticlesController < ApplicationController
   end
 
   def for_publish_or_approval
-    if((params[:commit] == SUBMIT_FOR_APPROVAL) || params[:commit] == PUBLISH)
-      yield
-    end
+    yield if params[:commit] == SUBMIT_FOR_APPROVAL || params[:commit] == PUBLISH
   end
 
   def display_preview
@@ -143,12 +142,12 @@ class ArticlesController < ApplicationController
         ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
         @article.cover_image = ci
       end
-      render 'articles/preview' and return
+      render('articles/preview') && return
     end
   end
 
   def assign_owner
     owner_type, owner_id = params[:owner_id].split(':'.freeze)
-    @article.article_owners = [ ArticleOwner.new(owner_id: owner_id, owner_type: owner_type) ]
+    @article.article_owners = [ArticleOwner.new(owner_id: owner_id, owner_type: owner_type)]
   end
 end

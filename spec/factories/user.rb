@@ -5,19 +5,19 @@ FactoryGirl.define do
     "email#{n}@factory.com"
   end
 
-  factory :user do |user|
+  factory :user do |_user|
     email
-    password { "Password1!" }
+    password { 'Password1!' }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     type { RegisteredUser.name }
   end
 
-  factory :administrator, parent: :user, class: Administrator.name  do
+  factory :administrator, parent: :user, class: Administrator.name do
     type { Administrator.name }
   end
 
-  factory :editor, parent: :user, class: Editor.name  do
+  factory :editor, parent: :user, class: Editor.name do
     type { Editor.name }
   end
 

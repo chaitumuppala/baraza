@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :newsletter do |newsletter|
+  factory :newsletter do |_newsletter|
     name { Faker::Team.name }
   end
 end

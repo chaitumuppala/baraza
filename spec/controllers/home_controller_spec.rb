@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
-  it "should set blocks without home_page_order with recently published articles " do
+  it 'should set blocks without home_page_order with recently published articles ' do
     article1 = create(:article, home_page_order: 5, status: Article::Status::PUBLISHED)
     article2 = create(:article, home_page_order: 1, status: Article::Status::PUBLISHED)
     article3 = create(:article, home_page_order: 2, status: Article::Status::PUBLISHED)
@@ -21,7 +21,7 @@ RSpec.describe HomeController, type: :controller do
     expect(assigns[:articles_with_order]).to eq(expected_result)
   end
 
-  it "should by default show recently published articles if no article has home_page_order" do
+  it 'should by default show recently published articles if no article has home_page_order' do
     article1 = create(:article, status: Article::Status::PUBLISHED)
     article2 = create(:article, status: Article::Status::PUBLISHED)
     article3 = create(:article, status: Article::Status::PUBLISHED)

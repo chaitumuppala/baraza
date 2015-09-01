@@ -38,7 +38,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
-  PASSWORD_SUBSTRING = "1Aa!"
+  PASSWORD_SUBSTRING = '1Aa!'
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, presence: true
   alias_attribute :role, :type
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
-  before_create ->{ self.type = RegisteredUser.name if self.type.blank? }
+  before_create -> { self.type = RegisteredUser.name if type.blank? }
 
   has_many :article_owners, as: :owner
   has_many :articles, through: :article_owners
@@ -62,9 +62,9 @@ class User < ActiveRecord::Base
 
   module GenderCategory
     extend ListValues
-    M = "M".freeze
-    F = "F".freeze
-    OTHER = "Other".freeze
+    M = 'M'.freeze
+    F = 'F'.freeze
+    OTHER = 'Other'.freeze
   end
 
   def role_symbols
@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
   end
 
   def generate_set_password_token
-    self.set_reset_password_token
+    set_reset_password_token
   end
 
   def full_name

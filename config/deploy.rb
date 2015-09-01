@@ -40,25 +40,24 @@ namespace :run_task do
   desc 'Take backup of database before deploy and store it in s3'
   task :database_backup do
     on roles(:web) do
-      execute "sh /home/deploy/db_backup/backup.sh"
-      system("\\say backup complete !!!")
+      execute 'sh /home/deploy/db_backup/backup.sh'
+      system('\\say backup complete !!!')
     end
   end
-
 
   desc 'Runs rake db:migrate, db:admin, restarts delayed_job'
   task :set_up_environment do
     on roles(:web) do
       within "#{current_path}" do
         with rails_env: fetch(:rails_env) do
-          execute :rake, "db:create"
-          execute :rake, "db:migrate"
-          system("\\say Database migrated!!!")
-          execute :rake, "db:admin"
-          system("\\say Admin rake task complete")
-          execute :rake, "db:category"
+          execute :rake, 'db:create'
+          execute :rake, 'db:migrate'
+          system('\\say Database migrated!!!')
+          execute :rake, 'db:admin'
+          system('\\say Admin rake task complete')
+          execute :rake, 'db:category'
           execute "cd #{File.join(current_path)} && RAILS_ENV=#{fetch(:rails_env)} bundle exec bin/delayed_job restart"
-          system("\\say delayed job restarted!!!")
+          system('\\say delayed job restarted!!!')
         end
       end
     end
@@ -67,18 +66,18 @@ namespace :run_task do
   desc 'Restart nginx'
   task :restart_nginx do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
-      execute "sudo service nginx restart"
-      system("\\say Nginx restarted! Good Job!")
+      execute 'sudo service nginx restart'
+      system('\\say Nginx restarted! Good Job!')
     end
   end
 
   desc 'Deployment is completed'
   task :say do
-    system("\\say Capistrano Deployment Completed! Good Job!")
+    system('\\say Capistrano Deployment Completed! Good Job!')
   end
 end
 
-after "deploy", "run_task:database_backup"
-after "run_task:database_backup", "run_task:set_up_environment"
-after "run_task:set_up_environment", "run_task:restart_nginx"
-after "run_task:restart_nginx", 'run_task:say'
+after 'deploy', 'run_task:database_backup'
+after 'run_task:database_backup', 'run_task:set_up_environment'
+after 'run_task:set_up_environment', 'run_task:restart_nginx'
+after 'run_task:restart_nginx', 'run_task:say'

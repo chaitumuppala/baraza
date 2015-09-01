@@ -1,8 +1,8 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe ArticleIndexJob do
-  context "perform" do
-    it "should index the article" do
+  context 'perform' do
+    it 'should index the article' do
       article = create(:article, id: 100)
       expect(Article).to receive(:find).with(article.id).and_return(article)
       expect(article).to receive(:index_current_document_values)

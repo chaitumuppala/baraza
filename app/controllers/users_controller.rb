@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
   def change_email
     email_value = params[@user.type.underscore.to_sym][:email]
-    if (email_value.present? && @user.update_attributes(email: email_value))
+    if email_value.present? && @user.update_attributes(email: email_value)
       redirect_to root_path
     else
       render :change_email_form
@@ -44,6 +44,7 @@ class UsersController < ApplicationController
   end
 
   private
+
   def set_user
     @user = User.find(params[:id])
   end

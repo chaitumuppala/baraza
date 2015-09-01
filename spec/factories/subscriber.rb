@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :subscriber do |tag|
+  factory :subscriber do |_tag|
   end
 end

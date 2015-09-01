@@ -9,13 +9,12 @@
 
 server '78.47.156.19',
        user: 'deploy',
-       roles: %w{web},
+       roles: %w(web),
        ssh_options: {
-           keys: File.join(ENV["HOME"], '.ssh', 'p_deploy_user_key.cer'),
-           forward_agent: false,
-           auth_methods: %w{publickey}
+         keys: File.join(ENV['HOME'], '.ssh', 'p_deploy_user_key.cer'),
+         forward_agent: false,
+         auth_methods: %w(publickey)
        }
-
 
 # role-based syntax
 # ==================
@@ -29,8 +28,6 @@ server '78.47.156.19',
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-
-
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
@@ -38,8 +35,6 @@ server '78.47.156.19',
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-
-
 
 # Custom SSH Options
 # ==================
