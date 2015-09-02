@@ -15,6 +15,7 @@ AllCops:
     - '**/*.css'
     - '**/*.eot'
     - '**/*.gif'
+    - '**/*.haml'
     - '**/*.html'
     - '**/*.html.erb'
     - '**/*.ico'
@@ -53,6 +54,10 @@ Metrics/AbcSize:
     - 'app/controllers/newsletters_controller.rb'
     - 'app/controllers/passwords_controller.rb'
     - 'app/controllers/users_controller.rb'
+    - 'db/migrate/20150902113501_merged_migration.rb'
+Metrics/ClassLength:
+  Exclude:
+    - 'db/migrate/20150902113501_merged_migration.rb'
 Metrics/CyclomaticComplexity:
   Exclude:
 Metrics/LineLength:

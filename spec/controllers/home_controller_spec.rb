@@ -10,7 +10,7 @@ RSpec.describe HomeController, type: :controller do
     article1.update_attributes(date_published: Date.yesterday)
     article2.update_attributes(date_published: 5.days.ago)
     article3.update_attributes(date_published: 2.days.ago)
-    article4.update_attributes(date_published: Date.today)
+    article4.update_attributes(date_published: Time.current.to_date)
     create(:article, home_page_order: 4, status: Article::Status::SUBMITTED_FOR_APPROVAL)
     create(:article, home_page_order: nil)
 
@@ -30,8 +30,8 @@ RSpec.describe HomeController, type: :controller do
     article1.update_attributes(date_published: Date.yesterday)
     article2.update_attributes(date_published: 5.days.ago)
     article3.update_attributes(date_published: 2.days.ago)
-    article4.update_attributes(date_published: Date.today)
-    article5.update_attributes(date_published: Date.today)
+    article4.update_attributes(date_published: Time.current.to_date)
+    article5.update_attributes(date_published: Time.current.to_date)
     create(:article, home_page_order: 4, status: Article::Status::SUBMITTED_FOR_APPROVAL)
     create(:article, home_page_order: nil)
 

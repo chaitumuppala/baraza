@@ -184,7 +184,7 @@ RSpec.describe Article, type: :model do
       article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article3 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article1.update_attributes(date_published: Date.today)
+      article1.update_attributes(date_published: Time.current.to_date)
       article2.update_attributes(date_published: 10.days.ago)
       article3.update_attributes(date_published: Date.yesterday)
       Article.__elasticsearch__.refresh_index!
@@ -218,7 +218,7 @@ RSpec.describe Article, type: :model do
       article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article3 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article1.update_attributes(date_published: Date.today)
+      article1.update_attributes(date_published: Time.current.to_date)
       article2.update_attributes(date_published: 10.days.ago)
       article3.update_attributes(date_published: Date.yesterday)
       Article.__elasticsearch__.refresh_index!
@@ -291,7 +291,7 @@ RSpec.describe Article, type: :model do
     it 'should return url of cover_photo of cover_image' do
       article = create(:article)
       cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
-      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+      create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
 
       expect(article.cover_image_url.split('/')).to include(/test.png*/)
       expect(article.cover_image_url.split('/')).to include('original')
@@ -301,7 +301,7 @@ RSpec.describe Article, type: :model do
     it 'should return thumb url if required' do
       article = create(:article)
       cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
-      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+      create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
 
       article_cover_image_url = article.cover_image_url(:thumb)
       expect(article_cover_image_url.split('/')).to include(/test.png*/)
@@ -312,7 +312,7 @@ RSpec.describe Article, type: :model do
     it 'should return medium url if required' do
       article = create(:article)
       cover_photo = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
-      cover = create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
+      create(:cover_image, preview_image: false, article: article, cover_photo: cover_photo)
 
       article_cover_image_url = article.cover_image_url(:medium)
       expect(article_cover_image_url.split('/')).to include(/test.png*/)
