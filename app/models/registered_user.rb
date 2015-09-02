@@ -20,8 +20,8 @@
 #  confirmation_sent_at   :datetime
 #  uid                    :string(255)
 #  provider               :string(255)
-#  first_name             :string(255)      not null
-#  last_name              :string(255)      not null
+#  first_name             :string(255)
+#  last_name              :string(255)
 #  year_of_birth          :integer
 #  country                :string(255)
 #  gender                 :string(255)

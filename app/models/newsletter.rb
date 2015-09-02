@@ -3,11 +3,11 @@
 # Table name: newsletters
 #
 #  id             :integer          not null, primary key
-#  name           :string(255)      not null
+#  name           :string(255)
 #  status         :string(255)      default("draft")
-#  date_published :datetime
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  date_published :datetime
 #
 
 # TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc

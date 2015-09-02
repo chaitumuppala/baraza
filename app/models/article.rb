@@ -3,8 +3,8 @@
 # Table name: articles
 #
 #  id                     :integer          not null, primary key
-#  title                  :string(255)      not null
-#  content                :text(65535)      not null
+#  title                  :string(255)
+#  content                :text(65535)
 #  creator_id             :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -13,7 +13,7 @@
 #  position_in_newsletter :integer
 #  status                 :string(255)      default("draft")
 #  author_content         :text(65535)
-#  summary                :text(65535)      not null
+#  summary                :text(65535)
 #  home_page_order        :integer
 #  date_published         :datetime
 #  category_id            :integer
