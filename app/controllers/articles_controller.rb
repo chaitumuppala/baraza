@@ -136,12 +136,15 @@ class ArticlesController < ApplicationController
   def display_preview
     if params[:commit] == PREVIEW
       preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
-      @article = Article.new(article_params.except(:cover_image_attributes))
-      if preview_cover_image_attributes
+      preview_article = Article.new(article_params.except(:cover_image_attributes))
+      if preview_cover_image_attributes.present?
         # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed? - since we wanted to resize and view the image. this happens only on save. We planned to have a rake task that clears out the orphan records
         ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
-        @article.cover_image = ci
+        preview_article.cover_image = ci
+      else
+        preview_article.cover_image = @article.cover_image
       end
+      @article = preview_article
       render('articles/preview') && return
     end
   end

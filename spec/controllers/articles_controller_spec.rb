@@ -132,6 +132,22 @@ RSpec.describe ArticlesController, type: :controller do
         expect(changed_article.cover_image.cover_photo.url.split('/')).to include(/test_preview.png*/)
         expect(article.reload.cover_image.cover_photo.url.split('/')).to include(/test.png*/)
       end
+
+      it 'should show cover_image even if it is not changed', sign_in: true do
+        allow_any_instance_of(Paperclip::Attachment).to receive(:save).and_return(true)
+        cover1 = Rack::Test::UploadedFile.new('spec/factories/test.png', 'image/png')
+
+        article = create(:article, creator_id: controller.current_user.id, title: 'old title', cover_image_attributes: CoverImage.new(cover_photo: cover1).attributes)
+
+        cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
+        patch :update, id: article.id, article: { title: 'new title', content: article.content,
+                                                  cover_image_attributes: { id: article.cover_image.id } }, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
+
+        changed_article = assigns[:article]
+        expect(changed_article.cover_image.cover_photo.url.split('/').count).to eq(11)
+        expect(changed_article.cover_image.cover_photo.url.split('/')).to include(/test.png*/)
+        expect(article.reload.cover_image.cover_photo.url.split('/')).to include(/test.png*/)
+      end
     end
   end
 
