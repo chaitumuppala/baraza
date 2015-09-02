@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901071153) do
+ActiveRecord::Schema.define(version: 20150902113501) do
 
   create_table "article_owners", force: :cascade do |t|
     t.integer  "article_id", limit: 4
@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 20150901071153) do
   add_index "article_owners", ["article_id"], name: "index_article_owners_on_article_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",                  limit: 255
-    t.text     "content",                limit: 65535
+    t.string   "title",                  limit: 255,                     null: false
+    t.text     "content",                limit: 65535,                   null: false
     t.integer  "creator_id",             limit: 4
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
@@ -34,10 +34,10 @@ ActiveRecord::Schema.define(version: 20150901071153) do
     t.integer  "position_in_newsletter", limit: 4
     t.string   "status",                 limit: 255,   default: "draft"
     t.text     "author_content",         limit: 65535
-    t.text     "summary",                limit: 65535
+    t.text     "summary",                limit: 65535,                   null: false
     t.integer  "home_page_order",        limit: 4
     t.datetime "date_published"
-    t.integer  "category_id",            limit: 4
+    t.integer  "category_id",            limit: 4,                       null: false
   end
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20150901071153) do
   add_index "articles_tags", ["tag_id"], name: "index_articles_tags_on_tag_id", using: :btree
 
   create_table "authors", force: :cascade do |t|
-    t.string   "full_name",  limit: 255
+    t.string   "full_name",  limit: 255, null: false
     t.string   "email",      limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -102,6 +102,17 @@ ActiveRecord::Schema.define(version: 20150901071153) do
 
   add_index "cover_images", ["article_id"], name: "index_cover_images_on_article_id", using: :btree
 
+  create_table "create_article_owners", force: :cascade do |t|
+    t.integer  "article_id", limit: 4
+    t.integer  "owner_id",   limit: 4
+    t.string   "owner_type", limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "create_article_owners", ["article_id"], name: "index_create_article_owners_on_article_id", using: :btree
+  add_index "create_article_owners", ["owner_id"], name: "index_create_article_owners_on_owner_id", using: :btree
+
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
     t.integer  "attempts",   limit: 4,     default: 0, null: false
@@ -119,7 +130,7 @@ ActiveRecord::Schema.define(version: 20150901071153) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "newsletters", force: :cascade do |t|
-    t.string   "name",           limit: 255
+    t.string   "name",           limit: 255,                   null: false
     t.string   "status",         limit: 255, default: "draft"
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
@@ -156,8 +167,8 @@ ActiveRecord::Schema.define(version: 20150901071153) do
     t.datetime "confirmation_sent_at"
     t.string   "uid",                    limit: 255
     t.string   "provider",               limit: 255
-    t.string   "first_name",             limit: 255
-    t.string   "last_name",              limit: 255
+    t.string   "first_name",             limit: 255,              null: false
+    t.string   "last_name",              limit: 255,              null: false
     t.integer  "year_of_birth",          limit: 4
     t.string   "country",                limit: 255
     t.string   "gender",                 limit: 255
@@ -175,4 +186,5 @@ ActiveRecord::Schema.define(version: 20150901071153) do
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
   add_foreign_key "cover_images", "articles"
+  add_foreign_key "create_article_owners", "articles"
 end
