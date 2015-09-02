@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
-  before_action :new_article_from_params, only: [:create]
+  before_action :new_article_from_params, only: [:new, :create]
   before_action :display_preview, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 

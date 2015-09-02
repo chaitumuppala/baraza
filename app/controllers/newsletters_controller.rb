@@ -1,6 +1,6 @@
 class NewslettersController < ApplicationController
   before_action :set_newsletter, only: [:show, :edit, :update, :destroy]
-  before_action :new_newsletter_from_params, only: [:create]
+  before_action :new_newsletter_from_params, only: [:new, :create]
 
   filter_resource_access additional_collection: [:subscribe]
 
@@ -68,7 +68,7 @@ class NewslettersController < ApplicationController
     if subscriber.save
       flash[:notice] = 'Subscribed successfully'.freeze
     else
-      flash[:alert] = 'Email already subscribed'.freeze
+      flash[:alert] = subscriber.errors.full_messages.join("<br/>")
     end
     redirect_to root_path
   end

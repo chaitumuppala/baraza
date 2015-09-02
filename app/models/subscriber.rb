@@ -10,5 +10,5 @@
 
 # TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Subscriber < ActiveRecord::Base
-  validates :email, uniqueness: { case_sensitive: false }, email: { if: proc { |s| s.email.present? } }
+  validates :email, uniqueness: { case_sensitive: false, message: 'already subscribed' }, email: { if: proc { |s| s.email.present? } }
 end

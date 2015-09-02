@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :edit, :update, :destroy]
-  before_action :new_author_from_params, only: [:create]
+  before_action :new_author_from_params, only: [:new, :create]
 
   # GET /authors
   # GET /authors.json
