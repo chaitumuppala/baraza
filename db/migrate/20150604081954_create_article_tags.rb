@@ -1,12 +1,10 @@
-class CreateArticlesTags < ActiveRecord::Migration
+class CreateArticleTags < ActiveRecord::Migration
   def change
-    create_table :articles_tags do |t|
+    create_table :article_tags do |t|
       t.references :article, index: true, foreign_key: true
       t.references :tag, index: true, foreign_key: true
 
       t.timestamps null: false
     end
-
-    # add_index :articles_tags, :left_side_id
   end
 end

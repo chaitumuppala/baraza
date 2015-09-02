@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820143141) do
+ActiveRecord::Schema.define(version: 20150901071153) do
 
   create_table "article_owners", force: :cascade do |t|
     t.integer  "article_id", limit: 4
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.string   "title",                  limit: 255,                     null: false
     t.text     "content",                limit: 65535,                   null: false
     t.integer  "creator_id",             limit: 4
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.boolean  "top_story"
     t.integer  "newsletter_id",          limit: 4
     t.integer  "position_in_newsletter", limit: 4
@@ -35,9 +37,7 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.text     "summary",                limit: 65535,                   null: false
     t.integer  "home_page_order",        limit: 4
     t.datetime "date_published"
-    t.integer  "category_id",            limit: 4,                       null: false
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.integer  "category_id",            limit: 4
   end
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
@@ -84,8 +84,8 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.string   "type",              limit: 30
     t.integer  "width",             limit: 4
     t.integer  "height",            limit: 4
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
@@ -121,9 +121,9 @@ ActiveRecord::Schema.define(version: 20150820143141) do
   create_table "newsletters", force: :cascade do |t|
     t.string   "name",           limit: 255,                   null: false
     t.string   "status",         limit: 255, default: "draft"
-    t.datetime "date_published"
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
+    t.datetime "date_published"
   end
 
   create_table "subscribers", force: :cascade do |t|
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "confirmation_token",     limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -160,8 +162,6 @@ ActiveRecord::Schema.define(version: 20150820143141) do
     t.string   "country",                limit: 255
     t.string   "gender",                 limit: 255
     t.string   "type",                   limit: 255
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

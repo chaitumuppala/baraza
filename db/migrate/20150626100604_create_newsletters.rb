@@ -1,9 +1,8 @@
 class CreateNewsletters < ActiveRecord::Migration
   def change
     create_table :newsletters do |t|
-      t.string :name, null: false
-      t.string :status, default: 'draft'
-      t.datetime :date_published
+      t.string :name
+      t.string :status, default: "draft"
 
       t.timestamps null: false
     end
