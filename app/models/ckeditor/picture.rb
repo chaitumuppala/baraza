@@ -23,9 +23,9 @@
 # TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Ckeditor::Picture < Ckeditor::Asset
   has_attached_file :data,
-                    storage: :s3,
+                    storage:        :s3,
                     s3_credentials: proc { |a| a.instance.s3_credentials },
-                    styles: { content: '800>', thumb: '118x100#' }
+                    styles:         { content: '800>', thumb: '118x100#' }
 
   validates_attachment_presence :data
   validates_attachment_size :data, less_than: 2.megabytes

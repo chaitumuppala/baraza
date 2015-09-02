@@ -4,12 +4,12 @@
 # You can define all roles on a single server, or split them:
 
 server '78.47.57.68',
-       user: 'deploy',
-       roles: %w(web),
+       user:        'deploy',
+       roles:       %w(web),
        ssh_options: {
-         keys: File.join(ENV['HOME'], '.ssh', 'deploy_user_key.cer'),
+         keys:          File.join(ENV['HOME'], '.ssh', 'deploy_user_key.cer'),
          forward_agent: false,
-         auth_methods: %w(publickey)
+         auth_methods:  %w(publickey)
        }
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value

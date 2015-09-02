@@ -22,7 +22,7 @@ RSpec.describe ApplicationController, type: :controller do
 
   context 'application_meta_tag' do
     it 'should set_meta_tag before every action' do
-      expect(controller).to receive(:set_meta_tags).with(site: 'Baraza',
+      expect(controller).to receive(:set_meta_tags).with(site:  'Baraza',
                                                          title: 'Baraza')
 
       get :index

@@ -80,11 +80,11 @@ Rails.application.configure do
   # SMTP settings for gmail
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
-    port: 587,
-    user_name: ENV['EMAIL'],
-    password: ENV['PASSWORD'],
-    authentication: 'plain',
+    address:              'smtp.gmail.com',
+    port:                 587,
+    user_name:            ENV['EMAIL'],
+    password:             ENV['PASSWORD'],
+    authentication:       'plain',
     enable_starttls_auto: true
   }
   config.action_mailer.default_url_options = { host: '78.47.57.68', port: 80 }

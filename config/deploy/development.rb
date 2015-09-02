@@ -5,13 +5,13 @@
 set :bundle_without, nil
 
 server '127.0.0.1',
-       user: 'deploy',
-       roles: %w(web),
+       user:        'deploy',
+       roles:       %w(web),
        ssh_options: {
-         keys: File.join(ENV['HOME'], '.ssh', 'deploy_user_key.cer'),
-         port: 2222,
+         keys:          File.join(ENV['HOME'], '.ssh', 'deploy_user_key.cer'),
+         port:          2222,
          forward_agent: false,
-         auth_methods: %w(publickey)
+         auth_methods:  %w(publickey)
        }
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value

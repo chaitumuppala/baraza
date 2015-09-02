@@ -34,7 +34,7 @@ RSpec.describe NewslettersController, type: :controller do
 
       expect(NewsletterMailer).not_to receive(:send_mail).with(newsletter)
 
-      patch :update, 'newsletter' => { 'article_ids' => [article1.id],
+      patch :update, 'newsletter' => { 'article_ids'         => [article1.id],
                                        'articles_attributes' => [{ 'position_in_newsletter' => '1', 'id' => article1.id }, { 'position_in_newsletter' => '2', 'id' => article2.id }, { 'position_in_newsletter' => '3', 'id' => article3.id }] },
                      'commit' => NewslettersController::SAVE, 'id' => newsletter.id
 
