@@ -20,15 +20,21 @@ require 'rails_helper'
 RSpec.describe CoverImage, type: :model do
   context 'validation' do
     it { should have_attached_file(:cover_photo) }
+
     it do
       should validate_attachment_content_type(:cover_photo)
         .allowing('image/png', 'image/jpeg', 'image/jpg')
         .rejecting('text/plain', 'text/xml', 'image/gif')
     end
+
     it do
       should validate_attachment_size(:cover_photo)
         .less_than(2.megabytes)
     end
+  end
+
+  context 'Relationships' do
+    it { should belong_to(:article) }
   end
 
   context 's3_credentials' do

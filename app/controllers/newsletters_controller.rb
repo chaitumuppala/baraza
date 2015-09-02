@@ -68,7 +68,7 @@ class NewslettersController < ApplicationController
     if subscriber.save
       flash[:notice] = 'Subscribed successfully'.freeze
     else
-      flash[:alert] = subscriber.errors.full_messages.join("<br/>")
+      flash[:alert] = subscriber.errors.full_messages.join('<br/>')
     end
     redirect_to root_path
   end

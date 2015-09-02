@@ -125,6 +125,8 @@ RSpec.describe Newsletter, type: :model do
   end
 
   context 'validation' do
+    it { should validate_presence_of(:name) }
+
     it 'should allow only one newsletter with draft' do
       n = create(:newsletter, status: Newsletter::Status::DRAFT)
       n.update_attributes(status: Newsletter::Status::PUBLISHED)

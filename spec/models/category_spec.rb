@@ -11,6 +11,10 @@
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
+  context 'Relationships' do
+    it { should have_many(:articles) }
+  end
+
   context 'articles' do
     it 'should include articles in order of position_in_newsletter' do
       category = create(:category, name: 'science')

@@ -13,17 +13,10 @@ require 'rails_helper'
 
 RSpec.describe Author, type: :model do
   context 'validation' do
-    it 'should validate presence of email' do
-      expect(build(:author, email: nil)).not_to be_valid
-    end
-
-    it 'should validate presence of full_name' do
-      expect(build(:author, full_name: nil)).not_to be_valid
-    end
-
-    it 'should validate uniqueness of email' do
-      create(:author, email: 'a@b.com')
-      expect(build(:author, email: 'a@b.com')).not_to be_valid
-    end
+    it { should validate_presence_of(:full_name) }
+    it { should_not allow_value(' ', '', nil).for(:full_name) }
+    it { should validate_presence_of(:email) }
+    it { should_not allow_value(' ', '', nil).for(:email) }
+    it { should allow_value('a@b.com').for(:email) }
   end
 end

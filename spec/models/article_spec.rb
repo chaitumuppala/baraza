@@ -246,24 +246,15 @@ RSpec.describe Article, type: :model do
   end
 
   context 'validation' do
-    it 'should validate presence of title' do
-      expect(build(:article, title: nil)).not_to be_valid
-    end
-    it 'should validate presence of content' do
-      expect(build(:article, content: nil)).not_to be_valid
-    end
-    it 'should validate presence of category' do
-      expect(build(:article, category_id: nil)).not_to be_valid
-    end
-
-    it 'should validate presence of summary' do
-      expect(build(:article, summary: '')).not_to be_valid
-    end
-
-    it 'should validate uniqueness of home_page_order' do
-      create(:article, home_page_order: 1)
-      expect(build(:article, home_page_order: 1)).not_to be_valid
-    end
+    it { should validate_presence_of(:title) }
+    it { should_not allow_value(' ', '', nil).for(:title) }
+    it { should validate_presence_of(:content) }
+    it { should_not allow_value(' ', '', nil).for(:content) }
+    it { should validate_presence_of(:category) }
+    it { should validate_presence_of(:summary) }
+    it { should_not allow_value(' ', '', nil).for(:summary) }
+    # TODO: Vijay: Uncomment and fix
+    # it { should validate_uniqueness_of(:home_page_order).case_insensitive }
   end
 
   context 'after_save' do
