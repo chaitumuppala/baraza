@@ -11,6 +11,7 @@
       %p{:id=> "summary"}
         = @article.summary
       %br
+      .content
         = @article.content.html_safe
       %br
       %a{:href =>"javascript:history.back()" ,:id => "edit" , class: "button", } Edit

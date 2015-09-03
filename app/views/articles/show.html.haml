@@ -26,6 +26,7 @@
       %p
         = @article.summary
       %br
+      .content
         = @article.content.html_safe
       - if permitted_to?(:edit, @article)
         = link_to 'Edit', edit_article_path(@article)

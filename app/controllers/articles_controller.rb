@@ -145,7 +145,7 @@ class ArticlesController < ApplicationController
         preview_article.cover_image = @article.cover_image
       end
       @article = preview_article
-      render('articles/preview') && return
+      render(:preview) && return
     end
   end
 
