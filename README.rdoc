@@ -1,7 +1,7 @@
 TODO: Vijay: Use markdown for better readme
 
-Machine Setup
-
+Machine Setup - Manual
+=======================
 * Install rvm using the command -> `curl -sSL https://get.rvm.io | bash`
 * Install ruby 2.2.2 using -> `rvm install 2.2.2`
 * Install bundler -> `gem install bundler`
@@ -25,3 +25,38 @@ elasticsearch
 
 imagemagick - for ckeditor image uploads
 * brew install imagemagick
+
+
+Machine Setup - Automated
+==========================
+* Download vagrant from
+    http://www.vagrantup.com/downloads
+* Install using the installer - the installer will automatically add vagrant to your system path so that it is available in terminals.
+* Download and install virtualbox
+* Ansible installation
+  sudo easy_install pip
+  If not mavericks, use
+  sudo pip install ansible
+  If mavericks, use
+  sudo CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install ansible
+
+* cd Path_to_ops_repo
+* vagrant up - This will download the box if it is not in your local
+* Try ssh to the machine using
+    vagrant ssh
+* exit from machine
+* To install deploy user,
+    ansible-playbook -vvvv user.yml -u vagrant -i inventories/vagrant --private-key=.vagrant/machines/default/virtualbox/private_key
+* Get the deploy_user_key.cer from mingle wiki. Save in your ~/.ssh folder.
+* sudo chmod 700 ~/.ssh
+* sudo chmod 600 ~/.ssh/deploy_user_key.cer
+* Check if user is installed
+    ssh -i ~/.ssh/deploy_user_key.cer deploy@127.0.0.1 -p 2222
+* If logged in, then exit
+* ansible-playbook -vvvv web.yml -u deploy -i inventories/vagrant --private-key=~/.ssh/deploy_user_key.cer
+* ansible-playbook -vvvv es.yml -u deploy -i inventories/vagrant --private-key=~/.ssh/deploy_user_key.cer
+* cd Path_to_baraza_repo
+* gem install bundler
+* bundle install
+* cap development deploy
+
