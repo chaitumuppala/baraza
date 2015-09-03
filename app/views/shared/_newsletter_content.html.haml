@@ -48,7 +48,7 @@
               %tr
                 %td{:colspan => "5", :style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px;"}
                   %p
-                    %b
+                    %b{:id => category.name, :class => "categories"}
                       = category.name
               / ARTCILES 2X2 COLUMNS
               - articles.to_a.in_groups_of(2, "empty") do |article_pair|

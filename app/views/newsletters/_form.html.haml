@@ -23,7 +23,7 @@
           %ul{id: "cat_#{category.id}", class: "content"}
             - articles.each do |article|
               %li.article
-                = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article))
+                = check_box_tag("newsletter[article_ids][]", article.id, @newsletter.articles.include?(article), class: article.title)
                 = fields_for "newsletter[articles_attributes][]", article, index: "" do |af|
                   = af.hidden_field :position_in_newsletter, class: "article_position"
                   = af.hidden_field :id
