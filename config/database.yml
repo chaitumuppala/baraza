@@ -20,6 +20,10 @@ test:
   <<: *default
   database: baraza_test
 
+automation:
+  <<: *default
+  database: baraza_automation
+
 production:
   <<: *default
   database: baraza_production

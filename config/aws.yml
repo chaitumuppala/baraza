@@ -10,6 +10,10 @@ test:
   secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   cover_image_bucket: "cover_image_test"
   ckeditor_image_bucket: "ckeditor_image_test"
+automation:
+  <<: *default
+  cover_image_bucket: "cover_image_development"
+  ckeditor_image_bucket: "ckeditor_image_development"
 demo:
   <<: *default
   cover_image_bucket: "cover_image_demo"
