@@ -26,3 +26,6 @@ mocks/*
 /coverage
 /spec/examples.txt
 .generators
+/brakeman-report.html
+/.ruby-version
+/.ruby-gemset
