@@ -42,8 +42,16 @@ class NewslettersController < ApplicationController
   # PATCH/PUT /newsletters/1.json
   def update
     ns_params = params[:newsletter]
-    flash.now[:alert] = 'There are no subscribers' and render(:edit) and return unless Subscriber.exists?
-    flash.now[:alert] = 'Select at least one article' and render(:edit) and return if ns_params['article_ids'].blank?
+    unless Subscriber.exists?
+      flash.now[:alert] = 'There are no subscribers'
+      render(:edit)
+      return
+    end
+    if ns_params['article_ids'].blank?
+      flash.now[:alert] = 'Select at least one article'
+      render(:edit)
+      return
+    end
     ns_params['articles_attributes'] = ns_params['articles_attributes'].select { |art_attr| ns_params['article_ids'].include?(art_attr['id']) }
     ns_params.merge!(status: Newsletter::Status::PUBLISHED) if params[:commit] == PUBLISH
     if @newsletter.update(newsletter_params)

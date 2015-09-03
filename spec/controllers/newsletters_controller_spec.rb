@@ -26,7 +26,7 @@ RSpec.describe NewslettersController, type: :controller do
       create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
-      cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
+      CategoryNewsletter.create(newsletter: newsletter, category: category)
       article1 = create(:article)
       article2 = create(:article)
       article3 = create(:article)
@@ -47,7 +47,7 @@ RSpec.describe NewslettersController, type: :controller do
       create(:subscriber)
       newsletter = create(:newsletter)
       category = create(:category)
-      cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
+      CategoryNewsletter.create(newsletter: newsletter, category: category)
       article1 = create(:article)
       article2 = create(:article)
       article3 = create(:article)
@@ -63,7 +63,7 @@ RSpec.describe NewslettersController, type: :controller do
     it 'should throw error if no subscribers', admin_sign_in: true do
       newsletter = create(:newsletter)
       category = create(:category)
-      cn = CategoryNewsletter.create(newsletter: newsletter, category: category)
+      CategoryNewsletter.create(newsletter: newsletter, category: category)
       article1 = create(:article)
       newsletter.articles << [article1]
 

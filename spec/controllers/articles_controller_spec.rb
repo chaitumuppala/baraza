@@ -139,7 +139,6 @@ RSpec.describe ArticlesController, type: :controller do
 
         article = create(:article, creator_id: controller.current_user.id, title: 'old title', cover_image_attributes: CoverImage.new(cover_photo: cover1).attributes)
 
-        cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
         patch :update, id: article.id, article: { title: 'new title', content: article.content,
                                                   cover_image_attributes: { id: article.cover_image.id } }, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
 
@@ -231,7 +230,7 @@ RSpec.describe ArticlesController, type: :controller do
       tag2 = create(:tag, name: 'history')
       tag3 = create(:tag, name: 'politics')
       article1 = create(:article, tag_list: "#{tag1.name},#{tag2.name}", content: 'article1', status: Article::Status::PUBLISHED)
-      article2 = create(:article, tag_list: tag3.name, content: 'article2', status: Article::Status::PUBLISHED)
+      create(:article, tag_list: tag3.name, content: 'article2', status: Article::Status::PUBLISHED)
       article3 = create(:article, tag_list: "#{tag1.name},#{tag3.name}", content: 'article3', status: Article::Status::PUBLISHED)
       Article.__elasticsearch__.import force: true
       Article.__elasticsearch__.refresh_index!
@@ -247,8 +246,8 @@ RSpec.describe ArticlesController, type: :controller do
       category2 = create(:category, name: 'history')
       category3 = create(:category, name: 'politics')
       article1 = create(:article, content: 'article1', category_id: category1.id, status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article2', category_id: category3.id, status: Article::Status::PUBLISHED)
-      article3 = create(:article, content: 'article3', category_id: category2.id, status: Article::Status::PUBLISHED)
+      create(:article, content: 'article2', category_id: category3.id, status: Article::Status::PUBLISHED)
+      create(:article, content: 'article3', category_id: category2.id, status: Article::Status::PUBLISHED)
       Article.__elasticsearch__.refresh_index!
 
       get :search, q: category1.name, search: 'category'
@@ -261,7 +260,7 @@ RSpec.describe ArticlesController, type: :controller do
   context 'index' do
     it 'should list current user articles if registered_user', sign_in: true do
       article1 = create(:article, creator_id: @user.id)
-      article2 = create(:article, creator_id: create(:user).id)
+      create(:article, creator_id: create(:user).id)
       article3 = create(:article, creator_id: @user.id)
       ArticleOwner.create(article: article1, owner: @user)
 
@@ -274,8 +273,8 @@ RSpec.describe ArticlesController, type: :controller do
     it 'should list current user articles and all articles submitted for approval if editor', editor_sign_in: true do
       article1 = create(:article, creator_id: @editor.id)
       article2 = create(:article, creator_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      article3 = create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
-      article4 = create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
+      create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
+      create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
       article5 = create(:article, creator_id: @editor.id)
 
       get :index
@@ -287,8 +286,8 @@ RSpec.describe ArticlesController, type: :controller do
     it 'should list current user articles and all articles submitted for approval if administrator', admin_sign_in: true do
       article1 = create(:article, creator_id: @admin.id)
       article2 = create(:article, creator_id: create(:user).id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      article3 = create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
-      article4 = create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
+      create(:article, creator_id: create(:user).id, status: Article::Status::DRAFT)
+      create(:article, creator_id: create(:user).id, status: Article::Status::PUBLISHED)
       article5 = create(:article, creator_id: @admin.id)
 
       get :index

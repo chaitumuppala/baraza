@@ -42,7 +42,7 @@ RSpec.describe Newsletter, type: :model do
       article1 = create(:article, title: '123', created_at: 1.month.ago.to_datetime, category_id: category1.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Time.current.to_date, category_id: category2.id, status: Article::Status::PUBLISHED)
       newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
-      article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
+      create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
       expected_result = { category2 => [article2].to_set, category1 => [article1].to_set }
 
       result = newsletter.reload.eligible_articles_by_category
@@ -58,7 +58,7 @@ RSpec.describe Newsletter, type: :model do
       article1 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: newsletter.id, category_id: category1.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Time.current.to_date, newsletter_id: newsletter.id, category_id: category2.id, status: Article::Status::PUBLISHED)
       newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
-      article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category2.id, status: Article::Status::PUBLISHED)
+      create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category2.id, status: Article::Status::PUBLISHED)
       result_hash = { category1 => [article1].to_set, category2 => [article2].to_set }
       expect(newsletter.eligible_articles_by_category).to eq(result_hash)
     end
@@ -95,8 +95,8 @@ RSpec.describe Newsletter, type: :model do
       newsletter.update_attributes(status: Newsletter::Status::PUBLISHED)
       article1 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: newsletter.id, category_id: category2.id, position_in_newsletter: 2, status: Article::Status::PUBLISHED)
       article2 = create(:article, created_at: Time.current.to_date, newsletter_id: newsletter.id, category_id: category2.id, position_in_newsletter: 1, status: Article::Status::PUBLISHED)
-      article3 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
-      article4 = create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: nil, category_id: category2.id, status: Article::Status::PUBLISHED)
+      create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: create(:newsletter).id, category_id: category1.id, status: Article::Status::PUBLISHED)
+      create(:article, created_at: 1.month.ago.to_datetime, newsletter_id: nil, category_id: category2.id, status: Article::Status::PUBLISHED)
       article5 = create(:article, created_at: Time.current.to_date, newsletter_id: newsletter.id, category_id: category1.id, position_in_newsletter: 1, status: Article::Status::PUBLISHED)
       result_hash = { category2 => [article2, article1].to_set, category1 => [article5].to_set }
       expect(newsletter.associated_articles_by_category).to eq(result_hash)

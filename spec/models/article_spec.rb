@@ -68,7 +68,7 @@ RSpec.describe Article, type: :model do
       tag1 = create(:tag, name: 'history')
       tag2 = create(:tag, name: 'science')
       article1 = create(:article, content: 'article1', tag_list: "#{tag1.name},#{tag2.name}", status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article2', tag_list: tag1.name)
+      create(:article, content: 'article2', tag_list: tag1.name)
 
       Article.__elasticsearch__.refresh_index!
 
@@ -78,7 +78,7 @@ RSpec.describe Article, type: :model do
     it 'should return articles of the given  new tag_name' do
       tag1 = create(:tag, name: 'history')
       article1 = create(:article, content: 'article1', tag_list: "#{tag1.name},science", status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article2', tag_list: tag1.name)
+      create(:article, content: 'article2', tag_list: tag1.name)
 
       Article.__elasticsearch__.refresh_index!
 
@@ -169,9 +169,9 @@ RSpec.describe Article, type: :model do
       category1 = create(:category, name: 'history')
       category2 = create(:category, name: 'science')
       article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
-      article3 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::DRAFT)
-      article4 = create(:article, content: 'article2', category_id: category1.id)
+      create(:article, content: 'article1', category_id: category2.id, status: Article::Status::SUBMITTED_FOR_APPROVAL)
+      create(:article, content: 'article1', category_id: category2.id, status: Article::Status::DRAFT)
+      create(:article, content: 'article2', category_id: category1.id)
 
       Article.__elasticsearch__.refresh_index!
 
@@ -179,7 +179,7 @@ RSpec.describe Article, type: :model do
     end
 
     it 'should sort results by date_published' do
-      category1 = create(:category, name: 'history')
+      create(:category, name: 'history')
       category2 = create(:category, name: 'science')
       article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
@@ -196,11 +196,11 @@ RSpec.describe Article, type: :model do
   context 'search_by_all', search: true do
     it 'should return articles of the given name' do
       category1 = create(:category, name: 'history')
-      category2 = create(:category, name: 'culture')
+      create(:category, name: 'culture')
       tag = create(:category, name: 'tag1')
       article1 = create(:article, content: 'article1', category_id: category1.id, tag_list: tag.name, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: 'article2', category_id: category1.id, status: Article::Status::PUBLISHED)
-      article3 = create(:article, content: 'article2', category_id: category1.id, status: Article::Status::DRAFT)
+      create(:article, content: 'article2', category_id: category1.id, status: Article::Status::DRAFT)
 
       Article.__elasticsearch__.refresh_index!
 
@@ -213,7 +213,7 @@ RSpec.describe Article, type: :model do
     end
 
     it 'should sort results by date_published' do
-      category1 = create(:category, name: 'history')
+      create(:category, name: 'history')
       category2 = create(:category, name: 'science')
       article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
       article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
@@ -274,10 +274,10 @@ RSpec.describe Article, type: :model do
   context 'cover_image' do
     it 'should return the cover_image that was not used for preview' do
       article = create(:article)
-      cover1 = create(:cover_image, preview_image: true, article: article)
+      create(:cover_image, preview_image: true, article: article)
       cover2 = create(:cover_image, preview_image: false, article: article)
-      cover3 = create(:cover_image, preview_image: false)
-      cover4 = create(:cover_image, preview_image: true, article: article)
+      create(:cover_image, preview_image: false)
+      create(:cover_image, preview_image: true, article: article)
 
       expect(article.cover_image).to eq(cover2)
     end

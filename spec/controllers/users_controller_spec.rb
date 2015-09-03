@@ -26,7 +26,7 @@ RSpec.describe UsersController, type: :controller do
 
     it 'should return error response if email is not unique' do
       email = 'email@valid.com'
-      user1 = create(:user, uid: 'uid001', provider: 'facebook', email: email)
+      create(:user, uid: 'uid001', provider: 'facebook', email: email)
       user2 = create(:user, uid: 'uid001', provider: 'facebook', email: nil)
       test_user_sign_in user2
 

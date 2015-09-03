@@ -8,7 +8,7 @@ RSpec.describe TagsController, type: :controller do
       tag1 = create(:tag, name: 'tag-1')
       tag2 = create(:tag, name: 'tag-2')
       tag3 = create(:tag, name: '3rd-tag')
-      tag4 = create(:tag, name: 'dummy')
+      create(:tag, name: 'dummy')
 
       get :index, format: 'json', q: 'tag'
 
