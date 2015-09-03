@@ -60,14 +60,14 @@
                     - else
                       %td{:style => "font-family: Arial, Helvetica; font-size: 14px; color: #353535; line-height: 18px; padding-left: 20px; padding-right: 20px; width: 290px"}
                         %span
-                          %a{:href => article_path(article), :style => "color: #d6562f; font-size: 16px; font-weight: bold; text-decoration: none;", :target => "_blank"}
+                          %a{:href => articles_url(article), :style => "color: #d6562f; font-size: 16px; font-weight: bold; text-decoration: none;", :target => "_blank"}
                             = article.title
                         %br
                           %span
                             = "#{article.principal_author.full_name.upcase}, #{article.date_published.strftime("%d %b %Y")}"
                           %br
                             %span
-                              = truncate_summary(article.summary)
+                              = truncate(article.summary, length: 153)
                             %br
                               %span
                                 %a{:href => article_path(article), :style => "color: #1595c0; text-decoration: none;"} Read more
