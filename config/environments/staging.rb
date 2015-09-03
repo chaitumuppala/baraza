@@ -88,4 +88,5 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
   config.action_mailer.default_url_options = { host: '78.47.57.68', port: 80 }
+  config.action_mailer.default_options = { from: ENV['email'] }
 end
