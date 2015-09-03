@@ -36,7 +36,7 @@
       TAGGED UNDER
       %div
         - @article.tags.each do |tag|
-          = link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
+          = link_to tag.name, search_articles_path(q: tag.name, search: ArticlesController::Search::TAGS)
 
     #disqus_shortname_for_comments{data: {sname: Rails.application.secrets.disqus_shortname}}
     - if @article.status == Article::Status::PUBLISHED

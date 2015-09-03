@@ -11,6 +11,12 @@ class ArticlesController < ApplicationController
   SUBMIT_FOR_APPROVAL = 'Submit for approval'.freeze
   PUBLISH = 'Publish'.freeze
   PREVIEW = 'Preview'.freeze
+  module Search
+    extend ListValues
+    ALL = 'all'.freeze
+    TAGS = 'tags'.freeze
+    CATEGORY = 'category'.freeze
+  end
 
   def show
   end
@@ -62,7 +68,7 @@ class ArticlesController < ApplicationController
   end
 
   def search
-    @articles = Article.public_send("search_by_#{params[:search]}", params[:q])
+    @articles = Article.public_send("search_by_#{params[:search]}", params[:q]) if Search.values.include?(params[:search])
   end
 
   def index

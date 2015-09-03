@@ -12,7 +12,7 @@
             = truncate_summary(article.summary)
           .desc
             - tags = article.tags.collect do |tag|
-              - link_to tag.name, search_articles_path(q: tag.name, search: Tag.name.downcase.pluralize)
+              - link_to tag.name, search_articles_path(q: tag.name, search: ArticlesController::Search::TAGS)
             = tags.join(", ").html_safe
 
           - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))

@@ -225,6 +225,20 @@ RSpec.describe ArticlesController, type: :controller do
   end
 
   context 'search' do
+    ArticlesController::Search.values.each do |search_criteria|
+      it "should search only with #{search_criteria}" do
+        expect(Article).to receive("search_by_#{search_criteria}")
+        get :search, q: "aaa", search: search_criteria
+      end
+    end
+
+    it 'should not search if search_criteria is other than all/tags/category' do
+      expect(Article).not_to receive(:search_by_all)
+      expect(Article).not_to receive(:search_by_tags)
+      expect(Article).not_to receive(:search_by_category)
+      get :search, q: "aaa", search: "title"
+    end
+
     it 'should search articles based on the tags', search: true do
       tag1 = create(:tag, name: 'science')
       tag2 = create(:tag, name: 'history')

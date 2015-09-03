@@ -14,11 +14,11 @@
     %ul#category-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       - Category.all.each do |category|
         %li
-          = link_to category.name, search_articles_path(q: category.name, search: Category.name.downcase)
+          = link_to category.name, search_articles_path(q: category.name, search: ArticlesController::Search::CATEGORY)
     #search-drop.f-dropdown.content{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       = form_tag search_articles_path, method: :get do
         = text_field_tag :q, params[:q], placeholder: "search...."
-        = hidden_field_tag :search, "all"
+        = hidden_field_tag :search, ArticlesController::Search::ALL
     %ul#user-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       - if permitted_to?(:index, :authors)
         %li
