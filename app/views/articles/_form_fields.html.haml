@@ -6,20 +6,12 @@
     = hidden_field_tag :owner_id, "User:#{current_user.id}"
   - else
     = label_tag :author, "Author", class: "star_it"
-    - owners = @article.owners
-    - user_option = []
-    - if owners.present?
-      - owner = owners.first
-      - if owner.is_a?(Author)
-        - selected_value = "Author:#{owner.id}"
-      - else
-        - selected_value = "User:#{owner.id}"
-      - user_option = [owner.full_name, selected_value]
+    - unless @article.creator.is_a?(RegisteredUser)
+      - select_options, selected_value = author_options(@article)
+      = select_tag :owner_id, options_for_select(select_options, selected_value), id: "owner-select"
+      %a{href: "#", "data-reveal-id" => "createAuthorModal"} + Add author
     - else
-      - selected_value = "User:#{current_user.id}"
-    - user_list = [current_user.full_name, "User:#{current_user.id}"]
-    = select_tag :owner_id, options_for_select((Author.all.collect { |owner| [owner.full_name, "Author:#{owner.id}"]} << [current_user.full_name, "User:#{current_user.id}"] << (user_option if user_option.present?)).uniq.compact, selected_value), id: "owner-select"
-    %a{href: "#", "data-reveal-id" => "createAuthorModal"} + Add author
+      = @article.principal_author.full_name
 .field#category_field
   = f.label "Category", class: "star_it"
   = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")

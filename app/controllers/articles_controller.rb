@@ -72,8 +72,8 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    @articles = current_user.articles
-    @proxy_articles = current_user.proxy_articles - @articles
+    @articles = current_user.articles.includes(:users, :system_users)
+    @proxy_articles = current_user.proxy_articles.includes(:users, :system_users) - @articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL).includes(:users, :system_users) unless current_user.registered_user?
   end
 
@@ -156,7 +156,9 @@ class ArticlesController < ApplicationController
   end
 
   def assign_owner
-    owner_type, owner_id = params[:owner_id].split(':'.freeze)
-    @article.article_owners = [ArticleOwner.new(owner_id: owner_id, owner_type: owner_type)]
+    if params[:owner_id]
+      owner_type, owner_id = params[:owner_id].split(':'.freeze)
+      @article.article_owners = [ArticleOwner.new(owner_id: owner_id, owner_type: owner_type)]
+    end
   end
 end

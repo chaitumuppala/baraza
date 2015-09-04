@@ -84,15 +84,15 @@ RSpec.describe ArticlesController, type: :controller do
       expect(response).to redirect_to(root_path)
     end
 
-    it 'should update and set status as submitted_for_approval' do
+    it 'should update and set status as submitted_for_approval and not update owner if not sent' do
       article = create(:article, creator_id: controller.current_user.id)
       article.users << @user
       mailer = double('mailer', deliver_now: '')
       expect(ArticleMailer).to receive(:notification_to_owner).with(controller.current_user, article).and_return(mailer)
       expect(ArticleMailer).to receive(:notification_to_editors).with(article).and_return(mailer)
-      patch :update, id: article.id, article: { title: 'new title' }, commit: ArticlesController::SUBMIT_FOR_APPROVAL, owner_id: "User:#{@user.id}"
+      patch :update, id: article.id, article: { title: 'new title' }, commit: ArticlesController::SUBMIT_FOR_APPROVAL
 
-      expect(article.reload.title).to eq('new title')
+      expect(article.reload.principal_author.id).to eq(@user.id)
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
     end
 
