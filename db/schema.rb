@@ -13,9 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150902113501) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "article_owners", force: :cascade do |t|
-    t.integer  "article_id", limit: 4
-    t.integer  "owner_id",   limit: 4
+    t.integer  "article_id"
+    t.integer  "owner_id"
     t.string   "owner_type", limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -24,30 +27,30 @@ ActiveRecord::Schema.define(version: 20150902113501) do
   add_index "article_owners", ["article_id"], name: "index_article_owners_on_article_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",                  limit: 255,                     null: false
-    t.text     "content",                limit: 65535,                   null: false
-    t.integer  "creator_id",             limit: 4
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.string   "title",                  limit: 255,                   null: false
+    t.text     "content",                                              null: false
+    t.integer  "creator_id"
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.boolean  "top_story"
-    t.integer  "newsletter_id",          limit: 4
-    t.integer  "position_in_newsletter", limit: 4
-    t.string   "status",                 limit: 255,   default: "draft"
-    t.text     "author_content",         limit: 65535
-    t.text     "summary",                limit: 65535,                   null: false
-    t.integer  "home_page_order",        limit: 4
+    t.integer  "newsletter_id"
+    t.integer  "position_in_newsletter"
+    t.string   "status",                 limit: 255, default: "draft"
+    t.text     "author_content"
+    t.text     "summary",                                              null: false
+    t.integer  "home_page_order"
     t.datetime "date_published"
-    t.integer  "category_id",            limit: 4,                       null: false
+    t.integer  "category_id",                                          null: false
   end
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
   add_index "articles", ["creator_id"], name: "index_articles_on_creator_id", using: :btree
 
   create_table "articles_tags", force: :cascade do |t|
-    t.integer  "article_id", limit: 4
-    t.integer  "tag_id",     limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "article_id"
+    t.integer  "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "articles_tags", ["article_id"], name: "index_articles_tags_on_article_id", using: :btree
@@ -67,9 +70,9 @@ ActiveRecord::Schema.define(version: 20150902113501) do
   end
 
   create_table "category_newsletters", force: :cascade do |t|
-    t.integer "category_id",            limit: 4
-    t.integer "newsletter_id",          limit: 4
-    t.integer "position_in_newsletter", limit: 4
+    t.integer "category_id"
+    t.integer "newsletter_id"
+    t.integer "position_in_newsletter"
   end
 
   add_index "category_newsletters", ["category_id"], name: "index_category_newsletters_on_category_id", using: :btree
@@ -78,12 +81,12 @@ ActiveRecord::Schema.define(version: 20150902113501) do
   create_table "ckeditor_assets", force: :cascade do |t|
     t.string   "data_file_name",    limit: 255, null: false
     t.string   "data_content_type", limit: 255
-    t.integer  "data_file_size",    limit: 4
-    t.integer  "assetable_id",      limit: 4
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
     t.string   "assetable_type",    limit: 30
     t.string   "type",              limit: 30
-    t.integer  "width",             limit: 4
-    t.integer  "height",            limit: 4
+    t.integer  "width"
+    t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,17 +97,17 @@ ActiveRecord::Schema.define(version: 20150902113501) do
   create_table "cover_images", force: :cascade do |t|
     t.string   "cover_photo_file_name",    limit: 255
     t.string   "cover_photo_content_type", limit: 255
-    t.integer  "cover_photo_file_size",    limit: 4
+    t.integer  "cover_photo_file_size"
     t.datetime "cover_photo_updated_at"
-    t.integer  "article_id",               limit: 4
+    t.integer  "article_id"
     t.boolean  "preview_image",                        default: false
   end
 
   add_index "cover_images", ["article_id"], name: "index_cover_images_on_article_id", using: :btree
 
   create_table "create_article_owners", force: :cascade do |t|
-    t.integer  "article_id", limit: 4
-    t.integer  "owner_id",   limit: 4
+    t.integer  "article_id"
+    t.integer  "owner_id"
     t.string   "owner_type", limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -114,10 +117,10 @@ ActiveRecord::Schema.define(version: 20150902113501) do
   add_index "create_article_owners", ["owner_id"], name: "index_create_article_owners_on_owner_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   limit: 4,     default: 0, null: false
-    t.integer  "attempts",   limit: 4,     default: 0, null: false
-    t.text     "handler",    limit: 65535,             null: false
-    t.text     "last_error", limit: 65535
+    t.integer  "priority",               default: 0, null: false
+    t.integer  "attempts",               default: 0, null: false
+    t.text     "handler",                            null: false
+    t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
@@ -155,7 +158,7 @@ ActiveRecord::Schema.define(version: 20150902113501) do
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -169,7 +172,7 @@ ActiveRecord::Schema.define(version: 20150902113501) do
     t.string   "provider",               limit: 255
     t.string   "first_name",             limit: 255,              null: false
     t.string   "last_name",              limit: 255,              null: false
-    t.integer  "year_of_birth",          limit: 4
+    t.integer  "year_of_birth"
     t.string   "country",                limit: 255
     t.string   "gender",                 limit: 255
     t.string   "type",                   limit: 255

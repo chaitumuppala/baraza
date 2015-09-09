@@ -1,10 +1,13 @@
 source 'https://rubygems.org'
+ruby "2.2.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3'
 gem 'mysql2', '~> 0.3.20'
+gem 'pg'
+gem 'puma', '~> 2.13'
 gem 'foundation-rails', '~> 5.4.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -84,6 +87,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'foreman'
   gem 'spring', '~> 1.3.6'
   gem 'quiet_assets', '~> 1.1.0'
   gem 'byebug', '~> 6.0.2'
@@ -98,8 +102,6 @@ group :development, :test do
   gem 'web-console', '~> 2.2.1'
   gem 'rails_instrument', '~> 0.0.4'
   gem 'faker', '~> 1.5.0'
-  # Use puma as the app server
-  gem 'puma', '~> 2.13.4'
 
   # Use debugger
   # gem 'debugger'

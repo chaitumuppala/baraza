@@ -1,16 +1,7 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
 default: &default
-  adapter: mysql2
-  encoding: utf8
-  port: 3306
-  host: localhost
-  username: <%=ENV["DB_USERNAME"] %>
-  password: <%=ENV["DB_PASSWORD"] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
 
 development:
   <<: *default
@@ -20,18 +11,9 @@ test:
   <<: *default
   database: baraza_test
 
-automation:
-  <<: *default
-  database: baraza_automation
-
 production:
   <<: *default
   database: baraza_production
-
-demo:
-  <<: *default
-  database: baraza_demo
-
-staging:
-  <<: *default
-  database: baraza_staging
+  url: <%= ENV['DATABASE_URL'] %>
+  username: baraza
+  password: <%= ENV['BARAZA_DATABASE_PASSWORD'] %>
