@@ -4,5 +4,6 @@ FactoryGirl.define do
     content { Faker::Lorem.paragraph }
     summary { Faker::Lorem.sentence }
     association :category
+    tag_list { "" }
   end
 end

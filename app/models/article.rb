@@ -26,65 +26,6 @@ class Article < ActiveRecord::Base
     system_users + users
   end
 
-  def as_indexed_json(_options = {})
-    as_json(
-      only:    [:id, :title, :content, :status, :date_published],
-      include: { tags:     { only: :name },
-                 category: { only: :name } }
-    )
-  end
-
-  def self.search_by_all(search_text)
-    query = {
-      query:  {
-        match: {
-          _all: search_text
-        }
-      },
-      filter: {
-        and: [
-          {
-            term: {
-              status: Article::Status::PUBLISHED
-            }
-          }
-        ]
-      },
-      sort:   { date_published: { order: :desc } }
-    }.to_json
-    response = Article.__elasticsearch__.search query
-    response.records.to_a
-  end
-
-  [:tags, :category].each do |criteria|
-    define_singleton_method "search_by_#{criteria}" do |search_text|
-      query = {
-        query: {
-          filtered: {
-            query:  {
-              match_all: {}
-            },
-            filter: {
-              bool: {
-                must: [
-                  {
-                    term: { :"#{criteria}.name" => search_text }
-                  },
-                  {
-                    term: { status: Article::Status::PUBLISHED }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        sort:  { date_published: { order: :desc } }
-      }.to_json
-      response = Article.__elasticsearch__.search query
-      response.records.to_a
-    end
-  end
-
   def cover_image_url(style = :original)
     ci = cover_image.blank? ? build_cover_image : cover_image
     ci.cover_photo.url(style)
