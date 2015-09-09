@@ -33,3 +33,7 @@ Finally, run the application with `bundle exec foreman start`.
 **NOTE on environment variables:** the local .env file (*do not commit this file!*) will be loaded by foreman automatically when you run the server. These same environment variables will have their values set on heroku for staging and production, so no worries there.
 
 And there you go :-)
+
+### OS X Setup
+
+If you're a console jockey, feel free to steal https://git.killerco.de/cuevee/dotfiles.git
