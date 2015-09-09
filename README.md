@@ -1,5 +1,7 @@
 # Baraza
 
+Current status: [![Build Status](https://snap-ci.com/Z3XXANONKIklTpFY0rIbTOFjSiyOD3KyWifmzqJEQu0/build_image)](https://snap-ci.com/cuevee/baraza/branch/master)
+
 **Note**: Things are still local at this point. I'll add container instructions
 in the next few commits.
 
@@ -24,10 +26,7 @@ After cloning the repo, we need to set up a couple of things: first, let's get o
 
 Then, set up the db:
 
-```
-bundle exec rake db:drop
-bundle exec rake db:reset
-```
+    bundle exec rake db:drop db:create db:migrate db:test:prepare
 
 Finally, run the application with `bundle exec foreman start`.
 
