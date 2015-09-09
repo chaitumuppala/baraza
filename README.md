@@ -1,6 +1,6 @@
 # Baraza
 
-**Note**: Things are still manual at this point. I'll add container instructions
+**Note**: Things are still local at this point. I'll add container instructions
 in the next few commits.
 
 ## Get set up
@@ -10,7 +10,15 @@ in the next few commits.
 - Postgresql with `brew install postgresql`
 - ImageMagick with `brew install imagemagick`
 
-### Run the server
+### Running unit tests
+
+`bundle exec rspec`
+
+Unless you type at the speed of light I strongly recommend you alias `bundle exec` to something like `be` with
+
+    echo "alias be=bundle exec" >> ~/.aliases
+
+### Running the server
 
 After cloning the repo, we need to set up a couple of things: first, let's get our dependencies installed with `bundle` (from the application directory.)
 
@@ -22,5 +30,7 @@ bundle exec rake db:reset
 ```
 
 Finally, run the application with `bundle exec foreman start`.
+
+**NOTE on environment variables:** the local .env file (*do not commit this file!*) will be loaded by foreman automatically when you run the server. These same environment variables will have their values set on heroku for staging and production, so no worries there.
 
 And there you go :-)
