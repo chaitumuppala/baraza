@@ -1,31 +1,4 @@
-# == Schema Information
-#
-# Table name: articles
-#
-#  id                     :integer          not null, primary key
-#  title                  :string(255)      not null
-#  content                :text             not null
-#  creator_id             :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  top_story              :boolean
-#  newsletter_id          :integer
-#  position_in_newsletter :integer
-#  status                 :string(255)      default("draft")
-#  author_content         :text
-#  summary                :text             not null
-#  home_page_order        :integer
-#  date_published         :datetime
-#  category_id            :integer          not null
-#
-# Indexes
-#
-#  index_articles_on_category_id  (category_id)
-#  index_articles_on_creator_id   (creator_id)
-#
-
 class Article < ActiveRecord::Base
-
   belongs_to :creator, class_name: User.name
   has_many :article_owners
   has_many :system_users, through: :article_owners, source: :owner, source_type: Author.name
@@ -34,9 +7,9 @@ class Article < ActiveRecord::Base
   has_and_belongs_to_many :tags
   belongs_to :category
 
-  accepts_nested_attributes_for :cover_image
+  acts_as_taggable_on :tags
 
-  attr_accessor :tag_list
+  accepts_nested_attributes_for :cover_image
 
   validates :title, :content, :category, :summary, presence: true
   validates :home_page_order, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -51,16 +24,6 @@ class Article < ActiveRecord::Base
 
   def owners
     system_users + users
-  end
-
-  def tag_list
-    tags.collect(&:name).join(','.freeze)
-  end
-
-  def tag_list=(tag_names_string)
-    tag_names_array = tag_names_string.split(','.freeze)
-    tags.destroy_all
-    tags << tag_names_array.collect { |name| Tag.find_or_initialize_by(name: name) }
   end
 
   def as_indexed_json(_options = {})

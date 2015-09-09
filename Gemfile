@@ -8,6 +8,9 @@ gem 'rails', '4.2.4'
 gem 'mysql2', '~> 0.3.20'
 gem 'pg'
 gem 'puma', '~> 2.13'
+
+gem 'acts-as-taggable-on', '~> 3.4'
+
 gem 'foundation-rails', '~> 5.4.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

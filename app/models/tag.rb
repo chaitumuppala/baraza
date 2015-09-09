@@ -2,10 +2,13 @@
 #
 # Table name: tags
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id             :integer          not null, primary key
+#  name           :string
+#  taggings_count :integer          default(0)
+#
+# Indexes
+#
+#  index_tags_on_name  (name) UNIQUE
 #
 
 class Tag < ActiveRecord::Base
