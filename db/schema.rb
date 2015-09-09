@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902113501) do
+ActiveRecord::Schema.define(version: 20150909162949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,16 +45,6 @@ ActiveRecord::Schema.define(version: 20150902113501) do
 
   add_index "articles", ["category_id"], name: "index_articles_on_category_id", using: :btree
   add_index "articles", ["creator_id"], name: "index_articles_on_creator_id", using: :btree
-
-  create_table "articles_tags", force: :cascade do |t|
-    t.integer  "article_id"
-    t.integer  "tag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "articles_tags", ["article_id"], name: "index_articles_tags_on_article_id", using: :btree
-  add_index "articles_tags", ["tag_id"], name: "index_articles_tags_on_tag_id", using: :btree
 
   create_table "authors", force: :cascade do |t|
     t.string   "full_name",  limit: 255, null: false
@@ -184,8 +174,6 @@ ActiveRecord::Schema.define(version: 20150902113501) do
 
   add_foreign_key "article_owners", "articles"
   add_foreign_key "articles", "categories"
-  add_foreign_key "articles_tags", "articles"
-  add_foreign_key "articles_tags", "tags"
   add_foreign_key "category_newsletters", "categories"
   add_foreign_key "category_newsletters", "newsletters"
   add_foreign_key "cover_images", "articles"
