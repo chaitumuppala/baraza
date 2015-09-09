@@ -10,5 +10,5 @@
 
 # TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Category < ActiveRecord::Base
-  has_many :articles, -> { order('-articles.position_in_newsletter DESC'.freeze, 'newsletter_id DESC'.freeze) }
+  has_many :articles, -> { order('-articles.position_in_newsletter DESC', 'newsletter_id DESC') }
 end

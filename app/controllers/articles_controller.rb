@@ -7,15 +7,15 @@ class ArticlesController < ApplicationController
   before_action :display_preview, only: [:create, :update, :approve]
   skip_before_action :application_meta_tag, only: [:show]
 
-  SAVE = 'Save as draft'.freeze
-  SUBMIT_FOR_APPROVAL = 'Submit for approval'.freeze
-  PUBLISH = 'Publish'.freeze
-  PREVIEW = 'Preview'.freeze
+  SAVE = 'Save as draft'
+  SUBMIT_FOR_APPROVAL = 'Submit for approval'
+  PUBLISH = 'Publish'
+  PREVIEW = 'Preview'
   module Search
     extend ListValues
-    ALL = 'all'.freeze
-    TAGS = 'tags'.freeze
-    CATEGORY = 'category'.freeze
+    ALL = 'all'
+    TAGS = 'tags'
+    CATEGORY = 'category'
   end
 
   def show
@@ -157,7 +157,7 @@ class ArticlesController < ApplicationController
 
   def assign_owner
     if params[:owner_id]
-      owner_type, owner_id = params[:owner_id].split(':'.freeze)
+      owner_type, owner_id = params[:owner_id].split(':')
       @article.article_owners = [ArticleOwner.new(owner_id: owner_id, owner_type: owner_type)]
     end
   end

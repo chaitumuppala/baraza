@@ -19,7 +19,7 @@ class PasswordsController < Devise::PasswordsController
       self.resource = resource_class.new
       resource.reset_password_token = params[:reset_password_token]
     else
-      flash[:error] = 'Reset password token is invalid'.freeze
+      flash[:error] = 'Reset password token is invalid'
     end
   end
 end

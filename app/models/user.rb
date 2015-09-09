@@ -55,16 +55,16 @@ class User < ActiveRecord::Base
 
   module Roles
     extend ListValues
-    ADMINISTRATOR = 'Administrator'.freeze
-    EDITOR = 'Editor'.freeze
-    REGISTERED_USER = 'RegisteredUser'.freeze
+    ADMINISTRATOR = 'Administrator'
+    EDITOR = 'Editor'
+    REGISTERED_USER = 'RegisteredUser'
   end
 
   module GenderCategory
     extend ListValues
-    M = 'M'.freeze
-    F = 'F'.freeze
-    OTHER = 'Other'.freeze
+    M = 'M'
+    F = 'F'
+    OTHER = 'Other'
   end
 
   def role_symbols

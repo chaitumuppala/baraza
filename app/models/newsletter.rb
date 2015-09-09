@@ -28,8 +28,8 @@ class Newsletter < ActiveRecord::Base
   before_update :set_date_published, if: -> { status_changed? && status == Newsletter::Status::PUBLISHED }
 
   module Status
-    DRAFT = 'draft'.freeze
-    PUBLISHED = 'published'.freeze
+    DRAFT = 'draft'
+    PUBLISHED = 'published'
   end
 
   def eligible_articles_by_category

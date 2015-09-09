@@ -4,9 +4,9 @@ class NewslettersController < ApplicationController
 
   filter_resource_access additional_collection: [:subscribe]
 
-  SAVE = 'Save'.freeze
-  PREVIEW = 'Preview'.freeze
-  PUBLISH = 'Publish'.freeze
+  SAVE = 'Save'
+  PREVIEW = 'Preview'
+  PUBLISH = 'Publish'
 
   # GET /newsletters
   # GET /newsletters.json
@@ -58,10 +58,10 @@ class NewslettersController < ApplicationController
       if params[:commit] == PUBLISH
         # TODO: Vijay: Move to an after_save hook on model
         NewsletterMailer.send_mail(@newsletter).deliver_now
-        flash[:notice] = 'eMagazine was successfully sent out to the subscribers'.freeze
+        flash[:notice] = 'eMagazine was successfully sent out to the subscribers'
         redirect_to newsletters_path
       elsif params[:commit] == SAVE
-        flash[:notice] = 'eMagazine is saved successfully'.freeze
+        flash[:notice] = 'eMagazine is saved successfully'
         redirect_to edit_newsletter_path(@newsletter)
       elsif params[:commit] == PREVIEW
         render 'newsletters/preview', layout: false
@@ -74,7 +74,7 @@ class NewslettersController < ApplicationController
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
-      flash[:notice] = 'Subscribed successfully'.freeze
+      flash[:notice] = 'Subscribed successfully'
     else
       flash[:alert] = subscriber.errors.full_messages.join('<br/>')
     end

@@ -17,9 +17,9 @@ class Article < ActiveRecord::Base
   before_save :set_date_published, if: -> { status_changed? && status == Article::Status::PUBLISHED }
 
   module Status
-    DRAFT = 'draft'.freeze
-    SUBMITTED_FOR_APPROVAL = 'submitted for approval'.freeze
-    PUBLISHED = 'published'.freeze
+    DRAFT = 'draft'
+    SUBMITTED_FOR_APPROVAL = 'submitted for approval'
+    PUBLISHED = 'published'
   end
 
   def owners
