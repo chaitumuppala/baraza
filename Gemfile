@@ -96,3 +96,7 @@ group :test do
   gem 'shoulda'
   # gem 'simplecov', '~> 0.10.0', require: false
 end
+
+group :production do
+  gem 'rack-cache'
+end

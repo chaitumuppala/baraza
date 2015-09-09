@@ -292,6 +292,8 @@ GEM
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
+    rack-cache (1.2)
+      rack (>= 0.4)
     rack-contrib (1.4.0)
       git-version-bump (~> 0.15)
       rack (~> 1.4)
@@ -472,6 +474,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 2.13)
   quiet_assets (~> 1.1.0)
+  rack-cache
   rails (= 4.2.4)
   rails_instrument (~> 0.0.4)
   rspec-rails (~> 3.3.3)
