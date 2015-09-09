@@ -16,25 +16,7 @@ class Article < ActiveRecord::Base
   validates :title, :content, :category, :summary, presence: true
   validates :home_page_order, uniqueness: { case_sensitive: false }, allow_blank: true
 
-  index_name "articles_#{Rails.env}"
-  settings do
-    mapping do
-      indexes :title, analyzer: 'snowball'.freeze
-      indexes :content, analyzer: 'snowball'.freeze
-      indexes :status, index: 'not_analyzed'.freeze
-      indexes :tags do
-        indexes :name, index: 'not_analyzed'.freeze
-      end
-      indexes :category do
-        indexes :name, index: 'not_analyzed'.freeze
-      end
-    end
-  end
-
   before_save :set_date_published, if: -> { status_changed? && status == Article::Status::PUBLISHED }
-  after_save do
-    Delayed::Job.enqueue(ArticleIndexJob.new(id))
-  end
 
   module Status
     DRAFT = 'draft'.freeze
