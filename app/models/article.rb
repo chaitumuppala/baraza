@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: articles
+#
+#  id                     :integer          not null, primary key
+#  title                  :string(255)      not null
+#  content                :text             not null
+#  creator_id             :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  top_story              :boolean
+#  newsletter_id          :integer
+#  position_in_newsletter :integer
+#  status                 :string(255)      default("draft")
+#  author_content         :text
+#  summary                :text             not null
+#  home_page_order        :integer
+#  date_published         :datetime
+#  category_id            :integer          not null
+#
+# Indexes
+#
+#  index_articles_on_category_id  (category_id)
+#  index_articles_on_creator_id   (creator_id)
+#
+
 class Article < ActiveRecord::Base
 
   belongs_to :creator, class_name: User.name
