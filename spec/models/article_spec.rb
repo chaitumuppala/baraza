@@ -70,8 +70,6 @@ RSpec.describe Article, type: :model do
       article1 = create(:article, content: 'article1', tag_list: "#{tag1.name},#{tag2.name}", status: Article::Status::PUBLISHED)
       create(:article, content: 'article2', tag_list: tag1.name)
 
-      Article.__elasticsearch__.refresh_index!
-
       expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([article1.id])
     end
 
@@ -79,8 +77,6 @@ RSpec.describe Article, type: :model do
       tag1 = create(:tag, name: 'history')
       article1 = create(:article, content: 'article1', tag_list: "#{tag1.name},science", status: Article::Status::PUBLISHED)
       create(:article, content: 'article2', tag_list: tag1.name)
-
-      Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_tags('science').collect(&:id)).to eq([article1.id])
     end
@@ -131,7 +127,6 @@ RSpec.describe Article, type: :model do
         article = create(:article, tag_list: tag1.name, status: Article::Status::PUBLISHED)
 
         article.update_attributes(tag_list: "#{tag1.name},#{tag2.name},abcd")
-        Article.__elasticsearch__.refresh_index!
         expect(Article.search_by_tags(tag1.name).collect(&:id)).to eq([article.id])
         expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([article.id])
         expect(Article.search_by_tags('abcd').collect(&:id)).to eq([article.id])
@@ -144,7 +139,6 @@ RSpec.describe Article, type: :model do
         article.tags << [tag1, tag2]
 
         article.update_attributes(tag_list: "#{tag1.name}")
-        Article.__elasticsearch__.refresh_index!
         expect(Article.search_by_tags(tag1.name).collect(&:id)).to eq([article.id])
         expect(Article.search_by_tags(tag2.name).collect(&:id)).to eq([])
       end
@@ -157,7 +151,6 @@ RSpec.describe Article, type: :model do
         article = create(:article, category_id: category1.id, status: Article::Status::PUBLISHED)
 
         article.update_attributes(category_id: category2.id)
-        Article.__elasticsearch__.refresh_index!
         expect(Article.search_by_category(category1.name).collect(&:id)).to eq([])
         expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article.id])
       end
@@ -173,8 +166,6 @@ RSpec.describe Article, type: :model do
       create(:article, content: 'article1', category_id: category2.id, status: Article::Status::DRAFT)
       create(:article, content: 'article2', category_id: category1.id)
 
-      Article.__elasticsearch__.refresh_index!
-
       expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id])
     end
 
@@ -187,61 +178,8 @@ RSpec.describe Article, type: :model do
       article1.update_attributes(date_published: Time.current.to_date)
       article2.update_attributes(date_published: 10.days.ago)
       article3.update_attributes(date_published: Date.yesterday)
-      Article.__elasticsearch__.refresh_index!
 
       expect(Article.search_by_category(category2.name).collect(&:id)).to eq([article1.id, article3.id, article2.id])
-    end
-  end
-
-  context 'search_by_all', search: true do
-    it 'should return articles of the given name' do
-      category1 = create(:category, name: 'history')
-      create(:category, name: 'culture')
-      tag = create(:category, name: 'tag1')
-      article1 = create(:article, content: 'article1', category_id: category1.id, tag_list: tag.name, status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article2', category_id: category1.id, status: Article::Status::PUBLISHED)
-      create(:article, content: 'article2', category_id: category1.id, status: Article::Status::DRAFT)
-
-      Article.__elasticsearch__.refresh_index!
-
-      expect(Article.search_by_all('article1').collect(&:id)).to eq([article1.id])
-      expect(Article.search_by_all(tag.name).collect(&:id)).to eq([article1.id])
-
-      expect(Article.search_by_all('article2').collect(&:id)).to eq([article2.id])
-
-      expect(Article.search_by_all(category1.name).collect(&:id)).to match_array([article1.id, article2.id])
-    end
-
-    it 'should sort results by date_published' do
-      create(:category, name: 'history')
-      category2 = create(:category, name: 'science')
-      article1 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article2 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article3 = create(:article, content: 'article1', category_id: category2.id, status: Article::Status::PUBLISHED)
-      article1.update_attributes(date_published: Time.current.to_date)
-      article2.update_attributes(date_published: 10.days.ago)
-      article3.update_attributes(date_published: Date.yesterday)
-      Article.__elasticsearch__.refresh_index!
-
-      expect(Article.search_by_all(category2.name).collect(&:id)).to eq([article1.id, article3.id, article2.id])
-    end
-  end
-
-  context 'delayed_job' do
-    it 'should asynchronously index the document' do
-      Delayed::Worker.delay_jobs = true
-
-      expect do
-        create(:article, content: 'article1')
-      end.to change { Delayed::Job.count }.from(0).to(1)
-    end
-
-    it 'should index using article index job' do
-      article_id = 100
-      mock_article_index_job = double('article_index_job')
-      expect(ArticleIndexJob).to receive(:new).with(article_id).and_return(mock_article_index_job)
-      expect(Delayed::Job).to receive(:enqueue).with(mock_article_index_job)
-      create(:article, content: 'article1', id: article_id)
     end
   end
 

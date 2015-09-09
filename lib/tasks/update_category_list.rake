@@ -11,7 +11,6 @@ namespace :data do
       category.name = category_names[index]
       category.save
     end
-    Article.__elasticsearch__.import force: true
     p 'Categories updated successfully'
   end
 end

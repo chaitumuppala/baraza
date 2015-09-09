@@ -56,11 +56,6 @@ RSpec.configure do |config|
     test_user_sign_in @admin
   end
 
-  config.before(:each, search: true) do
-    Article.__elasticsearch__.create_index! force: true
-    Delayed::Worker.delay_jobs = false
-  end
-
   def test_user_sign_in(user)
     user.confirm!
     sign_in user

@@ -233,7 +233,6 @@ RSpec.describe ArticlesController, type: :controller do
     end
 
     it 'should not search if search_criteria is other than all/tags/category' do
-      expect(Article).not_to receive(:search_by_all)
       expect(Article).not_to receive(:search_by_tags)
       expect(Article).not_to receive(:search_by_category)
       get :search, q: "aaa", search: "title"
@@ -246,8 +245,6 @@ RSpec.describe ArticlesController, type: :controller do
       article1 = create(:article, tag_list: "#{tag1.name},#{tag2.name}", content: 'article1', status: Article::Status::PUBLISHED)
       create(:article, tag_list: tag3.name, content: 'article2', status: Article::Status::PUBLISHED)
       article3 = create(:article, tag_list: "#{tag1.name},#{tag3.name}", content: 'article3', status: Article::Status::PUBLISHED)
-      Article.__elasticsearch__.import force: true
-      Article.__elasticsearch__.refresh_index!
 
       get :search, q: tag1.name, search: 'tags'
 
@@ -262,7 +259,6 @@ RSpec.describe ArticlesController, type: :controller do
       article1 = create(:article, content: 'article1', category_id: category1.id, status: Article::Status::PUBLISHED)
       create(:article, content: 'article2', category_id: category3.id, status: Article::Status::PUBLISHED)
       create(:article, content: 'article3', category_id: category2.id, status: Article::Status::PUBLISHED)
-      Article.__elasticsearch__.refresh_index!
 
       get :search, q: category1.name, search: 'category'
 
