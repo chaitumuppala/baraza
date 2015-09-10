@@ -80,6 +80,7 @@ group :development, :test do
   gem 'did_you_mean', '~> 0.10.0'
   gem 'annotate', '~> 2.6.5'
   gem 'rspec-rails', '~> 3.3.3'
+  gem 'factory_girl_rails', '~> 4.5'
 
   gem 'meta_request'
   # gem 'rspec-instafail', '~> 0.2.5'
@@ -92,8 +93,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 1.4.0'
-  gem 'factory_girl_rails', '~> 4.5'
-  gem 'shoulda'
+  gem 'shoulda-matchers'
   # gem 'simplecov', '~> 0.10.0', require: false
 end
 

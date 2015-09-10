@@ -6,40 +6,17 @@ describe User, type: :model do
     expect(build :user).to be_valid
   end
 
-#   describe 'validation' do
-#     it { should validate_presence_of(:last_name) }
-#     it { should validate_presence_of(:first_name) }
-#
-#     it 'should be inavlid if password length is less than 8 characters' do
-#       user = build(:user, password: 'Pa1!')
-#       expect(user).not_to be_valid
-#       expect(user.errors.full_messages).to eq(['Password is too short (minimum is 8 characters)'])
-#     end
-#
-#     it 'should validate presence' do
-#       expect(build(:user, password: nil)).not_to be_valid
-#     end
-#
-#     it 'should validate password and password_confirmation to be equal' do
-#       expect(build(:user, password: 'Password1!', password_confirmation: 'Password2!')).not_to be_valid
-#     end
-#
-#     it 'should validate to include at-least one letter, numeral and special character' do
-#       expect(build(:user, password: 'password1!')).to be_valid
-#       expect(build(:user, password: 'PASSWORD1!')).to be_valid
-#       expect(build(:user, password: 'Password!')).not_to be_valid
-#       expect(build(:user, password: 'Password1')).not_to be_valid
-#       expect(build(:user, password: '1234567!')).not_to be_valid
-#     end
-#
-#     it 'should return error message if email is not unique' do
-#       create(:user, email: 'again@gm.com')
-#       invalid_user = build(:user, email: 'again@gm.com')
-#       expect(invalid_user).not_to be_valid
-#       expect(invalid_user.errors.full_messages).to eq(["Email has already been used to register an account. To retrieve your password for this account, click on <a href='/users/password/new'> forgot your password </a> or <a href='/users/sign_in'> sign in here </a> "])
-#     end
-#   end
-#
+  describe 'validation' do
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+
+    it 'should be inavlid if password length is less than 8 characters' do
+      user = build(:user, password: 'Pa1!')
+      expect(user).not_to be_valid
+      expect(user.errors.full_messages).to eq(['Password is too short (minimum is 8 characters)'])
+    end
+  end
+
 #   describe 'before_create' do
 #     it 'should set type as registeredUser if no type is present' do
 #       user = User.create(email: 'random@gmai.com', password: 'Password1!', first_name: 'deepthi', last_name: 'vinod')
