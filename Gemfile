@@ -92,8 +92,9 @@ group :development, :test do
 end
 
 group :test do
-  gem 'database_cleaner', '~> 1.4.0'
   gem 'shoulda-matchers'
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
   # gem 'simplecov', '~> 0.10.0', require: false
 end
 

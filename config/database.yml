@@ -7,7 +7,7 @@ development:
   <<: *default
   database: baraza_development
 
-test:
+test: &test
   <<: *default
   database: baraza_test
 
@@ -17,3 +17,6 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
   username: baraza
   password: <%= ENV['BARAZA_DATABASE_PASSWORD'] %>
+
+cucumber:
+  <<: *test
