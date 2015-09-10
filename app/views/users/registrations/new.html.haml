@@ -22,13 +22,13 @@
           .name
             .field.first_name
               = f.label :first_name
-              = f.text_field :first_name, required: ""
+              = f.text_field :first_name, autofocus: true,required: ""
             .field.last_name
               = f.label :last_name
               = f.text_field :last_name, required: ""
           .field
             = f.label :email
-            = f.email_field :email, autofocus: true, required: ""
+            = f.email_field :email, required: ""
           .field
             = f.label :password, data: { hint: "Minimum of 8 characters, 1 special character & 1 number" }
             = f.password_field :password, autocomplete: "off", required: ""
