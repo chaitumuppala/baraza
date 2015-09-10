@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: newsletters
+#
+#  id             :integer          not null, primary key
+#  name           :string(255)      not null
+#  status         :string(255)      default("draft")
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  date_published :datetime
+#
+
 # # == Schema Information
 # #
 # # Table name: newsletters

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: authors
+#
+#  id         :integer          not null, primary key
+#  full_name  :string(255)      not null
+#  email      :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 # # == Schema Information
 # #
 # # Table name: authors
