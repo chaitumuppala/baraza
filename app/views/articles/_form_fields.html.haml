@@ -1,6 +1,4 @@
-.field
-  = f.label :title, data: { hint: "Maximum 12 words" }
-  = f.text_field :title
+
 .field#author_field
   - if current_user.is_a?(RegisteredUser)
     = hidden_field_tag :owner_id, "User:#{current_user.id}"
@@ -15,6 +13,9 @@
 .field#category_field
   = f.label "Category", class: "star_it"
   = f.select(:category_id, Category.all.collect{|c| [c.name, c.id]}, {include_blank: ''}, id: "category-select")
+.field
+  = f.label :title, data: { hint: "Maximum 12 words" }
+  = f.text_field :title
 .field#tags_field
   = label_tag "Tags"
   = f.text_field :tag_list, id: "tags"
