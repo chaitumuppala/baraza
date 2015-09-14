@@ -14,7 +14,8 @@
       .content
         = @article.content.html_safe
       %br
-      %a{:href =>"javascript:history.back()" ,:id => "edit" , class: "button", } Edit
+        = link_to 'Edit', article_edit_path(@article)
+
     .tags
       TAGGED UNDER
       %div
