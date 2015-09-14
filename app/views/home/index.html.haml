@@ -1,14 +1,17 @@
 #home-page
   #section-1{"data-equalizer" => ""}
-    #article-1
-      = render "shared/top_story_board", article: @articles_with_order[1], order: 1
-    #article-2
-      = render "shared/article_board", article: @articles_with_order[2], order: 2
+    - if @articles_with_order[1].present?
+      #article-1
+        = render "shared/top_story_board", article: @articles_with_order[1], order: 1
+    - if @articles_with_order[2].present?
+      #article-2
+        = render "shared/article_board", article: @articles_with_order[2], order: 2
 
   #section-2{"data-equalizer" => ""}
     - @articles_with_order.slice(3,4,5).each do |order, article|
-      .three-column-article
-        = render "shared/article_board", article: article, order: order
+      - if @articles_with_order[order].present?
+        .three-column-article
+          = render "shared/article_board", article: article, order: order
   #section-3
     .newsletter
       #title
@@ -20,8 +23,9 @@
           = submit_tag "Subscribe", value: "Subscribe"
   #section-4{"data-equalizer" => ""}
     - @articles_with_order.slice(6,7,8).each do |order, article|
-      .three-column-article
-        = render "shared/article_board", article: article, order: order
+      - if @articles_with_order[order].present?
+        .three-column-article
+          = render "shared/article_board", article: article, order: order
 
   - if( params[:configure_home]  && (current_user.administrator? || current_user.editor?))
     %div#chooseArticlesModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Choose articles", "data-reveal" => "", :role => "dialog"}
