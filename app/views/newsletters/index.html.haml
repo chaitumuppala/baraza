@@ -1,7 +1,9 @@
 .panel
   %h4 Listing eMagazines
-
+ 
   %table
+  - if @newsletters.count > 0
+
     %thead
       %tr
         %th
@@ -21,6 +23,9 @@
           %td= newsletter.status
           - if permitted_to?(:edit, newsletter)
             %td= link_to 'Edit', edit_newsletter_path(newsletter)
+
+  -else
+  THERE ARE NO eMAGAZINES AVAILABLE.
 
   %br
 
