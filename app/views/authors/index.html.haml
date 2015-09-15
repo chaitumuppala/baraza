@@ -1,22 +1,24 @@
 .panel
   %h4 Listing authors
-
-  %table
-    %thead
-      %tr
-        %th
-          Full Name
-        %th
-          Email
-        %th
-          Actions
-
-    %tbody
-      - @authors.each do |author|
+  -if @authors.count > 0 
+    %table
+      %thead
         %tr
-          %td= author.full_name
-          %td= author.email
-          %td= link_to 'Edit', edit_author_path(author)
+          %th
+            Full Name
+          %th
+            Email
+          %th
+            Actions
+
+      %tbody
+        - @authors.each do |author|
+          %tr
+            %td= author.full_name
+            %td= author.email
+            %td= link_to 'Edit', edit_author_path(author)
+  -else
+    No authors available
 
   %br
   = link_to 'New Author', new_author_path
