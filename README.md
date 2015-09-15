@@ -11,10 +11,13 @@ in the next few commits.
 
 - Postgresql with `brew install postgresql`
 - ImageMagick with `brew install imagemagick`
+- Heroku Toolbelt with `brew install heroku-toolbelt`. Alternatively, you can run all your tests using their respective rake tasks. Both RSpec and Cucumber have tasks which you can find with `rake -T`.
 
-### Running unit tests
+### Running tests
 
-`bundle exec rspec`
+Unit: `bundle exec rspec`
+
+Features: `bundle exec cucumber`
 
 Unless you type at the speed of light I strongly recommend you alias `bundle exec` to something like `be` with
 
