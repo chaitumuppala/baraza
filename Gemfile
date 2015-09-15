@@ -69,7 +69,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'foreman'
   gem 'spring', '~> 1.3.6'
   gem 'quiet_assets', '~> 1.1.0'
   gem 'byebug', '~> 6.0.2'
