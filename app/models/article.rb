@@ -46,6 +46,7 @@ class Article < ActiveRecord::Base
     DRAFT = 'draft'
     SUBMITTED_FOR_APPROVAL = 'submitted for approval'
     PUBLISHED = 'published'
+    PREVIEW = 'preview'
   end
 
   def owners

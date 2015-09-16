@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :articles do
     member do
       get 'approve_form'
+      get 'edit'
       patch 'approve'
       patch 'home_page_order_update'
     end

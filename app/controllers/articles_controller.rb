@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
 
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
-  before_action :new_article_from_params, only: [:new, :create]
-  before_action :display_preview, only: [:create, :update, :approve]
+  before_action :display_preview, only: [:update, :approve]
+  before_action :new_article_from_params, only: [:update, :new, :create]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = 'Save as draft'
@@ -30,18 +30,19 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      if @article.save
+    if @article.save
+    #if @article
         # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
         # This actually creates a different model. It is not dirtying the article.
-        assign_owner
-        article_arrival_notification
-        format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
-        format.json { render :show, status: :created, location: @article }
+      assign_owner
+      article_arrival_notification
+      if params[:commit] == PREVIEW
+        render(:preview)
       else
-        format.html { render :new }
-        format.json { render json: @article.errors.full_messages.to_sentence, status: :unprocessable_entity }
+        format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
       end
+    else
+      format.html { render :new }
     end
   end
 
@@ -72,6 +73,7 @@ class ArticlesController < ApplicationController
   end
 
   def index
+    #@articles = current_user.articles.includes(:users, :system_users) - current_user.Articles.where(tatus: Article::Status::PREVIEW)
     @articles = current_user.articles.includes(:users, :system_users)
     @proxy_articles = current_user.proxy_articles.includes(:users, :system_users) - @articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL).includes(:users, :system_users) unless current_user.registered_user?
@@ -109,7 +111,14 @@ class ArticlesController < ApplicationController
   end
 
   def new_article_from_params
+    logger.debug("top of new_article_from_params")
     @article = params[:article] ? Article.new(article_params) : Article.new
+    logger.debug("new_article_from_params:hash #{@article}")
+    logger.debug("new_article_from_params:title #{@article.title}")
+    logger.debug("new_article_from_params:summary #{@article.summary}")
+    logger.debug("new_article_from_params:category #{@article.category}")
+    logger.debug("new_article_from_params:content #{@article.content}")
+    logger.debug("new_article_from_params after save");
   end
 
   def article_params
@@ -124,6 +133,10 @@ class ArticlesController < ApplicationController
   def merge_status_to_params
     for_publish_or_approval do
       status = current_user.registered_user? ? Article::Status::SUBMITTED_FOR_APPROVAL : Article::Status::PUBLISHED
+      params[:article].merge!(status: status, author_content: params[:article][:content])
+    end
+    if params[:commit] == PREVIEW
+      status = Article::Status::PREVIEW
       params[:article].merge!(status: status, author_content: params[:article][:content])
     end
   end
@@ -141,16 +154,17 @@ class ArticlesController < ApplicationController
 
   def display_preview
     if params[:commit] == PREVIEW
-      preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
-      preview_article = Article.new(article_params.except(:cover_image_attributes))
-      if preview_cover_image_attributes.present?
-        # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed? - since we wanted to resize and view the image. this happens only on save. We planned to have a rake task that clears out the orphan records
-        ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
-        preview_article.cover_image = ci
-      else
-        preview_article.cover_image = @article.cover_image
-      end
-      @article = preview_article
+      #preview_cover_image_attributes = article_params.slice(:cover_image_attributes)[:cover_image_attributes].try(:except, :id)
+      #preview_article = Article.new(article_params.except(:cover_image_attributes))
+      #if preview_cover_image_attributes.present?
+      #  # TODO: Vijay: Why is this child being 'create'd when the parent is only 'new'ed? - since we wanted to resize and view the image. this happens only on save. We planned to have a rake task that clears out the orphan records
+      #  ci = CoverImage.create(preview_cover_image_attributes.merge(preview_image: true))
+      #  preview_article.cover_image = ci
+      #else
+      #  preview_article.cover_image = @article.cover_image
+      #end
+      #@article = preview_article
+      build_cover_image
       render(:preview) && return
     end
   end

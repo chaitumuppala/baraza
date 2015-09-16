@@ -14,7 +14,7 @@
       .content
         = @article.content.html_safe
       %br
-        = link_to 'Edit', article_edit_path(@article)
+        = link_to 'Edit', edit_article_path(@article)
 
     .tags
       TAGGED UNDER
