@@ -5,6 +5,7 @@ ruby "2.2.3"
 gem 'rails', '4.2.4'
 
 gem 'pg'
+gem 'foreman'
 gem 'puma', '~> 2.13'
 
 gem 'acts-as-taggable-on', '~> 3.4'
