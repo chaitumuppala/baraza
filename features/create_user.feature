@@ -13,3 +13,4 @@ Feature: Create User
     And Select Gender "Male"
     And Click Register a new user
     Then Validate success message is "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
+    Then Close browser

@@ -8,7 +8,6 @@ Given(/^I am on the homepage$/) do
 	@b.goto 'localhost:3000'
 end
 
-
 When(/^Click Login/) do
 	l = @b.link :text => 'LOGIN'
 	l.click
@@ -22,7 +21,6 @@ end
 
 Then(/^Validate error message "(.*?)"$/) do |message|
 	@b.text.should include(message)
-  @b.quit
 end
 
 And(/^Validate successful user login$/) do
@@ -31,4 +29,9 @@ end
 
 Then(/^Logout the user$/) do
 	pending
+end
+
+
+Then(/^Close browser$/) do
+	@b.quit
 end

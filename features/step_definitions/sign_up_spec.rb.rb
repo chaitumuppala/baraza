@@ -7,45 +7,45 @@ And(/^Open new user form with Signup$/) do
 end
 
 And(/^Enter First name "([^"]*)"$/) do |firstname|
-  @b.link(:id => 'user_first_name').set(firstname)
+  @b.text_field(:id => 'user_first_name').set(firstname)
 end
 
 And(/^Enter Last name "([^"]*)"$/) do |lastname|
-  @b.link(:id => 'user_last_name').set(lastname)
+  @b.text_field(:id => 'user_last_name').set(lastname)
 end
 
 
 And(/^Enter Email "([^"]*)"$/) do |email|
-  @b.link(:id => 'user_email').set(email)
+  @b.text_field(:id => 'user_email').set(email)
 end
 
 
 And(/^Enter Password "([^"]*)"$/) do |password|
-  @b.link(:id => 'user_password').set(password)
+  @b.text_field(:id => 'user_password').set(password)
 end
 
 
 And(/^Enter Confirm Password "([^"]*)"$/) do |confirm|
-  @b.link(:id => 'user_password_confirmation').set(confirm)
+  @b.text_field(:id => 'user_password_confirmation').set(confirm)
 end
 
 And(/^Enter Date of Birth "([^"]*)"$/) do |year|
-  @b.link(:id => 'user_year_of_birth').send_keys(year)
+  @b.select_list(:id => 'user_year_of_birth').select(year)
 end
 
 And(/^Enter Country "([^"]*)"$/) do |country|
-  @b.link(:id => 'user_country').send_keys(country)
+  @b.select_list(:id => 'user_country').select(country)
 end
 
 And(/^Select Gender "([^"]*)"$/) do |gender|
   if gender == "Male"
-    @b.link(:id => 'user_gender_m').set
+    @b.radio(:id => 'user_gender_m').set
   end
   if gender == "Female"
-    @b.link(:id => 'user_gender_f').set
+    @b.radio(:id => 'user_gender_f').set
   end
   if gender == "Other"
-    @b.link(:id => 'user_gender_other').set
+    @b.radio(:id => 'user_gender_other').set
   end
 end
 
