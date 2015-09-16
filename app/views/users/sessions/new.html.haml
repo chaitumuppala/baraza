@@ -8,7 +8,7 @@
     .social_media_sign_in
       = link_to "", omniauth_authorize_path(resource_name, "google_oauth2"), class: "google_sign_in"
       = link_to "", omniauth_authorize_path(resource_name, "facebook"), class: "fb_sign_in"
-    = form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "no-double-click"}) do |f|
+    = form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "no-double-click new-user-session"}) do |f|
       = devise_error_messages!
       .error
       .field

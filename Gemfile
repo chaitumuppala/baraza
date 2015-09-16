@@ -95,6 +95,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
+  gem 'capybara'
   # gem 'simplecov', '~> 0.10.0', require: false
 end
 
