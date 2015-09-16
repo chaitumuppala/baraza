@@ -1,23 +1,26 @@
 .panel
   %h4 My Articles
-
-  %table{id: "my-articles"}
-    %thead
-      %tr
-        %th
-          TITLE
-        %th
-          STATUS
-        %th
-          Actions
-
-    %tbody
-      - @articles.each do |article|
+  -if @articles.count > 0
+    %table{id: "my-articles"}
+  
+      %thead
         %tr
-          %td= link_to article.title, article_path(article)
-          %td= article.status
-          - if permitted_to?(:edit, article)
-            %td= link_to 'Edit', edit_article_path(article)
+          %th
+            TITLE
+          %th
+            STATUS
+          %th
+            Actions
+
+      %tbody
+        - @articles.each do |article|
+          %tr
+            %td= link_to article.title, article_path(article)
+            %td= article.status
+            - if permitted_to?(:edit, article)
+              %td= link_to 'Edit', edit_article_path(article)
+  -else
+    No articles available.
 
   %br
 
@@ -26,49 +29,56 @@
 - if @proxy_articles
   .panel
     %h4 Articles created for others
-
-    %table{id: "proxy-articles"}
-      %thead
-        %tr
-          %th
-            TITLE
-          %th
-            AUTHOR
-          %th
-            STATUS
-          %th
-            Actions
-
-      %tbody
-        - @proxy_articles.each do |article|
+    - if @proxy_articles.count > 0
+      %table{id: "proxy-articles"}
+    
+        %thead
           %tr
-            %td= link_to article.title, article_path(article)
-            %td= article.principal_author.full_name
-            %td= article.status
-            - if permitted_to?(:edit, article)
-              %td= link_to 'Edit', edit_article_path(article)
+            %th
+              TITLE
+            %th
+              AUTHOR
+            %th
+              STATUS
+            %th
+              Actions
+
+        %tbody
+          - @proxy_articles.each do |article|
+            %tr
+              %td= link_to article.title, article_path(article)
+              %td= article.principal_author.full_name
+              %td= article.status
+              - if permitted_to?(:edit, article)
+                %td= link_to 'Edit', edit_article_path(article)
+    -else
+      No articles available.
 
 - if @articles_submitted
   .panel
     %h4 Submitted Articles
 
-    %table{id: "submitted-articles"}
-      %thead
-        %tr
-          %th
-            TITLE
-          %th
-            AUTHOR
-          %th
-            STATUS
-          %th
-            Actions
-
-      %tbody
-        - @articles_submitted.each do |article|
+    - if @articles_submitted.count > 0
+      %table{id: "submitted-articles"}
+    
+        %thead
           %tr
-            %td= link_to article.title, article_path(article)
-            %td= article.principal_author.full_name
-            %td= article.status
-            - if permitted_to?(:approve_form, article)
-              %td= link_to 'Edit', approve_form_article_path(article)
+            %th
+              TITLE
+            %th
+              AUTHOR
+            %th
+              STATUS
+            %th
+              Actions
+
+        %tbody
+          - @articles_submitted.each do |article|
+            %tr
+              %td= link_to article.title, article_path(article)
+              %td= article.principal_author.full_name
+              %td= article.status
+              - if permitted_to?(:approve_form, article)
+                %td= link_to 'Edit', approve_form_article_path(article)
+    -else
+      No articles available.
