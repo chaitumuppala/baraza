@@ -1,6 +1,6 @@
 class LoginPage
   include Capybara::DSL
-  def login(email, password)
+  def login(email="user@example.com", password="9YaybL(7")
     visit '/users/sign_in'
     within ".new-user-session" do
       fill_in "Email", with: email
