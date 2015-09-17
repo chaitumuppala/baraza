@@ -11,6 +11,7 @@ class ArticlesController < ApplicationController
   SUBMIT_FOR_APPROVAL = 'Submit for approval'
   PUBLISH = 'Publish'
   PREVIEW = 'Preview'
+
   module Search
     extend ListValues
     ALL = 'all'

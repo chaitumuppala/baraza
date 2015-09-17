@@ -10,7 +10,6 @@ FactoryGirl.define do
     password { 'Password1!' }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    type { RegisteredUser.name }
   end
 
   factory :administrator, parent: :user, class: Administrator.name do

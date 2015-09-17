@@ -45,77 +45,60 @@ describe User, type: :model do
   describe 'validation' do
     it { is_expected.to validate_presence_of(:first_name) }
     it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_presence_of(:email) }
 
     it 'should be inavlid if password length is less than 8 characters' do
       user = build(:user, password: 'Pa1!')
       expect(user).not_to be_valid
       expect(user.errors.full_messages).to eq(['Password is too short (minimum is 8 characters)'])
     end
+    
+    it 'skips email validation for users associated to providers' do
+      expect do
+        create(:user, uid: 'uid001', provider: 'facebook', email: nil)
+      end.to change { User.count }.by(1)
+    end
+
+    it 'should skip password validation for users associated to providers' do
+      expect do
+        create(:user, uid: 'uid001', provider: 'facebook', password: nil, password_confirmation: nil)
+      end.to change { User.count }.by(1)
+    end
   end
 
-#   describe 'before_create' do
-#     it 'should set type as registeredUser if no type is present' do
-#       user = User.create(email: 'random@gmai.com', password: 'Password1!', first_name: 'deepthi', last_name: 'vinod')
-#       expect(user.type).to eq(RegisteredUser.name)
-#     end
-#
-#     it 'should set type as registeredUser if type is empty' do
-#       user = User.create(email: 'random@gmai.com', password: 'Password1!', first_name: 'deepthi', last_name: 'vinod', type: '')
-#       expect(user.type).to eq(RegisteredUser.name)
-#     end
-#
-#     it 'should use the provided type' do
-#       user = User.create(email: 'random@gmai.com', password: 'Password1!', first_name: 'deepthi', last_name: 'vinod', type: Administrator.name)
-#       expect(user.type).to eq(Administrator.name)
-#     end
-#   end
-#
-#   describe 'skip validation' do
-#     it 'should skip email validation for users associated to providers' do
-#       expect do
-#         create(:user, uid: 'uid001', provider: 'facebook', email: nil)
-#       end.to change { User.count }.by(1)
-#     end
-#
-#     it 'should skip password validation for users associated to providers' do
-#       expect do
-#         create(:user, uid: 'uid001', provider: 'facebook', password: nil, password_confirmation: nil)
-#       end.to change { User.count }.by(1)
-#     end
-#
-#     it 'should not skip for regular users' do
-#       expect(build(:user, email: nil)).not_to be_valid
-#     end
-#   end
-#
-#   describe 'GenderCategory' do
-#     context 'values' do
-#       it 'should return all values of gender category' do
-#         expect(User::GenderCategory.values).to eq(%w(M F Other))
-#       end
-#     end
-#   end
-#
-#   context 'administrator?' do
-#     it 'should return true for administrator' do
-#       expect(create(:administrator).administrator?).to eq(true)
-#     end
-#
-#     it 'should return false for others' do
-#       expect(create(:editor).administrator?).to eq(false)
-#     end
-#   end
-#
-#   context 'editor?' do
-#     it 'should return true for editor' do
-#       expect(create(:editor).editor?).to eq(true)
-#     end
-#
-#     it 'should return false for others' do
-#       expect(create(:administrator).editor?).to eq(false)
-#     end
-#   end
-#
+  describe "user type" do
+    it "is defaulted to registered when not provided" do
+      expect(create(:user).type).to eq("RegisteredUser")
+    end
+
+    it "is not defaulted when provided" do
+      user = create(:user, type: 'Administrator')
+      expect(user.type).to eq('Administrator')
+    end
+  end
+
+  describe "computed attributes" do
+    describe '#administrator?' do
+      it 'is true for administrator' do
+        expect(build(:administrator).administrator?).to eq(true)
+      end
+
+      it 'is false for everything else' do
+        expect(build(:editor).administrator?).to eq(false)
+      end
+    end
+
+    describe '#editor?' do
+      it 'is true for editor' do
+        expect(build(:editor).editor?).to eq(true)
+      end
+    
+      it 'is false for others' do
+        expect(build(:administrator).editor?).to eq(false)
+      end
+    end
+  end
+
 #   context 'generate_set_password_token' do
 #     it 'should return the token for the user' do
 #       user = create(:user)
