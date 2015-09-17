@@ -30,3 +30,10 @@ mocks/*
 /.ruby-version
 /.ruby-gemset
 .env
+Gemfile.lock
+.DS_Store
+*.gz
+*.4.8
+logfile
+typescript
+
