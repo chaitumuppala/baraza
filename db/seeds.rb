@@ -41,6 +41,13 @@ def categories
   end
 end
 
+def subscribers
+  seed "subscribers" do
+    Subscriber.find_or_create_by! email: "hanselmahlaola@gmail.com"
+  end
+end
+
 puts "Seeding Baraza..."
 admins
 categories
+subscribers
