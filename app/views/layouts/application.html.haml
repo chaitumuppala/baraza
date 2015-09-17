@@ -14,7 +14,7 @@
     %ul#category-drop.f-dropdown{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       - Category.all.each do |category|
         %li
-          = link_to category.name, search_articles_path(q: category.name, search: ArticlesController::Search::CATEGORY)
+          = link_to category.name, search_articles_path(q: category.id, search: ArticlesController::Search::CATEGORY)
     #search-drop.f-dropdown.content{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
       = form_tag search_articles_path, method: :get do
         = text_field_tag :q, params[:q], placeholder: "search...."

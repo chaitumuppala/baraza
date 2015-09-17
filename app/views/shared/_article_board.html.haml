@@ -6,7 +6,7 @@
       .title
         = link_to article.title, article_path(article.id)
       .desc
-        = "#{article.principal_author.full_name.upcase}, #{time_ago_in_words(article.date_published).upcase} AGO"
+        = "#{article.principal_author.full_name.upcase}"
       .summary
         = link_to (image_tag article.cover_image_url(:thumb)), article_path(article.id)
         = truncate_summary(article.summary)
