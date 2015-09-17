@@ -1,7 +1,5 @@
 #forgotPasswordModal.panel
   .forgot_password_page.row
-    .success_flash.hide
-      = t("devise.passwords.send_instructions")
     %h2 Forgot your password?
     = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "no-double-click" }) do |f|
       = devise_error_messages!
