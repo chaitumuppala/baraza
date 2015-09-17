@@ -11,6 +11,7 @@ FactoryGirl.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     type { RegisteredUser.name }
+    confirmed_at { Time.current }
   end
 
   factory :administrator, parent: :user, class: Administrator.name do

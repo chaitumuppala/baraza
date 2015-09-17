@@ -1,17 +1,13 @@
-require 'rails_helper'
+require 'rails_ui_helper'
 
 describe "the sign in process" do
   before :each do
-    create :user, { email: "user@example.com", password: "9YaybL(7", password_confirmation: "9YaybL(7" }
+    @password = "9YaybL(7"
+    @user = create :user, { email: "user@example.com", password: @password, password_confirmation: @password }
   end
 
   it "signs me in" do
-    visit '/users/sign_in'
-    within ".new-user-session" do
-      fill_in "Email", with: "user@example.com"
-      fill_in "Password", with: "9YaybL(7"
-    end
-    click_button "Log in"
+    @login_page.login(@user.email, @password)
     expect(page).to have_content("Signed in successfully")
   end
 end
