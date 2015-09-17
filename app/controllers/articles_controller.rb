@@ -73,8 +73,7 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    #@articles = current_user.articles.includes(:users, :system_users) - current_user.Articles.where(tatus: Article::Status::PREVIEW)
-    @articles = current_user.articles.includes(:users, :system_users)
+    @articles = current_user.articles.includes(:users, :system_users) - current_user.articles.where(status: Article::Status::PREVIEW)
     @proxy_articles = current_user.proxy_articles.includes(:users, :system_users) - @articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL).includes(:users, :system_users) unless current_user.registered_user?
   end
