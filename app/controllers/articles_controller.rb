@@ -71,7 +71,7 @@ class ArticlesController < ApplicationController
 
   def search
     if params[:search] == ArticlesController::Search::CATEGORY
-      @articles = Article.where(category: params[q] )
+      @articles = Article.where(category: params[:q] )
     end
   end
 
