@@ -38,10 +38,10 @@ class ArticlesController < ApplicationController
       if params[:commit] == PREVIEW
         render(:preview)
       else
-        format.html { redirect_to articles_path, notice: 'Article was successfully created.' }
+        redirect_to articles_path, notice: 'Article was successfully updated.'
       end
     else
-      format.html { render :new }
+      render(:new)
     end
   end
 
@@ -53,10 +53,10 @@ class ArticlesController < ApplicationController
         build_cover_image
         render(:preview)
       else
-        format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
+        redirect_to articles_path, notice: 'Article was successfully updated.'
       end
     else
-      format.html { render :edit }
+      render(:edit)
     end
   end
 
