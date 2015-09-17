@@ -1,10 +1,10 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :destroy, :approve_form, :approve, :home_page_order_update]
+  before_action :set_article, only: [:update, :show, :edit, :destroy, :approve_form, :approve, :home_page_order_update]
 
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
   before_action :display_preview, only: [ :approve]
-  before_action :new_article_from_params, only: [:update, :new, :create]
+  before_action :new_article_from_params, only: [:new, :create]
   skip_before_action :application_meta_tag, only: [:show]
 
   SAVE = 'Save as draft'
@@ -30,7 +30,6 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    logger.debug("top of create")
     if @article.save
         # TODO: Vijay: Maybe the owner assignment should be done before the save is tried, thus the notification can be done as an after save hoook on the model, as opposed to the controller
         # This actually creates a different model. It is not dirtying the article.
@@ -47,11 +46,11 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    logger.debug("top of update")
     if @article.update(article_params)
       assign_owner
       article_arrival_notification
       if params[:commit] == PREVIEW
+        build_cover_image
         render(:preview)
       else
         format.html { redirect_to articles_path, notice: 'Article was successfully updated.' }
