@@ -8,7 +8,7 @@ RSpec.describe UsersHelper do
 
       expect(helper.error_message_for_email(user)).to eq(["Email can't be blank",
                                                           "Password can't be blank",
-                                                          'Password should include at least one of the following characters: one letter, one numeral and one special character.',
+                                                          "Password can't be blank",
                                                           "First name can't be blank",
                                                           "Last name can't be blank"])
     end

@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'barazaweb@gmail.com'
+  default from: 'noreply@panafricanbaraza.org'
   layout 'mailer'
 end

@@ -34,13 +34,16 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
+require 'list_values'
+
 class User < ActiveRecord::Base
   PASSWORD_SUBSTRING = '1Aa!'
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
-  validates :password, format: { with: /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
+  # validates :password, format: { with: /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\W)/ }, if: :password_required?
+  validates_presence_of :password, if: :password_required?
   validates :first_name, :last_name, presence: true
   alias_attribute :role, :type
   delegate :administrator?, :editor?, :registered_user?, to: :user_role_is
@@ -57,23 +60,16 @@ class User < ActiveRecord::Base
     REGISTERED_USER = 'RegisteredUser'
   end
 
-  module GenderCategory
-    extend ListValues
-    M = 'M'
-    F = 'F'
-    OTHER = 'Other'
-  end
-
   def role_symbols
     [role.underscore.to_sym]
   end
 
   def email_required?
-    super && !has_a_provider?
+    super && !has_provider?
   end
 
   def password_required?
-    super && !has_a_provider?
+    super && !has_provider?
   end
 
   def user_role_is
@@ -88,7 +84,7 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def has_a_provider?
+  def has_provider?
     uid.present? && provider.present?
   end
 end
