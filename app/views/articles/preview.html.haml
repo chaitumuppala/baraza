@@ -9,7 +9,7 @@
         = image_tag @article.cover_image_url(:medium), :id => "coverImage"
       %br
       %p
-        author: 
+        Author: 
         = @article.principal_author.full_name
       %br
       %p{:id=> "summary"}
