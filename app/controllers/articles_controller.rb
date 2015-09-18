@@ -72,6 +72,11 @@ class ArticlesController < ApplicationController
   def search
     if params[:search] == ArticlesController::Search::CATEGORY
       @articles = Article.where(category: params[:q] )
+    else
+      if params[:search] == ArticlesController::Search::TAGS
+        search_tag = Tag.where(name: params[:q]).first
+        @articles = Article.includes(:tags, :search_tag )
+      end
     end
   end
 
