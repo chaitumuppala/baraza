@@ -59,6 +59,13 @@ describe User, type: :model do
       end.to change { User.count }.by(1)
     end
 
+    it 'should skip email uniqueness validation for users associated to providers' do
+      create(:user, uid: 'uid001', provider: 'facebook', email: nil)
+      expect do
+        create(:user, uid: 'uid002', provider: 'facebook', email: nil)
+      end.to change { User.count }.by(1)
+    end
+
     it 'should skip password validation for users associated to providers' do
       expect do
         create(:user, uid: 'uid001', provider: 'facebook', password: nil, password_confirmation: nil)
