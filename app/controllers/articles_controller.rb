@@ -71,11 +71,10 @@ class ArticlesController < ApplicationController
 
   def search
     if params[:search] == ArticlesController::Search::CATEGORY
-      @articles = Article.where(category: params[:q] )
+      @articles = Article.where(category: params[:q] ) - Article.where(status: Article::Status::PREVIEW)
     else
       if params[:search] == ArticlesController::Search::TAGS
-        search_tag = Tag.where(name: params[:q]).first
-        @articles = Article.includes(:tags, :search_tag )
+        @articles = Article.includes(:tags).where('tags.name=?', params[:q]).references(:tags) - Article.where(status: Article::Status::PREVIEW) - Article.where(status: Article::Status::PREVIEW)
       end
     end
   end
