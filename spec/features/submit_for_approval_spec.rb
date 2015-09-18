@@ -6,6 +6,7 @@ describe "submit_for_approval" do
     @user = create :user, password: @password
     @article = create :article, creator: @user
     @article.users << @user
+    create :editor
   end
 
   it "should submit the registered user article for approval" do
