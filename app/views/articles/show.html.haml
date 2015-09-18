@@ -24,6 +24,9 @@
         = image_tag @article.cover_image_url(:medium)
       %br
       %p
+        Author: 
+        = @article.principal_author.full_name
+      %p
         = @article.summary
       %br
       .content
