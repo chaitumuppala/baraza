@@ -10,12 +10,7 @@ FactoryGirl.define do
     password { 'Password1!' }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-<<<<<<< HEAD
-    type { RegisteredUser.name }
-    confirmed_at { Time.current }
-=======
     confirmed_at { Time.now }
->>>>>>> ad844b7f32939b03f31c729c40f9276bbefdf675
   end
 
   factory :administrator, parent: :user, class: Administrator.name do

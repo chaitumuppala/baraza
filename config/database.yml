@@ -7,10 +7,6 @@ development:
   <<: *default
   database: baraza_development
 
-automation:
-  <<: *default
-  database: baraza_automation
-
 test: &test
   <<: *default
   database: baraza_test

@@ -95,8 +95,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
-  gem 'selenium-webdriver', '~> 2.47.1'
-  gem 'watir-webdriver'
   gem 'capybara'
   # gem 'simplecov', '~> 0.10.0', require: false
 end
