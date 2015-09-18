@@ -8,7 +8,6 @@
 #  updated_at :datetime         not null
 #
 
-# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Category < ActiveRecord::Base
-  has_many :articles, -> { order('-articles.position_in_newsletter DESC', 'newsletter_id DESC') }
+  has_many :articles, -> { order('articles.position_in_newsletter', 'newsletter_id') }
 end

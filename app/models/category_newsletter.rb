@@ -13,10 +13,9 @@
 #  index_category_newsletters_on_newsletter_id  (newsletter_id)
 #
 
-# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class CategoryNewsletter < ActiveRecord::Base
   belongs_to :category
   belongs_to :newsletter
 
-  default_scope { order('-position_in_newsletter DESC') }
+  default_scope { order('position_in_newsletter') }
 end

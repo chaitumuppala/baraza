@@ -10,7 +10,6 @@
 #  date_published :datetime
 #
 
-# TODO: Vijay: Data integrity mandates that the db has constraints like non-nullable column, foreign key constraints, etc
 class Newsletter < ActiveRecord::Base
   has_many :articles
   has_many :category_newsletters
