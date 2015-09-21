@@ -71,17 +71,34 @@ class ArticlesController < ApplicationController
 
   def search
     if params[:search] == ArticlesController::Search::CATEGORY
-      @articles = Article.where(category: params[:q] ) - Article.where(status: Article::Status::PREVIEW)
+      @articles = Article.where(['category_id = ? and status != ?',  params[:q], Article::Status::PREVIEW ])
     else
       if params[:search] == ArticlesController::Search::TAGS
-        @articles = Article.includes(:tags).where('tags.name=?', params[:q]).references(:tags) - Article.where(status: Article::Status::PREVIEW) - Article.where(status: Article::Status::PREVIEW)
+        @articles = Article.includes(:tags).where(['tags.name= ? and status != ?', params[:q], Article::Status::PREVIEW ]).references(:tags)
+      else
+        if params[:search] == ArticlesController::Search::ALL
+          query_string = "%" + params[:q].upcase + "%"
+          @articles = Article.includes(:tags, :users, :category ).where(
+            [
+              "(upper(title) like ? or upper(summary) like ? or upper(content) like ? or upper(tags.name) like ? or upper(categories.name) like ? or upper(users.first_name) like ? or upper(users.last_name) like ? ) and status != ?",
+              query_string,
+              query_string,
+              query_string,
+              query_string,
+              query_string,
+              query_string,
+              query_string,
+              Article::Status::PREVIEW
+            ]
+          ).references(:tags, :users )
+        end
       end
     end
   end
 
   def index
-    @articles = current_user.articles.includes(:users, :system_users) - current_user.articles.where(status: Article::Status::PREVIEW)
-    @proxy_articles = current_user.proxy_articles.includes(:users, :system_users) - @articles
+    @articles = current_user.articles.includes(:users, :system_users).where('status != ?',  Article::Status::PREVIEW)
+    @proxy_articles = current_user.proxy_articles.includes(:users, :system_users).where('status != ?', Article::Status::PREVIEW) - @articles
     @articles_submitted = Article.where(status: Article::Status::SUBMITTED_FOR_APPROVAL).includes(:users, :system_users) unless current_user.registered_user?
   end
 
