@@ -59,7 +59,11 @@ class Article < ActiveRecord::Base
   end
 
   def principal_author
-    owners.first
+    if owners.count >0
+      owners.first
+    else
+        users.where("id = ?", creator_id)
+    end
   end
 
   private
