@@ -62,7 +62,7 @@ class Article < ActiveRecord::Base
     if owners.count >0
       owners.first
     else
-        users.where("id = ?", creator_id)
+        users.where("id = ?", creator_id).first
     end
   end
 
