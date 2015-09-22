@@ -12,5 +12,7 @@ RSpec.configure do |config|
     @login_page = LoginPage.new
     @article_list_page = ArticleListPage.new
     @article_page = ArticlePage.new
+    @home_page = HomePage.new
+    @add_author_page = AddAuthorPage.new
   end
 end
