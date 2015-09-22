@@ -14,5 +14,6 @@ RSpec.configure do |config|
     @article_page = ArticlePage.new
     @home_page = HomePage.new
     @add_author_page = AddAuthorPage.new
+    @password_reset_page = PasswordResetPage.new
   end
 end
