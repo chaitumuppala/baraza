@@ -6,7 +6,7 @@ class LoginPage
   end
 
   def login(email="email3@factory.com", password="Password1!")
-    goto_login
+    visit '/users/sign_in'
     within ".new-user-session" do
       fill_in "Email", with: email
       fill_in "Password", with: password
