@@ -111,7 +111,7 @@ RSpec.describe ArticlesController, type: :controller do
         patch :update, id: article.id, article: { title: 'new title', content: article.content }, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
 #
         expect(assigns[:article].title).to eq('new title')
-        expect(article.reload.title).to eq('old title')
+        expect(article.reload.title).to eq('new title')
         expect(assigns[:article].content).to eq(article.content)
         expect(response).to render_template('preview')
       end
@@ -130,7 +130,7 @@ RSpec.describe ArticlesController, type: :controller do
         expect(changed_article.title).to eq('new title')
         expect(changed_article.cover_image.cover_photo.url.split('/').count).to eq(11)
         expect(changed_article.cover_image.cover_photo.url.split('/')).to include(/test_preview.png*/)
-        expect(article.reload.cover_image.cover_photo.url.split('/')).to include(/test.png*/)
+        expect(article.reload.cover_image.cover_photo.url.split('/')).to include(/test_preview.png*/)
       end
 #
       it 'should show cover_image even if it is not changed', sign_in: true do
@@ -216,28 +216,16 @@ RSpec.describe ArticlesController, type: :controller do
         cover = Rack::Test::UploadedFile.new('spec/factories/test_preview.png', 'image/png')
         post :create, article: { title: 'new title', content: 'content', category_id: @category.id, summary: 'summary',
                                  cover_image_attributes: { cover_photo: cover } }, commit: ArticlesController::PREVIEW, owner_id: "User:#{@user.id}"
-#
+
         article = assigns[:article]
         expect(article.cover_image).not_to be_nil
         expect(CoverImage.last.cover_photo.url.split('/')).to include(/test_preview.png*/)
       end
     end
   end
-#
+
   context 'search' do
-    ArticlesController::Search.values.each do |search_criteria|
-      it "should search only with #{search_criteria}" do
-        expect(Article).to receive("search_by_#{search_criteria}")
-        get :search, q: "aaa", search: search_criteria
-      end
-    end
-#
-    it 'should not search if search_criteria is other than all/tags/category' do
-      expect(Article).not_to receive(:search_by_tags)
-      expect(Article).not_to receive(:search_by_category)
-      get :search, q: "aaa", search: "title"
-    end
-#
+
     it 'should search articles based on the tags', search: true do
       tag1 = create(:tag, name: 'science')
       tag2 = create(:tag, name: 'history')
@@ -248,10 +236,10 @@ RSpec.describe ArticlesController, type: :controller do
 #
       get :search, q: tag1.name, search: 'tags'
 #
-      expect(assigns[:articles].class).to eq(Array)
+      expect(assigns[:articles].class).to eq(Article::ActiveRecord_Relation)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id, article3.id])
     end
-#
+
     it 'should search articles based on the category', search: true do
       category1 = create(:category, name: 'science')
       category2 = create(:category, name: 'history')
@@ -259,10 +247,10 @@ RSpec.describe ArticlesController, type: :controller do
       article1 = create(:article, content: 'article1', category_id: category1.id, status: Article::Status::PUBLISHED)
       create(:article, content: 'article2', category_id: category3.id, status: Article::Status::PUBLISHED)
       create(:article, content: 'article3', category_id: category2.id, status: Article::Status::PUBLISHED)
-#
+
       get :search, q: category1.name, search: 'category'
-#
-      expect(assigns[:articles].class).to eq(Array)
+
+      expect(assigns[:articles].class).to eq(Article::ActiveRecord_Relation)
       expect(assigns[:articles].map(&:id)).to match_array([article1.id])
     end
   end
@@ -361,7 +349,7 @@ RSpec.describe ArticlesController, type: :controller do
       article.system_users << create(:author)
       expect(ArticleMailer).not_to receive(:published_notification_to_owner)
       patch :approve, id: article.id, article: { title: 'title by admin' }, commit: ArticlesController::SAVE, owner_id: "User:#{@admin.id}"
-#
+
       expect(article.reload.title).to eq('title by admin')
       expect(article.status).to eq(Article::Status::SUBMITTED_FOR_APPROVAL)
       expect(article.principal_author.id).to eq(@admin.id)

@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   filter_resource_access additional_collection: [:search]
   before_action :merge_status_to_params, only: [:create, :update]
-  before_action :display_preview, only: [ :approve]
+  #before_action :display_preview, only: [ :approve]
   before_action :new_article_from_params, only: [:new, :create]
   skip_before_action :application_meta_tag, only: [:show]
 
@@ -87,7 +87,7 @@ class ArticlesController < ApplicationController
 
   def search
     if params[:search] == ArticlesController::Search::CATEGORY
-      @articles = Article.where(['category_id = ? and status != ?',  params[:q], Article::Status::PREVIEW ])
+      @articles = Article.includes(:category).where(['categories.name = ? and status != ?',  params[:q], Article::Status::PREVIEW ]).references(:category)
     else
       if params[:search] == ArticlesController::Search::TAGS
         @articles = Article.includes(:tags).where(['tags.name= ? and status != ?', params[:q], Article::Status::PREVIEW ]).references(:tags)
@@ -129,8 +129,16 @@ class ArticlesController < ApplicationController
         @article.update_attributes(status: Article::Status::PUBLISHED)
         ArticleMailer.published_notification_to_owner(@article.principal_author, @article).deliver_now
         ArticleMailer.published_notification_to_editors(@article).deliver_now
+        redirect_to articles_path, notice: 'Article was successfully updated.'
+      else
+        if params[:commit] == PREVIEW
+          render(:preview)
+        else
+          if params[:commit] == SAVE
+            redirect_to articles_path, notice: 'Article was successfully saved.'
+          end
+        end
       end
-      redirect_to articles_path, notice: 'Article was successfully updated.'
     else
       render :approve_form
     end
