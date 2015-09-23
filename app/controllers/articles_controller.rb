@@ -62,7 +62,15 @@ class ArticlesController < ApplicationController
         build_cover_image
         render(:preview)
       else
-        redirect_to articles_path, notice: 'Article was successfully updated.'
+        if params[:commit] == PUBLISH
+          redirect_to articles_path, notice: 'Article was successfully published.'
+        else
+          if params[:commit] == SAVE
+            redirect_to articles_path, notice: 'Article was successfully saved.'
+          else
+            redirect_to articles_path, notice: 'Article was successfully updated.'
+          end
+        end
       end
     else
       render(:edit)
