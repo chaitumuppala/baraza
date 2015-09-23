@@ -46,6 +46,8 @@ class ArticlesController < ApplicationController
             redirect_to articles_path, notice: 'Article was successfully saved.'
           else
             redirect_to articles_path, notice: 'Article was successfully updated.'
+          end
+        end
       end
     else
       render(:new)
