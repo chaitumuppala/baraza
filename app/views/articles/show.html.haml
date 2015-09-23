@@ -26,7 +26,8 @@
       %p
         Author: 
         = @article.principal_author.full_name
-  
+      %p
+        = @article.summary
       %br
       .content
         = @article.content.html_safe
