@@ -39,7 +39,13 @@ class ArticlesController < ApplicationController
       if params[:commit] == PREVIEW
         render(:preview)
       else
-        redirect_to articles_path, notice: 'Article was successfully updated.'
+        if params[:commit] == PUBLISH
+          redirect_to articles_path, notice: 'Article was successfully published.'
+        else
+          if params[:commit] == SAVE
+            redirect_to articles_path, notice: 'Article was successfully saved.'
+          else
+            redirect_to articles_path, notice: 'Article was successfully updated.'
       end
     else
       render(:new)
@@ -151,7 +157,7 @@ class ArticlesController < ApplicationController
       status = current_user.registered_user? ? Article::Status::SUBMITTED_FOR_APPROVAL : Article::Status::PUBLISHED
       params[:article].merge!(status: status, author_content: params[:article][:content])
     end
-    if params[:commit] == PREVIEW
+    if params[:commit] == PREVIEW && @article.status == nil
       status = Article::Status::PREVIEW
       params[:article].merge!(status: status, author_content: params[:article][:content])
     end
