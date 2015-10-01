@@ -10,7 +10,7 @@ describe 'add author' do
 
   it 'should add author' do
     @login_page.login("email3@factory.com" , @password)
-    expect(page).to have_content("Signed in successfully")
+    #expect(page).to have_content("Signed in successfully")
     @home_page.home
     @home_page.click_username
     @add_author_page.go_to_authors
