@@ -4,8 +4,7 @@ class UsersController < ApplicationController
   filter_resource_access additional_collection: [:failure]
 
   def failure
-    logger.debug "hello world, in failure"
-    redirect_to root_path
+    render(:sign_in)
   end
 
   # GET /users
