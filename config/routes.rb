@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :users do
     member do
+      get :failure
       get :change_email_form
       patch :change_email
     end
@@ -42,6 +43,7 @@ Rails.application.routes.draw do
 
   get '/contact', to: 'static#contact'
   get '/about', to: 'static#about'
+  get '/users/falure' => 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
