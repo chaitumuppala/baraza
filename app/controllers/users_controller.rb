@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy, :change_email, :change_email_form]
   skip_before_action :ensure_email_present, only: [:change_email, :change_email_form]
-  #filter_resource_access
+  filter_resource_access additional_collection: [:failure]
+
+  def failure
+    logger.debug "hello world, in failure"
+    redirect_to root_path
+  end
 
   # GET /users
   # GET /users.json
