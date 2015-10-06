@@ -6,6 +6,7 @@ authorization do
       if_attribute status: is { Article::Status::PUBLISHED }
     end
     has_permission_on :newsletters, to: :subscribe
+    has_permission_on :users, to: [:failure]
   end
 
   role :registered_user do

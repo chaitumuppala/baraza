@@ -45,7 +45,6 @@ Rails.application.routes.draw do
 
   get '/contact', to: 'static#contact'
   get '/about', to: 'static#about'
-  get '/users/failure' => 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

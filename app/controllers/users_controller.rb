@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   filter_resource_access additional_collection: [:failure]
 
   def failure
-    render(:sign_in)
+    redirect_to "/users/sign_in"
   end
 
   # GET /users
