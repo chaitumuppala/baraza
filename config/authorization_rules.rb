@@ -17,10 +17,10 @@ authorization do
 
     has_permission_on :articles, to: [:new, :create, :index]
 
-    has_permission_on :articles, to: [:edit, :update] do
+    has_permission_on :articles, to: [:destroy, :edit, :update] do
       if_attribute creator_id: is { user.id }, status: is { Article::Status::DRAFT  }
     end
-    has_permission_on :articles, to: [:edit, :update] do
+    has_permission_on :articles, to: [:destroy, :edit, :update] do
       if_attribute creator_id: is { user.id }, status: is { Article::Status::PREVIEW  }
     end
 

@@ -26,7 +26,7 @@
 
 class Article < ActiveRecord::Base
   belongs_to :creator, class_name: User.name
-  has_many :article_owners
+  has_many :article_owners, :dependent => :destroy
   has_many :system_users, through: :article_owners, source: :owner, source_type: Author.name
   has_many :users, through: :article_owners, source: :owner, source_type: User.name
   has_one :cover_image, -> { where(preview_image: false) }
@@ -41,6 +41,7 @@ class Article < ActiveRecord::Base
   validates :home_page_order, uniqueness: { case_sensitive: false }, allow_blank: true
 
   before_save :set_date_published, if: -> { status_changed? && status == Article::Status::PUBLISHED }
+  #before_destroy -> { ArticleOwner.where(["article_id = ?", self.id]).first.destroy }
 
   module Status
     DRAFT = 'draft'
