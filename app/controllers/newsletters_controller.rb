@@ -74,6 +74,7 @@ class NewslettersController < ApplicationController
   def subscribe
     subscriber = Subscriber.new(email: params[:email])
     if subscriber.save
+      NewsletterMailer.subscription_signup(subscriber.email)
       flash[:notice] = 'Subscribed successfully'
     else
       flash[:alert] = subscriber.errors.full_messages.join('<br/>')
