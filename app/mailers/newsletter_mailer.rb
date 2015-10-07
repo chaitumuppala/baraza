@@ -5,7 +5,7 @@ class NewsletterMailer < ApplicationMailer
     mail(bcc: Subscriber.all.collect(&:email), subject: 'Baraza eMagazine')
   end
 
-  def subscription_signup(email)
+  def subscribtion_signup(email)
     mail(to: email, subject: 'Baraza eMagazine subscription')
   end
 
