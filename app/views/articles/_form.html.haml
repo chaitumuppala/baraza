@@ -18,6 +18,9 @@
     - else
       = f.submit  ArticlesController::PUBLISH,:id => "publish", data: {target: "", confirm: "Are you sure you want to publish this article?"}
     %span.cancel
+    - if(@article.status.eql?"(draft") || @article.status.eql?("submitted for approval")
+      - if permitted_to?(:destroy, article)
+        = link_to "Delete", article_path(article), :method => :delete
     = link_to "Cancel", articles_path
 
 %div#createAuthorModal.reveal-modal{"aria-hidden" => "true", "aria-labelledby" => "Create authors", "data-reveal" => "", :role => "dialog"}
