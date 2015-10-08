@@ -53,9 +53,10 @@
               %td= article.principal_author.full_name
               %td= article.status
               - if permitted_to?(:edit, article)
-                %td= link_to 'Edit', edit_article_path(article)
-              - if permitted_to?(:destroy, article)
-                = link_to "Delete", article_path(article), :method => :delete
+                %td
+                  = link_to 'Edit', edit_article_path(article)
+                  - if permitted_to?(:destroy, article)
+                    = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
 
@@ -84,8 +85,9 @@
               %td= article.principal_author.full_name
               %td= article.status
               - if permitted_to?(:approve_form, article)
-                %td= link_to 'Edit', approve_form_article_path(article)
-              - if permitted_to?(:destroy, article)
-                = link_to "Delete", article_path(article), :method => :delete
+                %td
+                  = link_to 'Edit', approve_form_article_path(article)
+                  - if permitted_to?(:destroy, article)
+                    = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
