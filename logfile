@@ -1,0 +1,4 @@
+LOG:  database system was shut down at 2015-10-08 10:29:40 SAST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "baraza_test" does not exist
