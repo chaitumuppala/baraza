@@ -1,8 +1,11 @@
 .item.left
   %a{"aria-controls" => "category-drop", "aria-expanded" => "false", "data-dropdown" => "category-drop", "data-options" => "is_hover:true"} EXPLORE
-.item.left
-  = link_to "eMAGAZINES", newsletters_path
-.item.left
-  = link_to "USERS", users_path
-.item.left
-  = link_to "CONFIGURE HOME PAGE", root_path(configure_home: true)
+%div#menu-tag
+  .item.left
+    = link_to "eMAGAZINES", newsletters_path
+%div#menu-tags
+  .item.left
+    = link_to "USERS", users_path
+%div#menu-tags
+  .item.left
+    = link_to "CONFIGURE HOME PAGE", root_path(configure_home: true)
