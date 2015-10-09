@@ -21,7 +21,9 @@
               %td
                 = link_to 'Edit', edit_article_path(article)
                 - if permitted_to?(:destroy, article)
+                  |
                   = link_to "Delete", article_path(article), :method => :delete
+
   -else
     No articles available.
 
@@ -56,6 +58,7 @@
                 %td
                   = link_to 'Edit', edit_article_path(article)
                   - if permitted_to?(:destroy, article)
+                    |
                     = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
@@ -88,6 +91,7 @@
                 %td
                   = link_to 'Edit', approve_form_article_path(article)
                   - if permitted_to?(:destroy, article)
+                    |
                     = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
