@@ -131,4 +131,9 @@ $(function () {
     }
   };
   loadPageSpecificJs("articles", ['new', 'edit', 'create', 'update', 'approve_form', 'approve'], ArticleTag.init.bind(ArticleTag));
+
+  $("#file_upload").on("change", function(e) {
+      var image = $("#coverImage");
+      image.fadeIn("fast").attr('src',URL.createObjectURL(e.target.files[0]));
+  });
 });

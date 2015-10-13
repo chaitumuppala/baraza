@@ -23,7 +23,7 @@
   .field
     = cif.label :cover_photo, "Cover Image"
     - if cif.object && cif.object.cover_photo
-      = image_tag @article.cover_image_url(:medium)
+      = image_tag @article.cover_image_url(:medium), :id => "coverImage"
     = cif.file_field :cover_photo, id: "file_upload"
 
 .field
