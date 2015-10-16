@@ -20,6 +20,7 @@
 //= require ckeditor/init
 //= require social-share-button
 //= require common
+//= require_tree ./jcrop
 //= require_tree ./custom_js
 
 $(function () {

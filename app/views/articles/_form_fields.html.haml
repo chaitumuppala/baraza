@@ -25,6 +25,25 @@
     - if cif.object && cif.object.cover_photo
       = image_tag @article.cover_image_url(:medium), :id => "coverImage"
     = cif.file_field :cover_photo, id: "file_upload"
+%div.inline-labels
+  %label
+    X1
+    %input#x1{:name => "x1", :size => "4", :type => "text"}/
+  %label
+    Y1
+    %input#y1{:name => "y1", :size => "4", :type => "text"}/
+  %label
+    X2
+    %input#x2{:name => "x2", :size => "4", :type => "text"}/
+  %label
+    Y2
+    %input#y2{:name => "y2", :size => "4", :type => "text"}/
+  %label
+    W
+    %input#w{:name => "w", :size => "4", :type => "text"}/
+  %label
+    H
+    %input#h{:name => "h", :size => "4", :type => "text"}/
 
 .field
   = f.label :summary,data: { hint: "Maximum 500 words" }
