@@ -25,7 +25,7 @@ RSpec.describe ArticleMailer, type: :mailer do
       article.users << create(:user, first_name: 'f4', last_name: 'l4')
       mailer = ArticleMailer.notification_to_editors(article)
 
-      expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
+      expect(mailer.bcc).to match_array([editor1.email, editor2.email, admin1.email])
       expect(mailer.subject).to eq('Submission for review by f4 l4: foo bar')
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe ArticleMailer, type: :mailer do
       article.system_users << create(:author)
       mailer = ArticleMailer.published_notification_to_editors(article)
 
-      expect(mailer.to).to match_array([editor1.email, editor2.email, admin1.email])
+      expect(mailer.bcc).to match_array([editor1.email, editor2.email, admin1.email])
       expect(mailer.subject).to eq('unite all has been published')
     end
   end
