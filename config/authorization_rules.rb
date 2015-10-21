@@ -45,9 +45,7 @@ authorization do
       if_attribute status: is { Article::Status::SUBMITTED_FOR_APPROVAL }
     end
 
-    has_permission_on :articles, to: [:show] do
-      if_attribute status: is_not { Article::Status::DRAFT }
-    end
+    has_permission_on :articles, to: [:show]
 
     has_permission_on :articles, to: [:home_page_order_update]
 

@@ -95,3 +95,36 @@
                     = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
+
+- if @articles_by_others
+  .panel
+    %h4 Articles by others
+
+    - if @articles_by_others.count > 0
+      %table{id: "articles-by-others"}
+
+        %thead
+          %tr
+            %th
+              TITLE
+            %th
+              AUTHOR
+            %th
+              STATUS
+            %th
+              Actions
+
+        %tbody
+          - @articles_by_others.each do |article|
+            %tr
+              %td= link_to article.title, article_path(article)
+              %td= article.principal_author.full_name
+              %td= article.status
+              - if permitted_to?(:approve_form, article)
+                %td
+                  = link_to 'Edit', approve_form_article_path(article)
+                  - if permitted_to?(:destroy, article)
+                    |
+                    = link_to "Delete", article_path(article), :method => :delete
+    -else
+      No articles available.
