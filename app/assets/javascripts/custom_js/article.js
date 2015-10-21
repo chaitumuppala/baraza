@@ -22,10 +22,11 @@ $(function () {
           url: "/tags",
           dataType: 'json',
           data: function (params) {
-            return {
+              return {
               q: params
             };
           },
+
           results: function (data) {
             return {results: formatValues(data.tags)};
           }

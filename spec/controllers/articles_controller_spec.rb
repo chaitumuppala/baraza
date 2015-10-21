@@ -408,25 +408,25 @@ RSpec.describe ArticlesController, type: :controller do
     end
 #
     context 'editor/admin' do
-      it 'should show any article not draft', editor_sign_in: true do
+      it 'should show articles that are submitted for approval', editor_sign_in: true do
         article = create(:article, status: Article::Status::SUBMITTED_FOR_APPROVAL)
         get :show, id: article.id
 #
         expect(response.code).to eq('200')
       end
 #
-      it 'should show any article not draft', editor_sign_in: true do
+      it 'should published articles', editor_sign_in: true do
         article = create(:article, status: Article::Status::PUBLISHED)
         get :show, id: article.id
 #
         expect(response.code).to eq('200')
       end
 #
-      it 'should not show any article draft', editor_sign_in: true do
+      it 'should show drafts', editor_sign_in: true do
         article = create(:article, status: Article::Status::DRAFT)
         get :show, id: article.id
 #
-        expect(response).to redirect_to(root_path)
+        expect(response.code).to eq('200')
       end
     end
   end
