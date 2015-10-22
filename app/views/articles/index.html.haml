@@ -1,5 +1,5 @@
 .panel
-  %h4 My Articles
+  %h4 My Draft Articles
   -if @articles.count > 0
     %table{id: "my-articles"}
   
@@ -98,7 +98,7 @@
 
 - if @articles_by_others
   .panel
-    %h4 Articles by others
+    %h4 Published Articles
 
     - if @articles_by_others.count > 0
       %table{id: "articles-by-others"}
