@@ -41,8 +41,12 @@ authorization do
       if_attribute status: is { Newsletter::Status::DRAFT }
     end
     has_permission_on :articles, to: [:destroy]
+      has_permission_on :articles, to: [:approve_form, :approve] do
+        if_attribute status: is { Article::Status::SUBMITTED_FOR_APPROVAL }
+      end
+    has_permission_on :articles, to: [:destroy]
     has_permission_on :articles, to: [:approve_form, :approve] do
-      if_attribute status: is { Article::Status::SUBMITTED_FOR_APPROVAL }
+      if_attribute status: is { Article::Status::PUBLISHED}
     end
 
     has_permission_on :articles, to: [:show]

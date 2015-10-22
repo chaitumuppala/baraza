@@ -33,7 +33,7 @@
 
 - if @proxy_articles
   .panel
-    %h4 Articles created for others
+    %h4 Draft articles created for others
     - if @proxy_articles.count > 0
       %table{id: "proxy-articles"}
     
@@ -122,9 +122,7 @@
               %td= article.status
               - if permitted_to?(:approve_form, article)
                 %td
-                  = link_to 'Edit', approve_form_article_path(article)
                   - if permitted_to?(:destroy, article)
-                    |
                     = link_to "Delete", article_path(article), :method => :delete
     -else
       No articles available.
